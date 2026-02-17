@@ -138,7 +138,7 @@ export function TerminalOverlay() {
         { type: "output", text: output },
       ]);
     },
-    [focusObject, openModal, returnToDesk]
+    [focusObject, openModal, returnToDesk, setTerminalFocused]
   );
 
   const handleSubmit = useCallback(
