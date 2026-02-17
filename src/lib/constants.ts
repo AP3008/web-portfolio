@@ -107,7 +107,7 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     label: "PROTEIN SHAKER",
     cameraTarget: [1.35, 0.1, -0.25],
     cameraPosition: [0.35, 1.4, 0.8],
-    position: [1.35, 0.1, -0.25],
+    position: [1.15, 0.1, -0.25],
     placeholderSize: [0.06, 0.12, 0.06],
     color: "#888888",
     modelUrl: "/models/protien_shaker.glb",
