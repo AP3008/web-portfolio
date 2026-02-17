@@ -202,12 +202,8 @@ export function ChessModal({ onClose }: ChessModalProps) {
   );
 
   return (
-    <Modal title="CHESS PUZZLE" onClose={onClose}>
+    <Modal onClose={onClose}>
       <div className="flex flex-col items-center gap-4">
-        <p className="text-sm text-text-muted text-center">
-          {chessPuzzle.title} — {chessPuzzle.description}
-        </p>
-
         {/* Board */}
         <div className="relative select-none">
           <div className="flex ml-6">

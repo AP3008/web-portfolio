@@ -9,7 +9,7 @@ interface AboutModalProps {
 
 export function AboutModal({ onClose }: AboutModalProps) {
   return (
-    <Modal title="ABOUT ME" onClose={onClose}>
+    <Modal onClose={onClose}>
       <div className="flex flex-col gap-6">
         <div>
           <h3 className="text-xl font-bold text-foreground mb-1">

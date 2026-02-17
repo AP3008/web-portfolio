@@ -9,7 +9,7 @@ interface ProjectPortalModalProps {
 
 export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
   return (
-    <Modal title="PROJECTS" onClose={onClose}>
+    <Modal onClose={onClose}>
       <div className="flex flex-col gap-4">
         {projects.map((project) => (
           <div

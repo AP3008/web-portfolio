@@ -8,7 +8,7 @@ interface FitnessModalProps {
 
 export function FitnessModal({ onClose }: FitnessModalProps) {
   return (
-    <Modal title="FITNESS" onClose={onClose}>
+    <Modal onClose={onClose}>
       <div className="flex flex-col gap-6">
         {/* Image placeholder */}
         <div className="w-full h-48 rounded border border-border bg-background flex items-center justify-center">
@@ -18,9 +18,6 @@ export function FitnessModal({ onClose }: FitnessModalProps) {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h3 className="text-base font-bold text-foreground">
-            Discipline Transfers
-          </h3>
           <p className="text-sm text-text-muted leading-relaxed">
             Bodybuilding taught me that consistency beats intensity. The same
             principles that build a physique — progressive overload, tracking
