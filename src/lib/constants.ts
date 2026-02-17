@@ -76,6 +76,7 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     color: "#555555",
     modelUrl: "/models/keyboard.glb",
     scale: [0.5, 0.5, 0.5],
+    rotation: [0, 0, 0],
     modal: "projects",
   },
   notebook: {
@@ -87,6 +88,7 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     color: "#2244aa",
     modelUrl: "/models/notebook.glb",
     scale: [0.2, 0.2, 0.2],
+    rotation: [0, 0, 0],
     modal: "about",
   },
   papers: {
@@ -98,6 +100,7 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     color: "#eeeeee",
     modelUrl: "/models/papers.glb",
     scale: [0.3, 0.3, 0.3],
+    rotation: [0, 0, 0],
     modal: "resume",
   },
   shaker: {
@@ -109,6 +112,7 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     color: "#888888",
     modelUrl: "/models/protien_shaker.glb",
     scale: [0.1, 0.1, 0.1],
+    rotation: [0, 0, 0],
     modal: "fitness",
   },
   chessboard: {
@@ -120,6 +124,7 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     color: "#222222",
     modelUrl: "/models/chess_borad.glb",
     scale: [0.3, 0.3, 0.3],
+    rotation: [0, 0, 0],
     modal: "chess",
   },
   phone: {
@@ -131,6 +136,7 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     color: "#1a1a2e",
     modelUrl: "/models/phone.glb",
     scale: [0.3, 0.3, 0.3],
+    rotation: [0, 0, 0],
     modal: "socials",
   },
 };
