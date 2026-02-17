@@ -79,6 +79,7 @@ export function InteractableObject({
     <group
       ref={groupRef}
       position={config.position}
+      rotation={config.rotation}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
       onClick={handleClick}
