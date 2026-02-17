@@ -10,7 +10,7 @@ interface ResumeModalProps {
 export function ResumeModal({ onClose }: ResumeModalProps) {
   return (
     <Modal title="RESUME" onClose={onClose}>
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-4">
         <div className="text-center">
           <h3 className="text-xl font-bold text-foreground">
             {resumeData.name}
@@ -18,12 +18,13 @@ export function ResumeModal({ onClose }: ResumeModalProps) {
           <p className="text-sm text-text-muted">{resumeData.title}</p>
         </div>
 
-        {/* PDF preview placeholder */}
-        <div className="w-full rounded border border-border bg-background p-8 text-center">
-          <p className="text-text-muted text-sm mb-4">Resume Preview</p>
-          <div className="h-64 rounded border border-border/50 bg-surface flex items-center justify-center">
-            <span className="text-text-muted text-xs">PDF preview area</span>
-          </div>
+        {/* Embedded PDF viewer */}
+        <div className="w-full rounded border border-border bg-background overflow-hidden">
+          <iframe
+            src={resumeData.pdfUrl}
+            title="Resume PDF"
+            className="w-full h-[55vh] border-0"
+          />
         </div>
 
         <a

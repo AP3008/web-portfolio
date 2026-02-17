@@ -62,6 +62,7 @@ export function TerminalOverlay() {
   const focusObject = usePortfolioStore((s) => s.focusObject);
   const openModal = usePortfolioStore((s) => s.openModal);
   const setTerminalFocused = usePortfolioStore((s) => s.setTerminalFocused);
+  const returnToDesk = usePortfolioStore((s) => s.returnToDesk);
 
   const [lines, setLines] = useState<TerminalLine[]>([
     { type: "output", text: 'Welcome to Adam\'s terminal. Type "help" for commands.' },
@@ -123,7 +124,7 @@ export function TerminalOverlay() {
           output = `cd: no such object: ${parts[1] || "(none)"}`;
         }
       } else if (command === "exit") {
-        setTerminalFocused(false);
+        returnToDesk();
         return;
       } else if (command === "") {
         return;
@@ -137,7 +138,7 @@ export function TerminalOverlay() {
         { type: "output", text: output },
       ]);
     },
-    [focusObject, openModal, setTerminalFocused]
+    [focusObject, openModal, returnToDesk]
   );
 
   const handleSubmit = useCallback(
@@ -162,7 +163,7 @@ export function TerminalOverlay() {
             adam@portfolio:~$
           </span>
           <button
-            onClick={() => setTerminalFocused(false)}
+            onClick={() => returnToDesk()}
             className="text-text-muted hover:text-accent transition-colors text-xs"
           >
             [ESC]
