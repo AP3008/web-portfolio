@@ -29,45 +29,93 @@ export type ModalType =
 /** Scene phases */
 export type ScenePhase = "gate" | "loading" | "desk" | "focused";
 
-/** Object metadata: labels and camera target positions */
-export const DESK_OBJECTS: Record<
-  DeskObjectId,
-  { label: string; cameraTarget: [number, number, number]; cameraPosition: [number, number, number] }
-> = {
+/** Tuple type alias for 3D coordinates */
+export type Vec3 = [number, number, number];
+
+/** Object metadata: labels, camera targets, and placeholder geometry */
+export interface DeskObjectConfig {
+  label: string;
+  cameraTarget: Vec3;
+  cameraPosition: Vec3;
+  /** World position of the object on/around the desk */
+  position: Vec3;
+  /** Primitive geometry dimensions [width, height, depth] */
+  placeholderSize: Vec3;
+  /** Placeholder color */
+  color: string;
+  /** Optional GLB model path — if set, loads model instead of primitive */
+  modelUrl?: string;
+  /** Which modal this object opens (null for drawer which has no modal) */
+  modal: ModalType;
+  /** Whether this object is hidden until revealed (e.g., inside drawer) */
+  hiddenByDefault?: boolean;
+}
+
+export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
   monitor: {
     label: "MONITOR",
     cameraTarget: [0, 1.2, -0.5],
     cameraPosition: [0, 1.2, 0.3],
+    position: [0, 1.15, -0.4],
+    placeholderSize: [0.6, 0.4, 0.05],
+    color: "#333333",
+    modal: null,
   },
   keyboard: {
     label: "KEYBOARD",
-    cameraTarget: [0, 0.8, 0],
+    cameraTarget: [0, 0.78, 0.1],
     cameraPosition: [0, 1.5, 0.8],
+    position: [0, 0.76, 0.15],
+    placeholderSize: [0.45, 0.02, 0.15],
+    color: "#555555",
+    modal: "projects",
   },
   notebook: {
     label: "NOTEBOOK",
-    cameraTarget: [-0.6, 0.8, -0.2],
-    cameraPosition: [-0.6, 1.4, 0.6],
+    cameraTarget: [-0.5, 0.8, -0.1],
+    cameraPosition: [-0.5, 1.4, 0.6],
+    position: [-0.5, 0.77, -0.1],
+    placeholderSize: [0.2, 0.03, 0.28],
+    color: "#2244aa",
+    modal: "about",
   },
   papers: {
     label: "PAPERS",
-    cameraTarget: [0.6, 0.8, -0.2],
-    cameraPosition: [0.6, 1.4, 0.6],
+    cameraTarget: [0.5, 0.8, -0.1],
+    cameraPosition: [0.5, 1.4, 0.6],
+    position: [0.5, 0.77, -0.1],
+    placeholderSize: [0.21, 0.02, 0.29],
+    color: "#eeeeee",
+    modal: "resume",
   },
   drawer: {
     label: "DRAWER",
-    cameraTarget: [0, 0.3, 0],
-    cameraPosition: [0, 0.8, 0.8],
+    cameraTarget: [0, 0.4, 0.2],
+    cameraPosition: [0, 0.8, 0.9],
+    position: [0, 0.4, 0.3],
+    placeholderSize: [0.5, 0.12, 0.35],
+    color: "#8B4513",
+    modal: null,
   },
   dumbbell: {
     label: "DUMBBELL",
-    cameraTarget: [-0.3, 0.3, 0],
-    cameraPosition: [-0.3, 0.8, 0.8],
+    cameraTarget: [-0.15, 0.35, 0.3],
+    cameraPosition: [-0.15, 0.8, 0.9],
+    position: [-0.15, 0.35, 0.3],
+    placeholderSize: [0.25, 0.06, 0.06],
+    color: "#888888",
+    modal: "fitness",
+    hiddenByDefault: true,
   },
   "chess-knight": {
     label: "CHESS KNIGHT",
-    cameraTarget: [0.3, 0.3, 0],
-    cameraPosition: [0.3, 0.8, 0.8],
+    cameraTarget: [0.15, 0.38, 0.3],
+    cameraPosition: [0.15, 0.8, 0.9],
+    position: [0.15, 0.38, 0.3],
+    placeholderSize: [0.06, 0.1, 0.06],
+    color: "#222222",
+    modal: "chess",
+    hiddenByDefault: true,
   },
 };
 
