@@ -49,7 +49,6 @@ const objectAliases: Record<string, DeskObjectId> = {
   about: "notebook",
   papers: "papers",
   resume: "papers",
-  drawer: "drawer",
   dumbbell: "dumbbell",
   fitness: "dumbbell",
   chess: "chess-knight",

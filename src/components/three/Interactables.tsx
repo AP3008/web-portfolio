@@ -9,8 +9,6 @@ export function Interactables() {
   const focusObject = usePortfolioStore((s) => s.focusObject);
   const openModal = usePortfolioStore((s) => s.openModal);
   const setTerminalFocused = usePortfolioStore((s) => s.setTerminalFocused);
-  const toggleDrawer = usePortfolioStore((s) => s.toggleDrawer);
-  const drawerOpen = usePortfolioStore((s) => s.drawerOpen);
   const scenePhase = usePortfolioStore((s) => s.scenePhase);
 
   const handleObjectClick = useCallback(
@@ -18,11 +16,6 @@ export function Interactables() {
       if (scenePhase !== "desk") return;
 
       const config = DESK_OBJECTS[id];
-
-      if (id === "drawer") {
-        toggleDrawer();
-        return;
-      }
 
       if (id === "monitor") {
         focusObject(id);
@@ -35,26 +28,20 @@ export function Interactables() {
         openModal(config.modal);
       }
     },
-    [scenePhase, focusObject, openModal, setTerminalFocused, toggleDrawer]
+    [scenePhase, focusObject, openModal, setTerminalFocused]
   );
 
   return (
     <group>
       {(Object.entries(DESK_OBJECTS) as [DeskObjectId, typeof DESK_OBJECTS[DeskObjectId]][]).map(
-        ([id, config]) => {
-          const isHiddenItem = config.hiddenByDefault;
-          const visible = isHiddenItem ? drawerOpen : true;
-
-          return (
-            <InteractableObject
-              key={id}
-              id={id}
-              config={config}
-              visible={visible}
-              onClick={() => handleObjectClick(id)}
-            />
-          );
-        }
+        ([id, config]) => (
+          <InteractableObject
+            key={id}
+            id={id}
+            config={config}
+            onClick={() => handleObjectClick(id)}
+          />
+        )
       )}
     </group>
   );

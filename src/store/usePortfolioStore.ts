@@ -16,7 +16,6 @@ export interface PortfolioState {
   activeModal: ModalType;
   interactionsEnabled: boolean;
   terminalFocused: boolean;
-  drawerOpen: boolean;
 
   // Performance
   quality: "high" | "medium" | "low";
@@ -34,7 +33,6 @@ export interface PortfolioActions {
   closeModal: () => void;
 
   setTerminalFocused: (focused: boolean) => void;
-  toggleDrawer: () => void;
   setQuality: (quality: PortfolioState["quality"]) => void;
 }
 
@@ -48,7 +46,6 @@ export const usePortfolioStore = create<PortfolioState & PortfolioActions>()(
     activeModal: null,
     interactionsEnabled: false,
     terminalFocused: false,
-    drawerOpen: false,
     quality: "high",
 
     // Actions
@@ -93,20 +90,17 @@ export const usePortfolioStore = create<PortfolioState & PortfolioActions>()(
         interactionsEnabled: false,
       }),
 
-    closeModal: () => {
-      const { focusedObjectId } = get();
-      // If we're focused on an object, closing modal returns to focus state
-      // (user then presses ESC again or clicks background to return to desk)
-      if (focusedObjectId) {
-        set({ activeModal: null });
-      } else {
-        set({ activeModal: null, interactionsEnabled: true });
-      }
-    },
+    closeModal: () =>
+      set({
+        activeModal: null,
+        focusedObjectId: null,
+        scenePhase: "desk",
+        interactionsEnabled: true,
+        terminalFocused: false,
+        hoveredObjectId: null,
+      }),
 
     setTerminalFocused: (focused) => set({ terminalFocused: focused }),
-
-    toggleDrawer: () => set((s) => ({ drawerOpen: !s.drawerOpen })),
 
     setQuality: (quality) => set({ quality }),
   })

@@ -13,7 +13,6 @@ export type DeskObjectId =
   | "keyboard"
   | "notebook"
   | "papers"
-  | "drawer"
   | "dumbbell"
   | "chess-knight";
 
@@ -45,10 +44,8 @@ export interface DeskObjectConfig {
   color: string;
   /** Optional GLB model path — if set, loads model instead of primitive */
   modelUrl?: string;
-  /** Which modal this object opens (null for drawer which has no modal) */
+  /** Which modal this object opens (null for monitor which opens terminal) */
   modal: ModalType;
-  /** Whether this object is hidden until revealed (e.g., inside drawer) */
-  hiddenByDefault?: boolean;
 }
 
 export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
@@ -88,34 +85,23 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     color: "#eeeeee",
     modal: "resume",
   },
-  drawer: {
-    label: "DRAWER",
-    cameraTarget: [0, 0.4, 0.2],
-    cameraPosition: [0, 0.8, 0.9],
-    position: [0, 0.4, 0.3],
-    placeholderSize: [0.5, 0.12, 0.35],
-    color: "#8B4513",
-    modal: null,
-  },
   dumbbell: {
     label: "DUMBBELL",
-    cameraTarget: [-0.15, 0.35, 0.3],
-    cameraPosition: [-0.15, 0.8, 0.9],
-    position: [-0.15, 0.35, 0.3],
+    cameraTarget: [0.35, 0.8, 0.15],
+    cameraPosition: [0.35, 1.4, 0.8],
+    position: [0.35, 0.77, 0.15],
     placeholderSize: [0.25, 0.06, 0.06],
     color: "#888888",
     modal: "fitness",
-    hiddenByDefault: true,
   },
   "chess-knight": {
     label: "CHESS KNIGHT",
-    cameraTarget: [0.15, 0.38, 0.3],
-    cameraPosition: [0.15, 0.8, 0.9],
-    position: [0.15, 0.38, 0.3],
+    cameraTarget: [-0.35, 0.8, 0.2],
+    cameraPosition: [-0.35, 1.4, 0.8],
+    position: [-0.35, 0.78, 0.2],
     placeholderSize: [0.06, 0.1, 0.06],
     color: "#222222",
     modal: "chess",
-    hiddenByDefault: true,
   },
 };
 
@@ -127,7 +113,6 @@ export const DEFAULT_CAMERA_TARGET: [number, number, number] = [0, 0.9, 0];
 export const DURATIONS = {
   CAMERA_FOCUS: 1.2,
   CAMERA_RETURN: 1.0,
-  DRAWER_OPEN: 0.8,
   HOVER_DEBOUNCE_MS: 120,
 } as const;
 

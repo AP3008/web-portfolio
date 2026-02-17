@@ -10,7 +10,6 @@ import type { DeskObjectId, DeskObjectConfig } from "@/lib/constants";
 interface InteractableObjectProps {
   id: DeskObjectId;
   config: DeskObjectConfig;
-  visible?: boolean;
   onClick?: () => void;
 }
 
@@ -22,7 +21,6 @@ function GLBModel({ url }: { url: string }) {
 export function InteractableObject({
   id,
   config,
-  visible = true,
   onClick,
 }: InteractableObjectProps) {
   const meshRef = useRef<Mesh>(null);
@@ -61,8 +59,6 @@ export function InteractableObject({
     },
     [interactionsEnabled, onClick]
   );
-
-  if (!visible) return null;
 
   return (
     <mesh
