@@ -31,9 +31,9 @@ export function Modal({ children, onClose }: ModalProps) {
     <div
       ref={backdropRef}
       onClick={handleBackdropClick}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
     >
-      <div className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded border border-border bg-surface p-5 font-mono text-foreground shadow-2xl">
+      <div className="relative h-[calc(100vh-6rem)] w-[calc(100vw-6rem)] max-w-350 overflow-y-auto rounded border border-border bg-surface p-5 font-mono text-foreground shadow-2xl">
         {/* Floating ESC button */}
         <button
           onClick={onClose}

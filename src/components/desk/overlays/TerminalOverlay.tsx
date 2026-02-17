@@ -54,6 +54,8 @@ const objectAliases: Record<string, DeskObjectId> = {
   chess: "chess-knight",
   knight: "chess-knight",
   "chess-knight": "chess-knight",
+  phone: "phone",
+  socials: "phone",
 };
 
 export function TerminalOverlay() {

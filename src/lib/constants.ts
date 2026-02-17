@@ -14,7 +14,8 @@ export type DeskObjectId =
   | "notebook"
   | "papers"
   | "dumbbell"
-  | "chess-knight";
+  | "chess-knight"
+  | "phone";
 
 /** Modal types */
 export type ModalType =
@@ -23,6 +24,7 @@ export type ModalType =
   | "about"
   | "chess"
   | "fitness"
+  | "socials"
   | null;
 
 /** Scene phases */
@@ -102,6 +104,15 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     placeholderSize: [0.06, 0.1, 0.06],
     color: "#222222",
     modal: "chess",
+  },
+  phone: {
+    label: "PHONE",
+    cameraTarget: [0.55, 0.8, 0.2],
+    cameraPosition: [0.55, 1.4, 0.8],
+    position: [0.55, 0.77, 0.2],
+    placeholderSize: [0.08, 0.01, 0.15],
+    color: "#1a1a2e",
+    modal: "socials",
   },
 };
 

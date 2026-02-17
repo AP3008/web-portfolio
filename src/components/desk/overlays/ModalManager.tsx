@@ -6,6 +6,7 @@ import { ResumeModal } from "./ResumeModal";
 import { AboutModal } from "./AboutModal";
 import { ChessModal } from "./ChessModal";
 import { FitnessModal } from "./FitnessModal";
+import { SocialsModal } from "./SocialsModal";
 
 export function ModalManager() {
   const activeModal = usePortfolioStore((s) => s.activeModal);
@@ -24,6 +25,8 @@ export function ModalManager() {
       return <ChessModal onClose={closeModal} />;
     case "fitness":
       return <FitnessModal onClose={closeModal} />;
+    case "socials":
+      return <SocialsModal onClose={closeModal} />;
     default:
       return null;
   }
