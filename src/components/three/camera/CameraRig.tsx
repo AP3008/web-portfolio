@@ -20,9 +20,9 @@ export function CameraRig() {
   useFrame(({ camera, pointer }) => {
     if (scenePhase !== "desk" || terminalFocused) return;
 
-    const amplitude = 0.08;
+    const amplitude = 0.4;
     const targetX = pointer.x * amplitude;
-    const targetY = pointer.y * amplitude * 0.5;
+    const targetY = pointer.y * amplitude * 0.4;
 
     offsetRef.current.x += (targetX - offsetRef.current.x) * 0.05;
     offsetRef.current.y += (targetY - offsetRef.current.y) * 0.05;
