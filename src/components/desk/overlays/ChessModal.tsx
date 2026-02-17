@@ -203,12 +203,12 @@ export function ChessModal({ onClose }: ChessModalProps) {
 
   return (
     <Modal onClose={onClose}>
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center justify-center gap-4 h-full">
         {/* Board */}
         <div className="relative select-none">
-          <div className="flex ml-6">
+          <div className="flex ml-8">
             {FILES.map((f) => (
-              <div key={f} className="w-10 h-4 flex items-center justify-center text-[10px] text-text-muted">
+              <div key={f} className="w-[min(8vw,8vh)] h-5 flex items-center justify-center text-xs text-text-muted">
                 {f}
               </div>
             ))}
@@ -217,7 +217,7 @@ export function ChessModal({ onClose }: ChessModalProps) {
           <div className="flex">
             <div className="flex flex-col">
               {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="w-6 h-10 flex items-center justify-center text-[10px] text-text-muted">
+                <div key={i} className="w-8 h-[min(8vw,8vh)] flex items-center justify-center text-xs text-text-muted">
                   {8 - i}
                 </div>
               ))}
@@ -236,10 +236,10 @@ export function ChessModal({ onClose }: ChessModalProps) {
                     <button
                       key={`${r}-${c}`}
                       onClick={() => handleSquareClick(r, c)}
-                      className={`w-10 h-10 flex items-center justify-center text-2xl relative transition-colors
-                        ${isLight ? "bg-[#b7c0d8]" : "bg-[#6b7aa1]"}
+                      className={`w-[min(8vw,8vh)] h-[min(8vw,8vh)] flex items-center justify-center text-[min(5vw,5vh)] relative transition-colors
+                        ${isLight ? "bg-[#f0d9b5]" : "bg-[#b58863]"}
                         ${isSelected ? "bg-accent/50!" : ""}
-                        ${isTarget ? "after:absolute after:w-3 after:h-3 after:rounded-full after:bg-accent/40" : ""}
+                        ${isTarget ? "after:absolute after:w-4 after:h-4 after:rounded-full after:bg-accent/40" : ""}
                         ${!solved && !waiting ? "hover:brightness-110 cursor-pointer" : ""}
                       `}
                     >
@@ -261,7 +261,7 @@ export function ChessModal({ onClose }: ChessModalProps) {
         </p>
 
         {solved && (
-          <div className="rounded border border-accent bg-accent/10 p-4 text-center w-full">
+          <div className="rounded border border-accent bg-accent/10 p-4 text-center max-w-lg">
             <p className="text-accent font-bold mb-2">Checkmate!</p>
             <p className="text-sm text-text-muted leading-relaxed">
               {chessPuzzle.explanation}

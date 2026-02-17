@@ -13,8 +13,8 @@ export type DeskObjectId =
   | "keyboard"
   | "notebook"
   | "papers"
-  | "dumbbell"
-  | "chess-knight"
+  | "shaker"
+  | "chessboard"
   | "phone";
 
 /** Modal types */
@@ -46,6 +46,8 @@ export interface DeskObjectConfig {
   color: string;
   /** Optional GLB model path — if set, loads model instead of primitive */
   modelUrl?: string;
+  /** Optional scale for GLB model */
+  scale?: Vec3;
   /** Which modal this object opens (null for monitor which opens terminal) */
   modal: ModalType;
 }
@@ -58,6 +60,8 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     position: [0, 1.15, -0.4],
     placeholderSize: [0.6, 0.4, 0.05],
     color: "#333333",
+    modelUrl: "/models/monitor.glb",
+    scale: [0.3, 0.3, 0.3],
     modal: null,
   },
   keyboard: {
@@ -67,6 +71,8 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     position: [0, 0.76, 0.15],
     placeholderSize: [0.45, 0.02, 0.15],
     color: "#555555",
+    modelUrl: "/models/keyboard.glb",
+    scale: [0.3, 0.3, 0.3],
     modal: "projects",
   },
   notebook: {
@@ -76,6 +82,8 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     position: [-0.5, 0.77, -0.1],
     placeholderSize: [0.2, 0.03, 0.28],
     color: "#2244aa",
+    modelUrl: "/models/notebook.glb",
+    scale: [0.3, 0.3, 0.3],
     modal: "about",
   },
   papers: {
@@ -85,24 +93,30 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     position: [0.5, 0.77, -0.1],
     placeholderSize: [0.21, 0.02, 0.29],
     color: "#eeeeee",
+    modelUrl: "/models/papers.glb",
+    scale: [0.3, 0.3, 0.3],
     modal: "resume",
   },
-  dumbbell: {
-    label: "DUMBBELL",
+  shaker: {
+    label: "PROTEIN SHAKER",
     cameraTarget: [0.35, 0.8, 0.15],
     cameraPosition: [0.35, 1.4, 0.8],
     position: [0.35, 0.77, 0.15],
-    placeholderSize: [0.25, 0.06, 0.06],
+    placeholderSize: [0.06, 0.12, 0.06],
     color: "#888888",
+    modelUrl: "/models/protien_shaker.glb",
+    scale: [0.3, 0.3, 0.3],
     modal: "fitness",
   },
-  "chess-knight": {
-    label: "CHESS KNIGHT",
+  chessboard: {
+    label: "CHESS BOARD",
     cameraTarget: [-0.35, 0.8, 0.2],
     cameraPosition: [-0.35, 1.4, 0.8],
     position: [-0.35, 0.78, 0.2],
-    placeholderSize: [0.06, 0.1, 0.06],
+    placeholderSize: [0.15, 0.05, 0.15],
     color: "#222222",
+    modelUrl: "/models/chess_borad.glb",
+    scale: [0.15, 0.15, 0.15],
     modal: "chess",
   },
   phone: {
@@ -112,6 +126,8 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     position: [0.55, 0.77, 0.2],
     placeholderSize: [0.08, 0.01, 0.15],
     color: "#1a1a2e",
+    modelUrl: "/models/phone.glb",
+    scale: [0.3, 0.3, 0.3],
     modal: "socials",
   },
 };
