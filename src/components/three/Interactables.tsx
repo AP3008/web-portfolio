@@ -2,8 +2,10 @@
 
 import { useCallback } from "react";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
-import { DESK_OBJECTS, type DeskObjectId } from "@/lib/constants";
+import { DESK_OBJECTS, DURATIONS, type DeskObjectId } from "@/lib/constants";
 import { InteractableObject } from "./objects/InteractableObject";
+
+const MODAL_DELAY_MS = DURATIONS.CAMERA_FOCUS * 1000;
 
 export function Interactables() {
   const focusObject = usePortfolioStore((s) => s.focusObject);
@@ -16,16 +18,15 @@ export function Interactables() {
       if (scenePhase !== "desk") return;
 
       const config = DESK_OBJECTS[id];
+      focusObject(id);
 
       if (id === "monitor") {
-        focusObject(id);
-        setTerminalFocused(true);
+        setTimeout(() => setTerminalFocused(true), MODAL_DELAY_MS);
         return;
       }
 
-      focusObject(id);
       if (config.modal) {
-        openModal(config.modal);
+        setTimeout(() => openModal(config.modal), MODAL_DELAY_MS);
       }
     },
     [scenePhase, focusObject, openModal, setTerminalFocused]
