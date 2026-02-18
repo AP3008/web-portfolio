@@ -2,6 +2,7 @@
 
 import { Environment } from "@react-three/drei";
 import { useAssetProgress } from "./loading/useAssetProgress";
+import { RoomModel } from "./RoomModel";
 import { DeskModel } from "./DeskModel";
 import { Interactables } from "./Interactables";
 import { CameraController } from "./camera/CameraController";
@@ -14,16 +15,19 @@ export function SceneRoot() {
 
   return (
     <>
-      {/* Lighting */}
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[3, 5, 2]} intensity={0.8} />
+      {/* Lighting — dark developer room */}
+      <ambientLight intensity={0.15} />
+      <directionalLight position={[2, 4, 1]} intensity={0.4} />
 
       {/* Environment for reflections */}
-      <Environment preset="city" environmentIntensity={0.3} />
+      <Environment preset="night" environmentIntensity={0.2} />
 
       {/* Camera systems */}
       <CameraController />
       <CameraRig />
+
+      {/* Room environment */}
+      <RoomModel />
 
       {/* Desk model */}
       <DeskModel />

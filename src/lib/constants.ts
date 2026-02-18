@@ -240,5 +240,6 @@ export const DURATIONS = {
 /** Asset paths */
 export const ASSETS = {
   DESK_MODEL: "/models/computer_desk.glb",
+  ROOM_MODEL: "/models/empty_bedroom.glb",
   RESUME_PDF: "/Adam-Porbanderwalla-Resume.pdf",
 } as const;
