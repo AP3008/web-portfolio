@@ -43,36 +43,41 @@ export function InteractableObject({
   const interactionsEnabled = usePortfolioStore((s) => s.interactionsEnabled);
   const hoveredObjectId = usePortfolioStore((s) => s.hoveredObjectId);
 
-  const isHovered = hoveredObjectId === id;
+  const isInteractive = config.interactive !== false;
+
+  const isHovered = hoveredObjectId === id ||
+    (hoveredObjectId !== null && config.linkedHoverId === hoveredObjectId);
 
   const handlePointerOver = useCallback(
     (e: ThreeEvent<PointerEvent>) => {
       e.stopPropagation();
-      if (interactionsEnabled) {
+      if (interactionsEnabled && isInteractive) {
         hoverObject(id);
         document.body.style.cursor = "pointer";
       }
     },
-    [id, hoverObject, interactionsEnabled]
+    [id, hoverObject, interactionsEnabled, isInteractive]
   );
 
   const handlePointerOut = useCallback(
     (e: ThreeEvent<PointerEvent>) => {
       e.stopPropagation();
-      hoverObject(null);
-      document.body.style.cursor = "default";
+      if (isInteractive) {
+        hoverObject(null);
+        document.body.style.cursor = "default";
+      }
     },
-    [hoverObject]
+    [hoverObject, isInteractive]
   );
 
   const handleClick = useCallback(
     (e: ThreeEvent<MouseEvent>) => {
       e.stopPropagation();
-      if (interactionsEnabled && onClick) {
+      if (interactionsEnabled && isInteractive && onClick) {
         onClick();
       }
     },
-    [interactionsEnabled, onClick]
+    [interactionsEnabled, isInteractive, onClick]
   );
 
   return (
@@ -80,9 +85,9 @@ export function InteractableObject({
       ref={groupRef}
       position={config.position}
       rotation={config.rotation}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
-      onClick={handleClick}
+      onPointerOver={isInteractive ? handlePointerOver : undefined}
+      onPointerOut={isInteractive ? handlePointerOut : undefined}
+      onClick={isInteractive ? handleClick : undefined}
     >
       {config.modelUrl ? (
         <GLBModel url={config.modelUrl} isHovered={isHovered} scale={config.scale} />

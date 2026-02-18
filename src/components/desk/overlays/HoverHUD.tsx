@@ -10,7 +10,8 @@ export function HoverHUD() {
 
   const displayLabel = useMemo(() => {
     if (scenePhase !== "desk" || !hoveredObjectId) return null;
-    return DESK_OBJECTS[hoveredObjectId].label;
+    const config = DESK_OBJECTS[hoveredObjectId];
+    return config.hudLabel ?? null;
   }, [hoveredObjectId, scenePhase]);
 
   if (!displayLabel) return null;

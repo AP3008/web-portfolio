@@ -25,8 +25,9 @@ export function Interactables() {
         return;
       }
 
-      if (config.modal) {
-        setTimeout(() => openModal(config.modal), MODAL_DELAY_MS);
+      const { modal } = config;
+      if (modal) {
+        setTimeout(() => openModal(modal), MODAL_DELAY_MS);
       }
     },
     [scenePhase, focusObject, openModal, setTerminalFocused]
@@ -40,7 +41,7 @@ export function Interactables() {
             key={id}
             id={id}
             config={config}
-            onClick={() => handleObjectClick(id)}
+            onClick={config.interactive !== false ? () => handleObjectClick(id) : undefined}
           />
         )
       )}

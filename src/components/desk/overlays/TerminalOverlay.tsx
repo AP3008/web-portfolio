@@ -52,6 +52,9 @@ const objectAliases: Record<string, DeskObjectId> = {
   shaker: "shaker",
   protein: "shaker",
   fitness: "shaker",
+  "protein-powder": "protein_powder",
+  powder: "protein_powder",
+  bodybuilding: "shaker",
   chess: "chessboard",
   chessboard: "chessboard",
   phone: "phone",
@@ -99,6 +102,7 @@ export function TerminalOverlay() {
         output = HELP_TEXT;
       } else if (command === "ls") {
         output = Object.values(DESK_OBJECTS)
+          .filter((o) => o.interactive !== false)
           .map((o) => `  ${o.label.toLowerCase()}`)
           .join("\n");
       } else if (command === "whoami") {
