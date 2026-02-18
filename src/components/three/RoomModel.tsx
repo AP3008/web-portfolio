@@ -11,7 +11,7 @@ export function RoomModel() {
       object={scene}
       position={[0, 0, 0]}
       scale={[2, 2, 2]}
-      rotation={[0, 0, 0]}
+      rotation={[0, -Math.PI / 2, 0]}
     />
   );
 }
