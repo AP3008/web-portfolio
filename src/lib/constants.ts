@@ -176,7 +176,7 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     label: "DESK LAMP",
     cameraTarget: [0, 0, 0],
     cameraPosition: [0, 0, 0],
-    position: [-2.75, 0.1, -1.5],
+    position: [-2.75, 0.1, -1.25],
     placeholderSize: [0.1, 0.2, 0.1],
     color: "#444444",
     modelUrl: "/models/desk_lamp.glb",
