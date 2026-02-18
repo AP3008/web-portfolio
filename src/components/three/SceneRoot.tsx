@@ -15,12 +15,14 @@ export function SceneRoot() {
 
   return (
     <>
-      {/* Lighting — dark developer room */}
-      <ambientLight intensity={0.15} />
-      <directionalLight position={[2, 4, 1]} intensity={0.4} />
+      {/* Lighting — daytime room */}
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[3, 5, 2]} intensity={0.8} color="#fff5e6" />
+      {/* Warm fill light simulating window daylight from the side */}
+      <directionalLight position={[-3, 3, 4]} intensity={0.3} color="#ffe8cc" />
 
       {/* Environment for reflections */}
-      <Environment preset="night" environmentIntensity={0.2} />
+      <Environment preset="apartment" environmentIntensity={0.4} />
 
       {/* Camera systems */}
       <CameraController />
