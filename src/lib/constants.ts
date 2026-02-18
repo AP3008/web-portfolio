@@ -135,9 +135,9 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
   chessboard: {
     label: "CHESS BOARD",
     hudLabel: "Chess Board",
-    cameraTarget: [-1.75, 0.2, -0.5],
+    cameraTarget: [-1.85, 0.1, -0.75],
     cameraPosition: [-0.35, 1.4, 0.8],
-    position: [-1.75, 0.2, -0.5],
+    position: [-1.95, 0.1, -0.75],
     placeholderSize: [0.15, 0.05, 0.15],
     color: "#222222",
     modelUrl: "/models/chess_borad.glb",
