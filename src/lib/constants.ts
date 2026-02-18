@@ -168,7 +168,7 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     color: "#aa4444",
     modelUrl: "/models/protein_powder.glb",
     scale: [0.15, 0.15, 0.15],
-    rotation: [0, 0, 0],
+    rotation: [0, -Math.PI/4 - Math.PI/6, 0],
     modal: "fitness",
     linkedHoverId: "shaker",
   },
