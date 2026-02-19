@@ -72,8 +72,25 @@ export const ROSE_PINE_PALETTES: Record<ThemeVariant, RosePinePalette> = {
   },
 };
 
+/** Default light-text color for Classic/Moon */
+export const DEFAULT_TEXT_COLOR = "#e0def4";
+
+/** Replacement default text color for Dawn (light theme) */
+export const DAWN_DEFAULT_TEXT = "#575279";
+
+/** Text color options for Classic/Moon themes */
 export const TEXT_COLOR_OPTIONS = [
   "#e0def4",
+  "#ebbcba",
+  "#9ccfd8",
+  "#c4a7e7",
+  "#eb6f92",
+  "#f6c177",
+] as const;
+
+/** Text color options for Dawn theme (#e0def4 swapped for #575279) */
+export const TEXT_COLOR_OPTIONS_DAWN = [
+  "#575279",
   "#ebbcba",
   "#9ccfd8",
   "#c4a7e7",

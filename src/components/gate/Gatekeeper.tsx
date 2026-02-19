@@ -5,7 +5,11 @@ import Link from "next/link";
 import { ROUTES } from "@/lib/constants";
 import { useIsDesktop } from "@/lib/device";
 import { useThemeStore } from "@/store/useThemeStore";
-import { TEXT_COLOR_OPTIONS, ROSE_PINE_PALETTES } from "@/lib/themes";
+import {
+  TEXT_COLOR_OPTIONS,
+  TEXT_COLOR_OPTIONS_DAWN,
+  ROSE_PINE_PALETTES,
+} from "@/lib/themes";
 import type { ThemeVariant } from "@/lib/themes";
 
 type HoveredSide = "left" | "right" | null;
@@ -21,25 +25,22 @@ const VARIANT_LABELS: { key: ThemeVariant; label: string }[] = [
 
 function useTypingEffect(text: string, speed: number) {
   const [displayedCount, setDisplayedCount] = useState(0);
-  const [done, setDone] = useState(false);
 
   useEffect(() => {
-    if (displayedCount >= text.length) {
-      setDone(true);
-      return;
-    }
+    if (displayedCount >= text.length) return;
     const timeout = setTimeout(() => {
       setDisplayedCount((c) => c + 1);
     }, speed);
     return () => clearTimeout(timeout);
   }, [displayedCount, text, speed]);
 
-  return { displayed: text.slice(0, displayedCount), done };
+  return text.slice(0, displayedCount);
 }
 
 export function Gatekeeper() {
   const isDesktop = useIsDesktop();
   const [hovered, setHovered] = useState<HoveredSide>(null);
+  const [hoveredVariant, setHoveredVariant] = useState<ThemeVariant | null>(null);
 
   const variant = useThemeStore((s) => s.variant);
   const textColor = useThemeStore((s) => s.textColor);
@@ -47,10 +48,10 @@ export function Gatekeeper() {
   const setTextColor = useThemeStore((s) => s.setTextColor);
 
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
+  const colorOptions = variant === "dawn" ? TEXT_COLOR_OPTIONS_DAWN : TEXT_COLOR_OPTIONS;
 
-  const { displayed, done } = useTypingEffect(FULL_NAME, TYPING_SPEED_MS);
+  const displayed = useTypingEffect(FULL_NAME, TYPING_SPEED_MS);
 
-  // Build CSS variable overrides from the active palette + text color
   const themeVars = useMemo(
     () =>
       ({
@@ -83,11 +84,11 @@ export function Gatekeeper() {
     >
       {/* Section 1 — Hero */}
       <section
-        className="relative flex min-h-screen flex-col items-center justify-center px-8 md:flex-row md:items-center md:justify-between md:px-16 lg:px-24"
+        className="relative flex min-h-screen flex-col items-center justify-center gap-10 px-8 md:flex-row md:items-center md:gap-16 md:px-16 lg:px-24"
         style={{ background: "var(--rp-base)" }}
       >
-        {/* Left — Name + Subtitle */}
-        <div className="flex flex-col gap-3 md:max-w-[55%]">
+        {/* Left — Name + Subtitle (centered within its half) */}
+        <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center md:items-start md:text-left">
           <h1
             className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
             style={{ color: "var(--rp-text)" }}
@@ -103,114 +104,98 @@ export function Gatekeeper() {
             />
           </h1>
           <p
-            className="text-base tracking-wide sm:text-lg md:text-xl transition-opacity duration-700"
-            style={{
-              color: "var(--rp-iris)",
-              opacity: done ? 1 : 0,
-            }}
+            className="text-base tracking-wide sm:text-lg md:text-xl"
+            style={{ color: "var(--rp-iris)" }}
           >
             Full-Stack Developer | Studying Computer Science
           </p>
         </div>
 
-        {/* Right — Palette Selector */}
-        <div
-          className="mt-10 flex flex-col gap-6 rounded-lg border p-6 md:mt-0"
-          style={{
-            background: "var(--rp-surface)",
-            borderColor: "var(--rp-highlight-med)",
-          }}
-        >
-          {/* Theme variant buttons */}
-          <div className="flex flex-col gap-2">
-            <span
-              className="text-xs uppercase tracking-widest"
-              style={{ color: "var(--rp-muted)" }}
-            >
-              Theme
-            </span>
-            <div className="flex gap-2">
-              {VARIANT_LABELS.map(({ key, label }) => (
-                <button
-                  key={key}
-                  onClick={() => setVariant(key)}
-                  className="rounded px-4 py-1.5 text-sm font-medium tracking-wider transition-all duration-200"
-                  style={{
-                    background:
-                      variant === key
-                        ? "var(--rp-overlay)"
-                        : "transparent",
-                    color:
-                      variant === key
-                        ? "var(--rp-iris)"
-                        : "var(--rp-subtle)",
-                    border:
-                      variant === key
-                        ? "1px solid var(--rp-iris)"
-                        : "1px solid var(--rp-highlight-med)",
-                  }}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Text color circles */}
-          <div className="flex flex-col gap-2">
-            <span
-              className="text-xs uppercase tracking-widest"
-              style={{ color: "var(--rp-muted)" }}
-            >
-              Text Colour
-            </span>
-            <div className="flex gap-3">
-              {TEXT_COLOR_OPTIONS.map((color) => (
-                <button
-                  key={color}
-                  onClick={() => setTextColor(color)}
-                  className="h-7 w-7 rounded-full transition-all duration-200"
-                  style={{
-                    background: color,
-                    outline:
-                      textColor === color
-                        ? `2px solid ${color}`
-                        : "2px solid transparent",
-                    outlineOffset: "3px",
-                  }}
-                  aria-label={`Set text color to ${color}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span
-            className="text-xs tracking-widest uppercase"
-            style={{ color: "var(--rp-muted)" }}
-          >
-            scroll
-          </span>
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
+        {/* Right — Palette Selector (center-right) */}
+        <div className="flex flex-1 items-center justify-center">
+          <div
+            className="flex flex-col gap-6 rounded-lg border p-6"
             style={{
-              color: "var(--rp-muted)",
-              animation: "bounce-down 2s ease-in-out infinite",
+              background: "var(--rp-surface)",
+              borderColor: "var(--rp-highlight-med)",
             }}
           >
-            <path
-              d="M4 7l6 6 6-6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+            {/* Theme variant buttons */}
+            <div className="flex flex-col gap-2">
+              <span
+                className="text-xs uppercase tracking-widest"
+                style={{ color: "var(--rp-muted)" }}
+              >
+                Theme
+              </span>
+              <div className="flex gap-2">
+                {VARIANT_LABELS.map(({ key, label }) => {
+                  const isActive = variant === key;
+                  const isHovered = hoveredVariant === key;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => setVariant(key)}
+                      onMouseEnter={() => setHoveredVariant(key)}
+                      onMouseLeave={() => setHoveredVariant(null)}
+                      className="rounded px-4 py-1.5 text-sm font-medium tracking-wider transition-all duration-200"
+                      style={{
+                        background: isActive
+                          ? "var(--rp-overlay)"
+                          : isHovered
+                            ? "var(--rp-highlight-low)"
+                            : "transparent",
+                        color: isActive
+                          ? "var(--rp-iris)"
+                          : isHovered
+                            ? "var(--rp-text)"
+                            : "var(--rp-subtle)",
+                        outline: isActive
+                          ? "2px solid var(--rp-iris)"
+                          : "2px solid transparent",
+                        outlineOffset: "2px",
+                        border: "1px solid " + (isActive
+                          ? "var(--rp-iris)"
+                          : isHovered
+                            ? "var(--rp-highlight-high)"
+                            : "var(--rp-highlight-med)"),
+                      }}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Text color circles */}
+            <div className="flex flex-col gap-2">
+              <span
+                className="text-xs uppercase tracking-widest"
+                style={{ color: "var(--rp-muted)" }}
+              >
+                Text Colour
+              </span>
+              <div className="flex gap-3">
+                {colorOptions.map((color) => (
+                  <button
+                    key={color}
+                    onClick={() => setTextColor(color)}
+                    className="h-7 w-7 rounded-full transition-all duration-200"
+                    style={{
+                      background: color,
+                      outline:
+                        textColor === color
+                          ? `2px solid ${color}`
+                          : "2px solid transparent",
+                      outlineOffset: "3px",
+                    }}
+                    aria-label={`Set text color to ${color}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -219,7 +204,6 @@ export function Gatekeeper() {
         className="relative flex min-h-screen flex-col md:flex-row"
         style={{ background: "var(--rp-base)" }}
       >
-        {/* "Choose your experience." heading — centered at top */}
         <h2
           className="absolute top-8 left-1/2 z-10 -translate-x-1/2 text-2xl font-bold tracking-tight sm:text-3xl"
           style={{ color: "var(--rp-text)" }}
