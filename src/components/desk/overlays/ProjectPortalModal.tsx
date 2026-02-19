@@ -17,12 +17,12 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
   const title = useTypingEffect("Featured Projects", 80);
 
-  const [commit, setCommit] = useState<CommitData | null>(null);
+  const [commits, setCommits] = useState<CommitData[]>([]);
 
   useEffect(() => {
-    fetch("/api/github-commits?repo=AP3008/web-portfolio")
+    fetch("/api/github-commits")
       .then((res) => res.json())
-      .then((data) => setCommit(data.commit ?? null))
+      .then((data) => setCommits(data.commits ?? []))
       .catch(() => {});
   }, []);
 
@@ -85,46 +85,63 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
           </div>
         ))}
 
-        {/* Most Recent Commit section */}
-        {commit && (
+        {/* Recent Commits section */}
+        {commits.length > 0 && (
           <div>
-            <h3 className="font-bold text-base mb-3" style={{ color: palette.text }}>
-              Most Recent Commit:{" "}
-              <span style={{ color: palette.foam }}>web-portfolio</span>
-            </h3>
-            <div
-              className="rounded-xl border p-4 flex items-center gap-3 text-xs"
-              style={{
-                backgroundColor: palette.surface,
-                borderColor: palette.highlightMed,
-              }}
-            >
+            <h3 className="font-bold text-base mb-3">
               <a
-                href={commit.htmlUrl}
+                href="https://github.com/AP3008/web-portfolio"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="truncate flex-1 hover:underline text-sm"
-                style={{ color: palette.text }}
+                className="hover:underline"
+                style={{ color: palette.foam }}
               >
-                {commit.message}
+                web-portfolio: AP3008
               </a>
-              <span className="shrink-0 flex items-center gap-2">
-                <span>
-                  <span style={{ color: "#a6e3a1" }}>+{commit.additions}</span>
-                  {" / "}
-                  <span style={{ color: "#f38ba8" }}>-{commit.deletions}</span>
-                </span>
-                <span
-                  className="px-2 py-0.5 rounded-md"
+            </h3>
+            <div className="flex flex-col gap-2">
+              {commits.map((c) => (
+                <div
+                  key={c.sha}
+                  className="rounded-xl border p-4 flex items-center gap-3 text-xs"
                   style={{
-                    backgroundColor: palette.overlay,
-                    color: palette.foam,
-                    fontFamily: "'JetBrains Mono', monospace",
+                    backgroundColor: palette.surface,
+                    borderColor: palette.highlightMed,
                   }}
                 >
-                  {commit.shortSha}
-                </span>
-              </span>
+                  <a
+                    href={c.htmlUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="truncate flex-1 hover:underline text-sm"
+                    style={{ color: palette.text }}
+                  >
+                    {c.message}
+                  </a>
+                  <span className="shrink-0 flex items-center gap-2">
+                    <span className="flex items-center gap-1.5">
+                      <svg width="8" height="8" viewBox="0 0 8 8">
+                        <circle cx="4" cy="4" r="4" fill={palette.foam} />
+                      </svg>
+                      <span
+                        className="px-2 py-0.5 rounded-md"
+                        style={{
+                          backgroundColor: palette.overlay,
+                          color: palette.foam,
+                          fontFamily: "'JetBrains Mono', monospace",
+                        }}
+                      >
+                        {c.shortSha}
+                      </span>
+                    </span>
+                    <span>
+                      <span style={{ color: "#a6e3a1" }}>+{c.additions}</span>
+                      {" / "}
+                      <span style={{ color: "#f38ba8" }}>-{c.deletions}</span>
+                    </span>
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         )}
