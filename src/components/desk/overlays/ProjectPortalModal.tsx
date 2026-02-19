@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Modal } from "./Modal";
-import { projects } from "../data/projects";
+import { projects, type Project } from "../data/projects";
 import { useTypingEffect } from "@/lib/useTypingEffect";
 import { useThemeStore } from "@/store/useThemeStore";
 import { ROSE_PINE_PALETTES, type RosePinePalette } from "@/lib/themes";
@@ -12,100 +12,38 @@ interface ProjectPortalModalProps {
   onClose: () => void;
 }
 
-function DiffBlock({ patch }: { patch: string }) {
-  const lines = patch.split("\n");
-  return (
-    <pre className="text-xs leading-relaxed overflow-x-auto">
-      {lines.map((line, i) => {
-        let color = "";
-        if (line.startsWith("+") && !line.startsWith("+++")) color = "#a6e3a1";
-        else if (line.startsWith("-") && !line.startsWith("---")) color = "#f38ba8";
-        else if (line.startsWith("@@")) color = "#89b4fa";
-        return (
-          <div key={i} style={{ color: color || undefined }}>
-            {line}
-          </div>
-        );
-      })}
-    </pre>
-  );
-}
+function LatestCommit({ project, palette }: { project: Project; palette: RosePinePalette }) {
+  const [commit, setCommit] = useState<CommitData | null>(null);
 
-function CommitRow({ commit, palette }: { commit: CommitData; palette: RosePinePalette }) {
-  const [expanded, setExpanded] = useState(false);
-  const date = new Date(commit.date).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-  });
+  useEffect(() => {
+    fetch(`/api/github-commits?repo=${project.repoOwner}/${project.repoName}`)
+      .then((res) => res.json())
+      .then((data) => setCommit(data.commit ?? null))
+      .catch(() => {});
+  }, [project.repoOwner, project.repoName]);
+
+  if (!commit) return null;
 
   return (
-    <div style={{ borderBottomColor: palette.highlightLow }} className="border-b last:border-b-0">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full text-left px-3 py-2.5 transition-colors flex items-center gap-3"
-        style={{ backgroundColor: "transparent" }}
-        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = palette.overlay)}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+    <div
+      className="mt-3 pt-3 border-t flex items-center gap-2 text-xs"
+      style={{ borderColor: palette.highlightLow }}
+    >
+      <span style={{ color: palette.foam }}>{project.repoName}:</span>
+      <a
+        href={commit.htmlUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="truncate flex-1 hover:underline"
+        style={{ color: palette.text }}
       >
-        <a
-          href={commit.htmlUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => e.stopPropagation()}
-          className="text-xs hover:underline shrink-0"
-          style={{ color: palette.foam, fontFamily: "'JetBrains Mono', monospace" }}
-        >
-          {commit.shortSha}
-        </a>
-        <span className="text-sm truncate flex-1" style={{ color: palette.text }}>
-          {commit.message}
-        </span>
-        <span className="text-xs shrink-0">
-          <span style={{ color: "#a6e3a1" }}>+{commit.additions}</span>
-          {" "}
-          <span style={{ color: "#f38ba8" }}>-{commit.deletions}</span>
-        </span>
-        <span className="text-xs shrink-0" style={{ color: palette.muted }}>{date}</span>
-        <svg
-          viewBox="0 0 24 24"
-          className={`w-3 h-3 fill-none shrink-0 transition-transform ${expanded ? "rotate-90" : ""}`}
-          stroke={palette.muted}
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M9 18l6-6-6-6" />
-        </svg>
-      </button>
-
-      {expanded && commit.files.length > 0 && (
-        <div
-          className="border-t px-3 py-2 flex flex-col gap-2"
-          style={{
-            backgroundColor: palette.highlightLow,
-            borderColor: palette.highlightMed,
-          }}
-        >
-          {commit.files.map((file) => (
-            <div key={file.filename}>
-              <div className="flex items-center gap-2 mb-1">
-                <span
-                  className="text-xs truncate"
-                  style={{ color: palette.text, fontFamily: "'JetBrains Mono', monospace" }}
-                >
-                  {file.filename}
-                </span>
-                <span className="text-xs shrink-0">
-                  <span style={{ color: "#a6e3a1" }}>+{file.additions}</span>
-                  {" "}
-                  <span style={{ color: "#f38ba8" }}>-{file.deletions}</span>
-                </span>
-              </div>
-              {file.patch && <DiffBlock patch={file.patch} />}
-            </div>
-          ))}
-        </div>
-      )}
+        {commit.message}
+      </a>
+      <span className="shrink-0" style={{ color: palette.muted }}>
+        <span style={{ color: "#a6e3a1" }}>+{commit.additions}</span>
+        {" / "}
+        <span style={{ color: "#f38ba8" }}>-{commit.deletions}</span>
+      </span>
     </div>
   );
 }
@@ -114,27 +52,6 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
   const variant = useThemeStore((s) => s.variant);
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
   const title = useTypingEffect("Projects", 80);
-
-  const [commits, setCommits] = useState<CommitData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchCommits = useCallback(async () => {
-    try {
-      const res = await fetch("/api/github-commits");
-      if (!res.ok) throw new Error("Failed to fetch");
-      const data = await res.json();
-      setCommits(data.commits ?? []);
-    } catch {
-      setError("Could not load recent commits");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchCommits();
-  }, [fetchCommits]);
 
   return (
     <Modal onClose={onClose}>
@@ -192,38 +109,11 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
                 </span>
               ))}
             </div>
+
+            {/* Latest commit row */}
+            <LatestCommit project={project} palette={palette} />
           </div>
         ))}
-
-        {/* Recent Activity */}
-        <div>
-          <h3 className="font-bold text-base mb-3" style={{ color: palette.text }}>
-            Recent Activity
-          </h3>
-          <div
-            className="rounded-xl border overflow-hidden"
-            style={{ borderColor: palette.highlightMed }}
-          >
-            {loading && (
-              <div className="px-3 py-4 text-sm text-center" style={{ color: palette.muted }}>
-                Loading commits...
-              </div>
-            )}
-            {error && (
-              <div className="px-3 py-4 text-sm text-center" style={{ color: palette.love }}>
-                {error}
-              </div>
-            )}
-            {!loading && !error && commits.length === 0 && (
-              <div className="px-3 py-4 text-sm text-center" style={{ color: palette.muted }}>
-                No recent commits found
-              </div>
-            )}
-            {commits.map((commit) => (
-              <CommitRow key={commit.sha} commit={commit} palette={palette} />
-            ))}
-          </div>
-        </div>
       </div>
     </Modal>
   );
