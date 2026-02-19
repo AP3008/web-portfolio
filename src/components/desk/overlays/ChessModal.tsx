@@ -7,14 +7,14 @@ interface ChessModalProps {
   onClose: () => void;
 }
 
-// White pieces = outline chars, Black pieces = filled chars
-const PIECE_CHARS: Record<string, string> = {
-  K: "\u2654", k: "\u265A",
-  Q: "\u2655", q: "\u265B",
-  R: "\u2656", r: "\u265C",
-  B: "\u2657", b: "\u265D",
-  N: "\u2658", n: "\u265E",
-  P: "\u2659", p: "\u265F",
+// Map FEN chars to piece image paths in /chess_pieces/
+const PIECE_IMAGES: Record<string, string> = {
+  K: "/chess_pieces/w_king.png",   k: "/chess_pieces/b_king.png",
+  Q: "/chess_pieces/w_queen.png",  q: "/chess_pieces/b_queen.png",
+  R: "/chess_pieces/w_rook.png",   r: "/chess_pieces/b_rook.svg",
+  B: "/chess_pieces/w_bishop.png", b: "/chess_pieces/b_bishop.png",
+  N: "/chess_pieces/w_knight.png", n: "/chess_pieces/b_knight.png",
+  P: "/chess_pieces/w_pawn.png",   p: "/chess_pieces/b_pawn.png",
 };
 
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -263,7 +263,7 @@ export function ChessModal({ onClose }: ChessModalProps) {
                       <button
                         key={`${r}-${c}`}
                         onClick={() => handleSquareClick(r, c)}
-                        className={`w-[min(8vw,8vh)] h-[min(8vw,8vh)] flex items-center justify-center text-[min(6.5vw,6.5vh)] relative transition-colors
+                        className={`w-[min(8vw,8vh)] h-[min(8vw,8vh)] flex items-center justify-center relative transition-colors
                           ${isLight ? "bg-[#f0d9b5]" : "bg-[#b58863]"}
                           ${isSelected ? "bg-accent/50!" : ""}
                           ${isTarget ? "after:absolute after:w-4 after:h-4 after:rounded-full after:bg-accent/40" : ""}
@@ -271,16 +271,14 @@ export function ChessModal({ onClose }: ChessModalProps) {
                         `}
                       >
                         {piece && (
-                          <span
-                            className="leading-none drop-shadow-md"
-                            style={
-                              isWhite(piece)
-                                ? { color: "#fff", WebkitTextStroke: "1px #333", paintOrder: "stroke fill" }
-                                : { color: "#1a1a1a" }
-                            }
-                          >
-                            {PIECE_CHARS[piece]}
-                          </span>
+                          <img
+                            src={PIECE_IMAGES[piece]}
+                            alt={piece}
+                            className={`object-contain drop-shadow-md pointer-events-none ${
+                              piece === "Q" || piece === "q" ? "w-[150%] h-[150%]" : "w-[80%] h-[80%]"
+                            }`}
+                            draggable={false}
+                          />
                         )}
                       </button>
                     );

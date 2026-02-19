@@ -21,7 +21,8 @@ export type DeskObjectId =
   | "desk_lamp"
   | "desk_plant"
   | "pen_holder"
-  | "computer_mouse";
+  | "computer_mouse"
+  | "linux_char";
 
 /** Modal types */
 export type ModalType =
@@ -222,6 +223,19 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
     modelUrl: "/models/computer_mouse_low-poly.glb",
     scale: [0.1, 0.1, 0.1],
     rotation: [0, Math.PI/2, 0],
+    modal: null,
+    interactive: false,
+  },
+  linux_char: {
+    label: "LINUX CHARACTER",
+    cameraTarget: [0, 0, 0],
+    cameraPosition: [0, 0, 0],
+    position: [2.25, 0.1, 0.5],
+    placeholderSize: [0.1, 0.15, 0.1],
+    color: "#555555",
+    modelUrl: "/models/linux-char.glb",
+    scale: [0.15, 0.15, 0.15],
+    rotation: [0, 0, 0],
     modal: null,
     interactive: false,
   },
