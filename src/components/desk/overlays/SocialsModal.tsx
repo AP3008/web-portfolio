@@ -51,7 +51,7 @@ export function SocialsModal({ onClose }: SocialsModalProps) {
           {/* Screen content — behind the frame image but above the 3D scene */}
           <div
             className="absolute overflow-y-auto flex flex-col bg-[#1a1a1a] rounded-[8%]"
-            style={{ top: "8%", left: "30%", right: "31%", bottom: "10%", zIndex: 1 }}
+            style={{ top: "8%", left: "29.5%", right: "31.5%", bottom: "10%", zIndex: 1 }}
           >
             {/* Status bar */}
             <div className="px-5 pt-5 pb-2 flex items-center justify-between text-[10px] text-text-muted shrink-0">
