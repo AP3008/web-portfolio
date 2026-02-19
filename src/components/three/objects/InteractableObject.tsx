@@ -84,23 +84,24 @@ export function InteractableObject({
     <group
       ref={groupRef}
       position={config.position}
-      rotation={config.rotation}
       onPointerOver={isInteractive ? handlePointerOver : undefined}
       onPointerOut={isInteractive ? handlePointerOut : undefined}
       onClick={isInteractive ? handleClick : undefined}
     >
-      {config.modelUrl ? (
-        <GLBModel url={config.modelUrl} isHovered={isHovered} scale={config.scale} />
-      ) : (
-        <mesh>
-          <boxGeometry args={config.placeholderSize} />
-          <meshStandardMaterial
-            color={isHovered ? "#00ff88" : config.color}
-            emissive={isHovered ? "#00ff88" : "#000000"}
-            emissiveIntensity={isHovered ? 0.15 : 0}
-          />
-        </mesh>
-      )}
+      <group rotation={config.rotation}>
+        {config.modelUrl ? (
+          <GLBModel url={config.modelUrl} isHovered={isHovered} scale={config.scale} />
+        ) : (
+          <mesh>
+            <boxGeometry args={config.placeholderSize} />
+            <meshStandardMaterial
+              color={isHovered ? "#00ff88" : config.color}
+              emissive={isHovered ? "#00ff88" : "#000000"}
+              emissiveIntensity={isHovered ? 0.15 : 0}
+            />
+          </mesh>
+        )}
+      </group>
     </group>
   );
 }
