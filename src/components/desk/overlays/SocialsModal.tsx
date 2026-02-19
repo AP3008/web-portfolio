@@ -37,22 +37,15 @@ export function SocialsModal({ onClose }: SocialsModalProps) {
         onClick={handleBackdropClick}
         className="fixed inset-0 z-50 flex items-center justify-center"
       >
-        {/* Phone container — image in flow gives size */}
-        <div className="relative max-h-[95vh]">
-          {/* Phone frame — in normal flow to define container size, pointer-events-none so clicks pass through */}
-          <img
-            src="/phone_png.png"
-            alt=""
-            className="h-full max-h-[95vh] w-auto object-contain relative pointer-events-none"
-            style={{ zIndex: 2, mixBlendMode: "multiply" }}
-            draggable={false}
-          />
+        {/* Phone body */}
+        <div className="flex flex-col bg-black border-2 border-orange-500 rounded-[3rem] w-[280px] h-[580px] p-3 shadow-lg shadow-orange-500/20">
+          {/* Notch */}
+          <div className="flex justify-center pt-2 pb-3">
+            <div className="w-20 h-5 bg-black border border-orange-500/30 rounded-full" />
+          </div>
 
-          {/* Screen content — behind the frame image but above the 3D scene */}
-          <div
-            className="absolute overflow-y-auto flex flex-col bg-[#1a1a1a] rounded-[8%]"
-            style={{ top: "8%", left: "29.5%", right: "31.5%", bottom: "10%", zIndex: 1 }}
-          >
+          {/* Screen */}
+          <div className="flex-1 flex flex-col bg-[#1a1a1a] rounded-[2rem] overflow-y-auto">
             {/* Status bar */}
             <div className="px-5 pt-5 pb-2 flex items-center justify-between text-[10px] text-text-muted shrink-0">
               <span>9:41</span>
@@ -108,9 +101,12 @@ export function SocialsModal({ onClose }: SocialsModalProps) {
 
             {/* Home indicator */}
             <div className="flex justify-center pb-1.5 pt-1 shrink-0">
-              <div className="w-24 h-1 bg-[#555] rounded-full" />
+              <div className="w-24 h-1 bg-orange-500/40 rounded-full" />
             </div>
           </div>
+
+          {/* Bottom bezel spacer */}
+          <div className="h-3" />
         </div>
       </div>
     </>

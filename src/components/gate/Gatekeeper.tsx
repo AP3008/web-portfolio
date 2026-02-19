@@ -120,6 +120,17 @@ export function Gatekeeper() {
               borderColor: "var(--rp-highlight-med)",
             }}
           >
+            {/* Rosé Pine label */}
+            <span
+              className="text-3xl"
+              style={{
+                fontFamily: "'Hurricane', cursive",
+                color: "var(--rp-rose)",
+              }}
+            >
+              Rosé Pine
+            </span>
+
             {/* Theme variant buttons */}
             <div className="flex flex-col gap-2">
               <span
