@@ -8,13 +8,14 @@ interface ChessModalProps {
   onClose: () => void;
 }
 
+// Use filled (solid) characters for both colors — styled via CSS
 const PIECE_CHARS: Record<string, string> = {
-  K: "\u2654", k: "\u265A",
-  Q: "\u2655", q: "\u265B",
-  R: "\u2656", r: "\u265C",
-  B: "\u2657", b: "\u265D",
-  N: "\u2658", n: "\u265E",
-  P: "\u2659", p: "\u265F",
+  K: "\u265A", k: "\u265A",
+  Q: "\u265B", q: "\u265B",
+  R: "\u265C", r: "\u265C",
+  B: "\u265D", b: "\u265D",
+  N: "\u265E", n: "\u265E",
+  P: "\u265F", p: "\u265F",
 };
 
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -244,7 +245,14 @@ export function ChessModal({ onClose }: ChessModalProps) {
                       `}
                     >
                       {piece && (
-                        <span className={`leading-none drop-shadow-sm ${isWhite(piece) ? "text-white" : "text-gray-900"}`}>
+                        <span
+                          className="leading-none drop-shadow-md"
+                          style={
+                            isWhite(piece)
+                              ? { color: "#fff", WebkitTextStroke: "1px #333", paintOrder: "stroke fill" }
+                              : { color: "#1a1a1a" }
+                          }
+                        >
                           {PIECE_CHARS[piece]}
                         </span>
                       )}

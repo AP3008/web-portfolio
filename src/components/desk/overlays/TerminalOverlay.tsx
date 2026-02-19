@@ -7,7 +7,10 @@ import { DESK_OBJECTS, type DeskObjectId } from "@/lib/constants";
 interface TerminalLine {
   type: "input" | "output";
   text: string;
+  hint?: string;
 }
+
+const PROMPT = "PS C:\\Users\\Adam>";
 
 const HELP_TEXT = `Available commands:
   help        — Show this message
@@ -61,6 +64,23 @@ const objectAliases: Record<string, DeskObjectId> = {
   socials: "phone",
 };
 
+function renderLineText(text: string, hint?: string) {
+  if (!hint) return text;
+  const idx = text.indexOf(hint);
+  if (idx === -1) return text;
+  const before = text.slice(0, idx);
+  const after = text.slice(idx + hint.length);
+  return (
+    <>
+      {before}
+      <span className="border border-foreground/25 px-1.5 py-0.5 rounded">
+        {hint}
+      </span>
+      {after}
+    </>
+  );
+}
+
 export function TerminalOverlay() {
   const terminalFocused = usePortfolioStore((s) => s.terminalFocused);
   const activeModal = usePortfolioStore((s) => s.activeModal);
@@ -70,7 +90,7 @@ export function TerminalOverlay() {
   const returnToDesk = usePortfolioStore((s) => s.returnToDesk);
 
   const [lines, setLines] = useState<TerminalLine[]>([
-    { type: "output", text: 'Welcome to Adam\'s terminal. Type "help" for commands.' },
+    { type: "output", text: 'Type "help" to get started.', hint: "help" },
   ]);
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -88,7 +108,7 @@ export function TerminalOverlay() {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [lines]);
+  }, [lines, input]);
 
   const executeCommand = useCallback(
     (cmd: string) => {
@@ -117,7 +137,6 @@ export function TerminalOverlay() {
         const objectId = objectAliases[target];
         if (objectId) {
           output = `Focusing on ${DESK_OBJECTS[objectId].label}...`;
-          // Navigate after a brief delay
           setTimeout(() => {
             setTerminalFocused(false);
             focusObject(objectId);
@@ -140,7 +159,7 @@ export function TerminalOverlay() {
 
       setLines((prev) => [
         ...prev,
-        { type: "input", text: `$ ${cmd}` },
+        { type: "input", text: `${PROMPT} ${cmd}` },
         { type: "output", text: output },
       ]);
     },
@@ -157,58 +176,67 @@ export function TerminalOverlay() {
     [input, activeModal, executeCommand]
   );
 
-  // Don't render if terminal not focused or not in focused/desk phase on monitor
+  const handleContainerClick = useCallback(() => {
+    inputRef.current?.focus();
+  }, []);
+
   if (!terminalFocused) return null;
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
-      <div className="w-full max-w-2xl h-[60vh] rounded border border-accent/30 bg-background/95 backdrop-blur-sm p-4 flex flex-col font-mono text-sm pointer-events-auto">
-        {/* Terminal header */}
-        <div className="flex items-center justify-between border-b border-border pb-2 mb-2">
-          <span className="text-accent text-xs tracking-wider">
-            adam@portfolio:~$
-          </span>
-          <button
-            onClick={() => returnToDesk()}
-            className="text-text-muted hover:text-accent transition-colors text-xs"
-          >
-            [ESC]
-          </button>
-        </div>
-
-        {/* Terminal output */}
-        <div
-          ref={scrollRef}
-          className="flex-1 overflow-y-auto mb-2 text-foreground"
+    <div
+      onClick={handleContainerClick}
+      className="fixed inset-0 z-40 bg-background/95 backdrop-blur-sm p-6 flex flex-col font-mono text-sm cursor-text"
+    >
+      {/* Terminal header */}
+      <div className="flex items-center justify-between border-b border-border pb-2 mb-2">
+        <span className="text-text-muted text-xs tracking-wider">
+          Windows PowerShell
+        </span>
+        <button
+          onClick={(e) => { e.stopPropagation(); returnToDesk(); }}
+          className="text-text-muted hover:text-accent transition-colors text-xs"
         >
-          {lines.map((line, i) => (
-            <div
-              key={i}
-              className={`whitespace-pre-wrap leading-relaxed ${
-                line.type === "input" ? "text-accent" : "text-text-muted"
-              }`}
-            >
-              {line.text}
-            </div>
-          ))}
-        </div>
-
-        {/* Input */}
-        <form onSubmit={handleSubmit} className="flex items-center gap-2">
-          <span className="text-accent">$</span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            disabled={!!activeModal}
-            className="flex-1 bg-transparent text-foreground outline-none caret-accent"
-            autoComplete="off"
-            spellCheck={false}
-          />
-          <span className="w-2 h-4 bg-accent animate-pulse" />
-        </form>
+          [ESC]
+        </button>
       </div>
+
+      {/* Terminal output + inline prompt */}
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto text-foreground"
+      >
+        {lines.map((line, i) => (
+          <div
+            key={i}
+            className="whitespace-pre-wrap leading-relaxed text-foreground"
+          >
+            {renderLineText(line.text, line.hint)}
+          </div>
+        ))}
+
+        {/* Active prompt line with inline input */}
+        <div className="whitespace-pre-wrap leading-relaxed flex items-center">
+          <span className="text-foreground shrink-0">{PROMPT}&nbsp;</span>
+          <span className="text-foreground">{input}</span>
+          <span
+            className="inline-block w-[8px] h-[1.1em] bg-foreground ml-[1px]"
+            style={{ animation: "blink-cursor 1.06s step-end infinite" }}
+          />
+        </div>
+      </div>
+
+      {/* Hidden input for capturing keystrokes */}
+      <form onSubmit={handleSubmit} className="absolute -left-[9999px]">
+        <input
+          ref={inputRef}
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          disabled={!!activeModal}
+          autoComplete="off"
+          spellCheck={false}
+        />
+      </form>
     </div>
   );
 }
