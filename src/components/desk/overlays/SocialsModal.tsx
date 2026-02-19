@@ -38,20 +38,20 @@ export function SocialsModal({ onClose }: SocialsModalProps) {
         className="fixed inset-0 z-50 flex items-center justify-center"
       >
         {/* Phone container — image in flow gives size */}
-        <div className="relative max-h-[70vh]">
-          {/* Phone frame — in normal flow to define container size */}
+        <div className="relative max-h-[95vh]">
+          {/* Phone frame — in normal flow to define container size, pointer-events-none so clicks pass through */}
           <img
             src="/phone_png.png"
             alt=""
-            className="h-full max-h-[70vh] w-auto object-contain relative"
-            style={{ zIndex: 1, mixBlendMode: "multiply" }}
+            className="h-full max-h-[95vh] w-auto object-contain relative pointer-events-none"
+            style={{ zIndex: 2, mixBlendMode: "multiply" }}
             draggable={false}
           />
 
-          {/* Screen content — positioned within the phone screen area */}
+          {/* Screen content — behind the frame image but above the 3D scene */}
           <div
-            className="absolute overflow-y-auto flex flex-col bg-[#1a1a1a] rounded-[4%]"
-            style={{ top: "5.5%", left: "7%", right: "7%", bottom: "5.5%", zIndex: 0 }}
+            className="absolute overflow-y-auto flex flex-col bg-[#1a1a1a] rounded-[8%]"
+            style={{ top: "8%", left: "30%", right: "31%", bottom: "10%", zIndex: 1 }}
           >
             {/* Status bar */}
             <div className="px-5 pt-5 pb-2 flex items-center justify-between text-[10px] text-text-muted shrink-0">

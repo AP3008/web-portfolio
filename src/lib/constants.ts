@@ -5,6 +5,7 @@ export const DESKTOP_MIN_WIDTH = 900;
 export const ROUTES = {
   HOME: "/",
   THREE_D: "/3d",
+  TWO_D: "/2d",
 } as const;
 
 /** Desk object identifiers */
