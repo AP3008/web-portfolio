@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { Modal } from "./Modal";
+import { useState, useCallback, useEffect } from "react";
 import { chessPuzzle } from "../data/chess";
 
 interface ChessModalProps {
@@ -131,6 +130,20 @@ export function ChessModal({ onClose }: ChessModalProps) {
   const [message, setMessage] = useState(chessPuzzle.prompt);
   const [waiting, setWaiting] = useState(false);
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  const handleBackdropClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target === e.currentTarget) onClose();
+    },
+    [onClose]
+  );
+
   const handleSquareClick = useCallback(
     (row: number, col: number) => {
       if (solved || wrongMove || waiting) return;
@@ -203,80 +216,96 @@ export function ChessModal({ onClose }: ChessModalProps) {
   );
 
   return (
-    <Modal onClose={onClose}>
-      <div className="flex flex-col items-center justify-center gap-4 h-full">
-        {/* Board */}
-        <div className="relative select-none">
-          <div className="flex ml-8">
-            {FILES.map((f) => (
-              <div key={f} className="w-[min(8vw,8vh)] h-5 flex items-center justify-center text-xs text-text-muted">
-                {f}
-              </div>
-            ))}
-          </div>
+    <>
+      {/* ESC button */}
+      <button
+        onClick={onClose}
+        className="fixed top-4 right-4 z-60 text-text-muted hover:text-accent transition-colors text-sm font-mono tracking-wider"
+      >
+        [ESC]
+      </button>
 
-          <div className="flex">
-            <div className="flex flex-col">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="w-8 h-[min(8vw,8vh)] flex items-center justify-center text-xs text-text-muted">
-                  {8 - i}
+      {/* No backdrop — 3D scene visible behind */}
+      <div
+        onClick={handleBackdropClick}
+        className="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <div className="flex flex-col items-center gap-4">
+          {/* Board */}
+          <div className="relative select-none">
+            <div className="flex ml-8">
+              {FILES.map((f) => (
+                <div key={f} className="w-[min(8vw,8vh)] h-5 flex items-center justify-center text-xs text-text-muted">
+                  {f}
                 </div>
               ))}
             </div>
 
-            <div className="grid grid-cols-8 border border-border rounded overflow-hidden">
-              {board.flatMap((row, r) =>
-                row.map((piece, c) => {
-                  const isLight = (r + c) % 2 === 0;
-                  const isSelected = selected?.row === r && selected?.col === c;
-                  const isTarget =
-                    selected && !solved && !waiting &&
-                    isLegalMove(board, selected.row, selected.col, r, c);
+            <div className="flex">
+              <div className="flex flex-col">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="w-8 h-[min(8vw,8vh)] flex items-center justify-center text-xs text-text-muted">
+                    {8 - i}
+                  </div>
+                ))}
+              </div>
 
-                  return (
-                    <button
-                      key={`${r}-${c}`}
-                      onClick={() => handleSquareClick(r, c)}
-                      className={`w-[min(8vw,8vh)] h-[min(8vw,8vh)] flex items-center justify-center text-[min(5vw,5vh)] relative transition-colors
-                        ${isLight ? "bg-[#f0d9b5]" : "bg-[#b58863]"}
-                        ${isSelected ? "bg-accent/50!" : ""}
-                        ${isTarget ? "after:absolute after:w-4 after:h-4 after:rounded-full after:bg-accent/40" : ""}
-                        ${!solved && !waiting ? "hover:brightness-110 cursor-pointer" : ""}
-                      `}
-                    >
-                      {piece && (
-                        <span
-                          className="leading-none drop-shadow-md"
-                          style={
-                            isWhite(piece)
-                              ? { color: "#fff", WebkitTextStroke: "1px #333", paintOrder: "stroke fill" }
-                              : { color: "#1a1a1a" }
-                          }
-                        >
-                          {PIECE_CHARS[piece]}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })
-              )}
+              <div className="grid grid-cols-8 border-2 border-[#8B4513] rounded overflow-hidden shadow-xl">
+                {board.flatMap((row, r) =>
+                  row.map((piece, c) => {
+                    const isLight = (r + c) % 2 === 0;
+                    const isSelected = selected?.row === r && selected?.col === c;
+                    const isTarget =
+                      selected && !solved && !waiting &&
+                      isLegalMove(board, selected.row, selected.col, r, c);
+
+                    return (
+                      <button
+                        key={`${r}-${c}`}
+                        onClick={() => handleSquareClick(r, c)}
+                        className={`w-[min(8vw,8vh)] h-[min(8vw,8vh)] flex items-center justify-center text-[min(5vw,5vh)] relative transition-colors
+                          ${isLight ? "bg-[#f0d9b5]" : "bg-[#b58863]"}
+                          ${isSelected ? "bg-accent/50!" : ""}
+                          ${isTarget ? "after:absolute after:w-4 after:h-4 after:rounded-full after:bg-accent/40" : ""}
+                          ${!solved && !waiting ? "hover:brightness-110 cursor-pointer" : ""}
+                        `}
+                      >
+                        {piece && (
+                          <span
+                            className="leading-none drop-shadow-md"
+                            style={
+                              isWhite(piece)
+                                ? { color: "#fff", WebkitTextStroke: "1px #333", paintOrder: "stroke fill" }
+                                : { color: "#1a1a1a" }
+                            }
+                          >
+                            {PIECE_CHARS[piece]}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })
+                )}
+              </div>
             </div>
           </div>
+
+          {/* Message */}
+          <p className={`text-sm text-center font-bold font-mono ${wrongMove ? "text-red-400" : "text-accent"}`}>
+            {message}
+          </p>
+
+          {/* Checkmate banner */}
+          {solved && (
+            <div className="rounded border border-accent bg-accent/10 backdrop-blur-sm p-4 text-center max-w-lg">
+              <p className="text-accent font-bold mb-2">Checkmate!</p>
+              <p className="text-sm text-text-muted leading-relaxed">
+                {chessPuzzle.explanation}
+              </p>
+            </div>
+          )}
         </div>
-
-        <p className={`text-sm text-center font-bold ${wrongMove ? "text-red-400" : "text-accent"}`}>
-          {message}
-        </p>
-
-        {solved && (
-          <div className="rounded border border-accent bg-accent/10 p-4 text-center max-w-lg">
-            <p className="text-accent font-bold mb-2">Checkmate!</p>
-            <p className="text-sm text-text-muted leading-relaxed">
-              {chessPuzzle.explanation}
-            </p>
-          </div>
-        )}
       </div>
-    </Modal>
+    </>
   );
 }
