@@ -35,7 +35,7 @@ export function SocialsModal({ onClose }: SocialsModalProps) {
       {/* No backdrop — 3D scene visible behind */}
       <div
         onClick={handleBackdropClick}
-        className="fixed inset-0 z-50 flex items-center justify-center"
+        className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
       >
         {/* Phone body */}
         <div className="flex flex-col bg-black border-2 border-orange-500 rounded-[3rem] w-[280px] h-[580px] p-3 shadow-lg shadow-orange-500/20">

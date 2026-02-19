@@ -7,14 +7,14 @@ interface ChessModalProps {
   onClose: () => void;
 }
 
-// Use filled (solid) characters for both colors — styled via CSS
+// White pieces = outline chars, Black pieces = filled chars
 const PIECE_CHARS: Record<string, string> = {
-  K: "\u265A", k: "\u265A",
-  Q: "\u265B", q: "\u265B",
-  R: "\u265C", r: "\u265C",
-  B: "\u265D", b: "\u265D",
-  N: "\u265E", n: "\u265E",
-  P: "\u265F", p: "\u265F",
+  K: "\u2654", k: "\u265A",
+  Q: "\u2655", q: "\u265B",
+  R: "\u2656", r: "\u265C",
+  B: "\u2657", b: "\u265D",
+  N: "\u2658", n: "\u265E",
+  P: "\u2659", p: "\u265F",
 };
 
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -228,7 +228,7 @@ export function ChessModal({ onClose }: ChessModalProps) {
       {/* No backdrop — 3D scene visible behind */}
       <div
         onClick={handleBackdropClick}
-        className="fixed inset-0 z-50 flex items-center justify-center"
+        className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
       >
         <div className="flex flex-col items-center gap-4">
           {/* Board */}
@@ -263,7 +263,7 @@ export function ChessModal({ onClose }: ChessModalProps) {
                       <button
                         key={`${r}-${c}`}
                         onClick={() => handleSquareClick(r, c)}
-                        className={`w-[min(8vw,8vh)] h-[min(8vw,8vh)] flex items-center justify-center text-[min(5vw,5vh)] relative transition-colors
+                        className={`w-[min(8vw,8vh)] h-[min(8vw,8vh)] flex items-center justify-center text-[min(6.5vw,6.5vh)] relative transition-colors
                           ${isLight ? "bg-[#f0d9b5]" : "bg-[#b58863]"}
                           ${isSelected ? "bg-accent/50!" : ""}
                           ${isTarget ? "after:absolute after:w-4 after:h-4 after:rounded-full after:bg-accent/40" : ""}
