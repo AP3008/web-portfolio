@@ -8,7 +8,6 @@ interface SocialsModalProps {
 }
 
 export function SocialsModal({ onClose }: SocialsModalProps) {
-  // Prevent scroll on body
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -33,25 +32,26 @@ export function SocialsModal({ onClose }: SocialsModalProps) {
         [ESC]
       </button>
 
-      {/* Transparent overlay — no backdrop blur/color */}
+      {/* No backdrop — 3D scene visible behind */}
       <div
         onClick={handleBackdropClick}
         className="fixed inset-0 z-50 flex items-center justify-center"
       >
-        {/* Phone container */}
-        <div className="relative max-h-[70vh] aspect-[9/19.5]">
-          {/* Phone frame image */}
+        {/* Phone container — image in flow gives size */}
+        <div className="relative max-h-[70vh]">
+          {/* Phone frame — in normal flow to define container size */}
           <img
             src="/phone_png.png"
             alt=""
-            className="h-full w-full object-contain"
+            className="h-full max-h-[70vh] w-auto object-contain relative"
+            style={{ zIndex: 1, mixBlendMode: "multiply" }}
             draggable={false}
           />
 
-          {/* Screen content overlay */}
+          {/* Screen content — positioned within the phone screen area */}
           <div
             className="absolute overflow-y-auto flex flex-col bg-[#1a1a1a] rounded-[4%]"
-            style={{ top: "5.5%", left: "7%", right: "7%", bottom: "5.5%" }}
+            style={{ top: "5.5%", left: "7%", right: "7%", bottom: "5.5%", zIndex: 0 }}
           >
             {/* Status bar */}
             <div className="px-5 pt-5 pb-2 flex items-center justify-between text-[10px] text-text-muted shrink-0">
