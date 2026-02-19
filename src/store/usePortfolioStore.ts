@@ -16,6 +16,7 @@ export interface PortfolioState {
   activeModal: ModalType;
   interactionsEnabled: boolean;
   terminalFocused: boolean;
+  showExitConfirm: boolean;
 
   // Performance
   quality: "high" | "medium" | "low";
@@ -33,6 +34,7 @@ export interface PortfolioActions {
   closeModal: () => void;
 
   setTerminalFocused: (focused: boolean) => void;
+  setShowExitConfirm: (show: boolean) => void;
   setQuality: (quality: PortfolioState["quality"]) => void;
 }
 
@@ -46,6 +48,7 @@ export const usePortfolioStore = create<PortfolioState & PortfolioActions>()(
     activeModal: null,
     interactionsEnabled: false,
     terminalFocused: false,
+    showExitConfirm: false,
     quality: "high",
 
     // Actions
@@ -101,6 +104,7 @@ export const usePortfolioStore = create<PortfolioState & PortfolioActions>()(
       }),
 
     setTerminalFocused: (focused) => set({ terminalFocused: focused }),
+    setShowExitConfirm: (show) => set({ showExitConfirm: show }),
 
     setQuality: (quality) => set({ quality }),
   })

@@ -6,6 +6,7 @@ import { TerminalLoader } from "@/components/gate/TerminalLoader";
 import { HoverHUD } from "@/components/desk/overlays/HoverHUD";
 import { ModalManager } from "@/components/desk/overlays/ModalManager";
 import { TerminalOverlay } from "@/components/desk/overlays/TerminalOverlay";
+import { ExitOverlay } from "@/components/desk/overlays/ExitOverlay";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
 
 export function DeskExperience() {
@@ -16,6 +17,8 @@ export function DeskExperience() {
   const returnToDesk = usePortfolioStore((s) => s.returnToDesk);
   const terminalFocused = usePortfolioStore((s) => s.terminalFocused);
   const setTerminalFocused = usePortfolioStore((s) => s.setTerminalFocused);
+  const showExitConfirm = usePortfolioStore((s) => s.showExitConfirm);
+  const setShowExitConfirm = usePortfolioStore((s) => s.setShowExitConfirm);
 
   // Transition from gate to loading when this component mounts
   useEffect(() => {
@@ -30,14 +33,18 @@ export function DeskExperience() {
       if (e.key === "Escape") {
         if (activeModal) {
           closeModal();
+        } else if (showExitConfirm) {
+          setShowExitConfirm(false);
         } else if (scenePhase === "focused") {
           returnToDesk();
         } else if (terminalFocused) {
           setTerminalFocused(false);
+        } else if (scenePhase === "desk") {
+          setShowExitConfirm(true);
         }
       }
     },
-    [activeModal, scenePhase, terminalFocused, closeModal, returnToDesk, setTerminalFocused]
+    [activeModal, showExitConfirm, scenePhase, terminalFocused, closeModal, returnToDesk, setTerminalFocused, setShowExitConfirm]
   );
 
   useEffect(() => {
@@ -52,6 +59,7 @@ export function DeskExperience() {
       <HoverHUD />
       <ModalManager />
       <TerminalOverlay />
+      <ExitOverlay />
     </>
   );
 }

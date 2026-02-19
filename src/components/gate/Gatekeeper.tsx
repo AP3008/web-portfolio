@@ -6,36 +6,22 @@ import { ROUTES } from "@/lib/constants";
 import { useIsDesktop } from "@/lib/device";
 import { useTypingEffect } from "@/lib/useTypingEffect";
 import { useThemeStore } from "@/store/useThemeStore";
-import {
-  TEXT_COLOR_OPTIONS,
-  TEXT_COLOR_OPTIONS_DAWN,
-  ROSE_PINE_PALETTES,
-} from "@/lib/themes";
-import type { ThemeVariant } from "@/lib/themes";
+import { ROSE_PINE_PALETTES } from "@/lib/themes";
+import { ThemePicker } from "./ThemePicker";
 
 type HoveredSide = "left" | "right" | null;
 
 const FULL_NAME = "Adam Porbanderwalla";
 const TYPING_SPEED_MS = 80;
 
-const VARIANT_LABELS: { key: ThemeVariant; label: string }[] = [
-  { key: "classic", label: "Classic" },
-  { key: "moon", label: "Moon" },
-  { key: "dawn", label: "Dawn" },
-];
-
 export function Gatekeeper() {
   const isDesktop = useIsDesktop();
   const [hovered, setHovered] = useState<HoveredSide>(null);
-  const [hoveredVariant, setHoveredVariant] = useState<ThemeVariant | null>(null);
 
   const variant = useThemeStore((s) => s.variant);
   const textColor = useThemeStore((s) => s.textColor);
-  const setVariant = useThemeStore((s) => s.setVariant);
-  const setTextColor = useThemeStore((s) => s.setTextColor);
 
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
-  const colorOptions = variant === "dawn" ? TEXT_COLOR_OPTIONS_DAWN : TEXT_COLOR_OPTIONS;
 
   const displayed = useTypingEffect(FULL_NAME, TYPING_SPEED_MS);
 
@@ -74,7 +60,7 @@ export function Gatekeeper() {
         className="relative flex min-h-screen flex-col items-center justify-center gap-10 px-8 md:flex-row md:items-center md:gap-16 md:px-16 lg:px-24"
         style={{ background: "var(--rp-base)" }}
       >
-        {/* Left — Name + Subtitle (centered within its half) */}
+        {/* Left — Name + Subtitle */}
         <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
           <h1
             className="whitespace-nowrap text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
@@ -98,102 +84,9 @@ export function Gatekeeper() {
           </p>
         </div>
 
-        {/* Right — Palette Selector (center-right) */}
+        {/* Right — Palette Selector */}
         <div className="flex flex-1 items-center justify-center">
-          <div
-            className="flex flex-col items-center gap-6 rounded-lg border p-6"
-            style={{
-              background: "var(--rp-surface)",
-              borderColor: "var(--rp-highlight-med)",
-            }}
-          >
-            {/* Rosé Pine label */}
-            <span
-              className="text-3xl text-center"
-              style={{
-                fontFamily: "'Hurricane', cursive",
-                color: "var(--rp-rose)",
-              }}
-            >
-              Rosé Pine
-            </span>
-
-            {/* Theme variant buttons */}
-            <div className="flex flex-col gap-2">
-              <span
-                className="text-xs uppercase tracking-widest"
-                style={{ color: "var(--rp-muted)" }}
-              >
-                Theme
-              </span>
-              <div className="flex gap-2">
-                {VARIANT_LABELS.map(({ key, label }) => {
-                  const isActive = variant === key;
-                  const isHovered = hoveredVariant === key;
-                  return (
-                    <button
-                      key={key}
-                      onClick={() => setVariant(key)}
-                      onMouseEnter={() => setHoveredVariant(key)}
-                      onMouseLeave={() => setHoveredVariant(null)}
-                      className="rounded px-4 py-1.5 text-sm font-medium tracking-wider transition-all duration-200"
-                      style={{
-                        background: isActive
-                          ? "var(--rp-overlay)"
-                          : isHovered
-                            ? "var(--rp-highlight-low)"
-                            : "transparent",
-                        color: isActive
-                          ? "var(--rp-iris)"
-                          : isHovered
-                            ? "var(--rp-text)"
-                            : "var(--rp-subtle)",
-                        outline: isActive
-                          ? "2px solid var(--rp-iris)"
-                          : "2px solid transparent",
-                        outlineOffset: "2px",
-                        border: "1px solid " + (isActive
-                          ? "var(--rp-iris)"
-                          : isHovered
-                            ? "var(--rp-highlight-high)"
-                            : "var(--rp-highlight-med)"),
-                      }}
-                    >
-                      {label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Text color circles */}
-            <div className="flex flex-col gap-2">
-              <span
-                className="text-xs uppercase tracking-widest"
-                style={{ color: "var(--rp-muted)" }}
-              >
-                Text Colour
-              </span>
-              <div className="flex gap-3">
-                {colorOptions.map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => setTextColor(color)}
-                    className="h-7 w-7 rounded-full transition-all duration-200"
-                    style={{
-                      background: color,
-                      outline:
-                        textColor === color
-                          ? `2px solid ${color}`
-                          : "2px solid transparent",
-                      outlineOffset: "3px",
-                    }}
-                    aria-label={`Set text color to ${color}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+          <ThemePicker />
         </div>
       </section>
 
@@ -270,8 +163,9 @@ export function Gatekeeper() {
         </Link>
 
         {/* Right — 2D Portfolio */}
-        <div
-          className="relative flex flex-1 flex-col items-center justify-center cursor-not-allowed transition-all duration-500 ease-out"
+        <Link
+          href={ROUTES.TWO_D}
+          className="relative flex flex-1 flex-col items-center justify-center transition-all duration-500 ease-out"
           style={{
             background:
               hovered === "right" ? "var(--rp-overlay)" : "var(--rp-base)",
@@ -305,16 +199,24 @@ export function Gatekeeper() {
               A classic portfolio with projects, experience, and more.
             </p>
             <div
-              className="mt-4 rounded border px-8 py-2 text-sm tracking-wider"
+              className="mt-4 rounded border px-8 py-2 text-sm tracking-wider transition-all duration-300"
               style={{
-                borderColor: "var(--rp-highlight-high)",
-                color: "var(--rp-muted)",
+                borderColor:
+                  hovered === "right"
+                    ? "var(--rp-iris)"
+                    : "var(--rp-highlight-high)",
+                color:
+                  hovered === "right" ? "var(--rp-iris)" : "var(--rp-subtle)",
+                background:
+                  hovered === "right"
+                    ? "rgba(196, 167, 231, 0.05)"
+                    : "transparent",
               }}
             >
-              COMING SOON
+              ENTER
             </div>
           </div>
-        </div>
+        </Link>
       </section>
     </div>
   );
