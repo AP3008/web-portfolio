@@ -88,9 +88,9 @@ export function Gatekeeper() {
         style={{ background: "var(--rp-base)" }}
       >
         {/* Left — Name + Subtitle (centered within its half) */}
-        <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center md:items-start md:text-left">
+        <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
           <h1
-            className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+            className="whitespace-nowrap text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
             style={{ color: "var(--rp-text)" }}
           >
             {displayed}
@@ -114,7 +114,7 @@ export function Gatekeeper() {
         {/* Right — Palette Selector (center-right) */}
         <div className="flex flex-1 items-center justify-center">
           <div
-            className="flex flex-col gap-6 rounded-lg border p-6"
+            className="flex flex-col items-center gap-6 rounded-lg border p-6"
             style={{
               background: "var(--rp-surface)",
               borderColor: "var(--rp-highlight-med)",
@@ -122,7 +122,7 @@ export function Gatekeeper() {
           >
             {/* Rosé Pine label */}
             <span
-              className="text-3xl"
+              className="text-3xl text-center"
               style={{
                 fontFamily: "'Hurricane', cursive",
                 color: "var(--rp-rose)",
