@@ -1,6 +1,10 @@
 "use client";
 
+import { useMemo } from "react";
 import { Modal } from "./Modal";
+import { useTypingEffect } from "@/lib/useTypingEffect";
+import { useThemeStore } from "@/store/useThemeStore";
+import { ROSE_PINE_PALETTES } from "@/lib/themes";
 
 interface FitnessModalProps {
   onClose: () => void;
@@ -54,27 +58,78 @@ const ROUTINE: WorkoutDay[] = [
 ];
 
 export function FitnessModal({ onClose }: FitnessModalProps) {
+  const variant = useThemeStore((s) => s.variant);
+  const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
+  const title = useTypingEffect("Body Building", 80);
+
   return (
     <Modal onClose={onClose}>
       <div className="flex flex-col gap-6">
-        <div>
-          <h2 className="text-foreground font-bold text-lg mb-1">
-            Current Split
-          </h2>
-          <p className="text-text-muted text-sm">Push / Pull / Legs — 6 days on, 1 rest</p>
-        </div>
+        {/* Title with typing effect */}
+        <h2
+          className="text-2xl font-bold"
+          style={{ color: palette.text }}
+        >
+          {title}
+          <span
+            className="inline-block w-[2px] h-[1.1em] ml-1 align-middle"
+            style={{
+              backgroundColor: palette.text,
+              animation: "blink-cursor 1.06s step-end infinite",
+            }}
+          />
+        </h2>
 
+        {/* Hevy banner */}
+        <a
+          href="https://hevy.com/user/adamp3008"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-xl px-4 py-3 text-sm transition-opacity hover:opacity-80 inline-flex items-center gap-2"
+          style={{
+            backgroundColor: palette.overlay,
+            color: palette.iris,
+          }}
+        >
+          Check me out on Hevy
+          <svg
+            viewBox="0 0 24 24"
+            className="w-3.5 h-3.5 fill-none shrink-0"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
+          </svg>
+        </a>
+
+        {/* Subtitle */}
+        <p className="text-sm" style={{ color: palette.muted }}>
+          Push / Pull / Legs — 6 days on, 1 rest
+        </p>
+
+        {/* Workout days */}
         <div className="flex flex-col gap-4">
           {ROUTINE.map((day) => (
             <div
               key={day.title}
-              className="rounded border border-border p-4"
+              className="rounded-xl border p-4"
+              style={{
+                backgroundColor: palette.surface,
+                borderColor: palette.highlightMed,
+              }}
             >
               <div className="flex items-baseline justify-between mb-3">
-                <h3 className="text-accent font-bold text-base">
+                <h3
+                  className="font-bold text-base"
+                  style={{ color: palette.iris }}
+                >
                   {day.title}
                 </h3>
-                <span className="text-text-muted text-xs">{day.schedule}</span>
+                <span className="text-xs" style={{ color: palette.muted }}>
+                  {day.schedule}
+                </span>
               </div>
               <div className="flex flex-col gap-1.5">
                 {day.exercises.map((ex) => (
@@ -82,8 +137,10 @@ export function FitnessModal({ onClose }: FitnessModalProps) {
                     key={ex.name}
                     className="flex items-center justify-between"
                   >
-                    <span className="text-foreground text-sm">{ex.name}</span>
-                    <span className="text-text-muted text-sm font-mono">
+                    <span className="text-sm" style={{ color: palette.text }}>
+                      {ex.name}
+                    </span>
+                    <span className="text-sm" style={{ color: palette.subtle }}>
                       {ex.sets}
                     </span>
                   </div>

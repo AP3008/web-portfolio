@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/constants";
 import { useIsDesktop } from "@/lib/device";
+import { useTypingEffect } from "@/lib/useTypingEffect";
 import { useThemeStore } from "@/store/useThemeStore";
 import {
   TEXT_COLOR_OPTIONS,
@@ -22,20 +23,6 @@ const VARIANT_LABELS: { key: ThemeVariant; label: string }[] = [
   { key: "moon", label: "Moon" },
   { key: "dawn", label: "Dawn" },
 ];
-
-function useTypingEffect(text: string, speed: number) {
-  const [displayedCount, setDisplayedCount] = useState(0);
-
-  useEffect(() => {
-    if (displayedCount >= text.length) return;
-    const timeout = setTimeout(() => {
-      setDisplayedCount((c) => c + 1);
-    }, speed);
-    return () => clearTimeout(timeout);
-  }, [displayedCount, text, speed]);
-
-  return text.slice(0, displayedCount);
-}
 
 export function Gatekeeper() {
   const isDesktop = useIsDesktop();

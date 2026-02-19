@@ -1,8 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Modal } from "./Modal";
 import { projects } from "../data/projects";
+import { useTypingEffect } from "@/lib/useTypingEffect";
+import { useThemeStore } from "@/store/useThemeStore";
+import { ROSE_PINE_PALETTES, type RosePinePalette } from "@/lib/themes";
 import type { CommitData } from "@/app/api/github-commits/route";
 
 interface ProjectPortalModalProps {
@@ -14,12 +17,12 @@ function DiffBlock({ patch }: { patch: string }) {
   return (
     <pre className="text-xs leading-relaxed overflow-x-auto">
       {lines.map((line, i) => {
-        let color = "text-text-muted";
-        if (line.startsWith("+") && !line.startsWith("+++")) color = "text-green-400";
-        else if (line.startsWith("-") && !line.startsWith("---")) color = "text-red-400";
-        else if (line.startsWith("@@")) color = "text-blue-400";
+        let color = "";
+        if (line.startsWith("+") && !line.startsWith("+++")) color = "#a6e3a1";
+        else if (line.startsWith("-") && !line.startsWith("---")) color = "#f38ba8";
+        else if (line.startsWith("@@")) color = "#89b4fa";
         return (
-          <div key={i} className={color}>
+          <div key={i} style={{ color: color || undefined }}>
             {line}
           </div>
         );
@@ -28,7 +31,7 @@ function DiffBlock({ patch }: { patch: string }) {
   );
 }
 
-function CommitRow({ commit }: { commit: CommitData }) {
+function CommitRow({ commit, palette }: { commit: CommitData; palette: RosePinePalette }) {
   const [expanded, setExpanded] = useState(false);
   const date = new Date(commit.date).toLocaleDateString("en-US", {
     month: "short",
@@ -36,32 +39,37 @@ function CommitRow({ commit }: { commit: CommitData }) {
   });
 
   return (
-    <div className="border-b border-border/50 last:border-b-0">
+    <div style={{ borderBottomColor: palette.highlightLow }} className="border-b last:border-b-0">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full text-left px-3 py-2.5 hover:bg-surface-hover transition-colors flex items-center gap-3"
+        className="w-full text-left px-3 py-2.5 transition-colors flex items-center gap-3"
+        style={{ backgroundColor: "transparent" }}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = palette.overlay)}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
       >
         <a
           href={commit.htmlUrl}
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="text-accent font-mono text-xs hover:underline shrink-0"
+          className="text-xs hover:underline shrink-0"
+          style={{ color: palette.foam, fontFamily: "'JetBrains Mono', monospace" }}
         >
           {commit.shortSha}
         </a>
-        <span className="text-foreground text-sm truncate flex-1">
+        <span className="text-sm truncate flex-1" style={{ color: palette.text }}>
           {commit.message}
         </span>
         <span className="text-xs shrink-0">
-          <span className="text-green-400">+{commit.additions}</span>
+          <span style={{ color: "#a6e3a1" }}>+{commit.additions}</span>
           {" "}
-          <span className="text-red-400">-{commit.deletions}</span>
+          <span style={{ color: "#f38ba8" }}>-{commit.deletions}</span>
         </span>
-        <span className="text-text-muted text-xs shrink-0">{date}</span>
+        <span className="text-xs shrink-0" style={{ color: palette.muted }}>{date}</span>
         <svg
           viewBox="0 0 24 24"
-          className={`w-3 h-3 fill-none stroke-text-muted shrink-0 transition-transform ${expanded ? "rotate-90" : ""}`}
+          className={`w-3 h-3 fill-none shrink-0 transition-transform ${expanded ? "rotate-90" : ""}`}
+          stroke={palette.muted}
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -71,17 +79,26 @@ function CommitRow({ commit }: { commit: CommitData }) {
       </button>
 
       {expanded && commit.files.length > 0 && (
-        <div className="bg-[#0d0d0d] border-t border-border/30 px-3 py-2 flex flex-col gap-2">
+        <div
+          className="border-t px-3 py-2 flex flex-col gap-2"
+          style={{
+            backgroundColor: palette.highlightLow,
+            borderColor: palette.highlightMed,
+          }}
+        >
           {commit.files.map((file) => (
             <div key={file.filename}>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-foreground text-xs font-mono truncate">
+                <span
+                  className="text-xs truncate"
+                  style={{ color: palette.text, fontFamily: "'JetBrains Mono', monospace" }}
+                >
                   {file.filename}
                 </span>
                 <span className="text-xs shrink-0">
-                  <span className="text-green-400">+{file.additions}</span>
+                  <span style={{ color: "#a6e3a1" }}>+{file.additions}</span>
                   {" "}
-                  <span className="text-red-400">-{file.deletions}</span>
+                  <span style={{ color: "#f38ba8" }}>-{file.deletions}</span>
                 </span>
               </div>
               {file.patch && <DiffBlock patch={file.patch} />}
@@ -94,6 +111,10 @@ function CommitRow({ commit }: { commit: CommitData }) {
 }
 
 export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
+  const variant = useThemeStore((s) => s.variant);
+  const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
+  const title = useTypingEffect("Projects", 80);
+
   const [commits, setCommits] = useState<CommitData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -118,33 +139,54 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
   return (
     <Modal onClose={onClose}>
       <div className="flex flex-col gap-6">
+        {/* Title with typing effect */}
+        <h2 className="text-2xl font-bold" style={{ color: palette.text }}>
+          {title}
+          <span
+            className="inline-block w-[2px] h-[1.1em] ml-1 align-middle"
+            style={{
+              backgroundColor: palette.text,
+              animation: "blink-cursor 1.06s step-end infinite",
+            }}
+          />
+        </h2>
+
         {/* Project cards */}
         {projects.map((project) => (
           <div
             key={project.id}
-            className="rounded border border-border p-4 hover:border-accent/40 transition-colors"
+            className="rounded-xl border p-4 transition-colors"
+            style={{
+              backgroundColor: palette.surface,
+              borderColor: palette.highlightMed,
+            }}
           >
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-base font-bold text-foreground">
+              <h3 className="text-base font-bold" style={{ color: palette.text }}>
                 {project.title}
               </h3>
               <a
                 href={`https://github.com/${project.repoOwner}/${project.repoName}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-accent hover:underline font-mono"
+                className="text-xs hover:underline"
+                style={{ color: palette.foam, fontFamily: "'JetBrains Mono', monospace" }}
               >
                 {project.repoOwner}/{project.repoName}
               </a>
             </div>
-            <p className="text-sm text-text-muted mb-3 leading-relaxed">
+            <p className="text-sm mb-3 leading-relaxed" style={{ color: palette.subtle }}>
               {project.description}
             </p>
             <div className="flex flex-wrap gap-2">
               {project.techStack.map((tech) => (
                 <span
                   key={tech}
-                  className="rounded border border-accent/20 px-2 py-0.5 text-xs text-accent"
+                  className="rounded-lg border px-2 py-0.5 text-xs"
+                  style={{
+                    borderColor: palette.highlightMed,
+                    color: palette.iris,
+                  }}
                 >
                   {tech}
                 </span>
@@ -155,27 +197,30 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
 
         {/* Recent Activity */}
         <div>
-          <h3 className="text-foreground font-bold text-base mb-3">
+          <h3 className="font-bold text-base mb-3" style={{ color: palette.text }}>
             Recent Activity
           </h3>
-          <div className="rounded border border-border overflow-hidden">
+          <div
+            className="rounded-xl border overflow-hidden"
+            style={{ borderColor: palette.highlightMed }}
+          >
             {loading && (
-              <div className="px-3 py-4 text-text-muted text-sm text-center">
+              <div className="px-3 py-4 text-sm text-center" style={{ color: palette.muted }}>
                 Loading commits...
               </div>
             )}
             {error && (
-              <div className="px-3 py-4 text-red-400 text-sm text-center">
+              <div className="px-3 py-4 text-sm text-center" style={{ color: palette.love }}>
                 {error}
               </div>
             )}
             {!loading && !error && commits.length === 0 && (
-              <div className="px-3 py-4 text-text-muted text-sm text-center">
+              <div className="px-3 py-4 text-sm text-center" style={{ color: palette.muted }}>
                 No recent commits found
               </div>
             )}
             {commits.map((commit) => (
-              <CommitRow key={commit.sha} commit={commit} />
+              <CommitRow key={commit.sha} commit={commit} palette={palette} />
             ))}
           </div>
         </div>
