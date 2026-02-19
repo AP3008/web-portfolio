@@ -83,7 +83,7 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
   },
   keyboard: {
     label: "KEYBOARD",
-    hudLabel: "Projects",
+    hudLabel: "Featured Projects",
     cameraTarget: [0.1, 0.15, 0.25],
     cameraPosition: [0.1, 0.8, 1.0],
     position: [0.1, 0.15, 0.25],

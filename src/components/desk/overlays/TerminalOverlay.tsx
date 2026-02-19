@@ -17,31 +17,12 @@ const HELP_TEXT = `Available commands:
   ls          — List desk objects
   whoami      — Display bio summary
   clear       — Clear terminal
-  git log     — Show commit history
   cd [object] — Focus on an object
   exit        — Exit terminal`;
 
 const WHOAMI_TEXT = `Adam Porbanderwalla
 Software Engineer | 3.9 GPA
 Building immersive web experiences with React, Three.js, and TypeScript.`;
-
-const GIT_LOG_TEXT = `commit a1b2c3d (HEAD -> main)
-Author: Adam <adam@dev.com>
-Date:   2024-12-01
-
-    feat: add 3D portfolio desk experience
-
-commit e4f5g6h
-Author: Adam <adam@dev.com>
-Date:   2024-11-28
-
-    refactor: clean up camera controller
-
-commit i7j8k9l
-Author: Adam <adam@dev.com>
-Date:   2024-11-25
-
-    init: project scaffold with Next.js + R3F`;
 
 const objectAliases: Record<string, DeskObjectId> = {
   monitor: "monitor",
@@ -130,8 +111,6 @@ export function TerminalOverlay() {
       } else if (command === "clear") {
         setLines([]);
         return;
-      } else if (trimmed === "git log") {
-        output = GIT_LOG_TEXT;
       } else if (command === "cd") {
         const target = parts.slice(1).join("-");
         const objectId = objectAliases[target];

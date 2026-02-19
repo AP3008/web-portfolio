@@ -2,56 +2,29 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { Modal } from "./Modal";
-import { projects, type Project } from "../data/projects";
+import { projects } from "../data/projects";
 import { useTypingEffect } from "@/lib/useTypingEffect";
 import { useThemeStore } from "@/store/useThemeStore";
-import { ROSE_PINE_PALETTES, type RosePinePalette } from "@/lib/themes";
+import { ROSE_PINE_PALETTES } from "@/lib/themes";
 import type { CommitData } from "@/app/api/github-commits/route";
 
 interface ProjectPortalModalProps {
   onClose: () => void;
 }
 
-function LatestCommit({ project, palette }: { project: Project; palette: RosePinePalette }) {
-  const [commit, setCommit] = useState<CommitData | null>(null);
-
-  useEffect(() => {
-    fetch(`/api/github-commits?repo=${project.repoOwner}/${project.repoName}`)
-      .then((res) => res.json())
-      .then((data) => setCommit(data.commit ?? null))
-      .catch(() => {});
-  }, [project.repoOwner, project.repoName]);
-
-  if (!commit) return null;
-
-  return (
-    <div
-      className="mt-3 pt-3 border-t flex items-center gap-2 text-xs"
-      style={{ borderColor: palette.highlightLow }}
-    >
-      <span style={{ color: palette.foam }}>{project.repoName}:</span>
-      <a
-        href={commit.htmlUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="truncate flex-1 hover:underline"
-        style={{ color: palette.text }}
-      >
-        {commit.message}
-      </a>
-      <span className="shrink-0" style={{ color: palette.muted }}>
-        <span style={{ color: "#a6e3a1" }}>+{commit.additions}</span>
-        {" / "}
-        <span style={{ color: "#f38ba8" }}>-{commit.deletions}</span>
-      </span>
-    </div>
-  );
-}
-
 export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
   const variant = useThemeStore((s) => s.variant);
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
-  const title = useTypingEffect("Projects", 80);
+  const title = useTypingEffect("Featured Projects", 80);
+
+  const [commit, setCommit] = useState<CommitData | null>(null);
+
+  useEffect(() => {
+    fetch("/api/github-commits?repo=AP3008/web-portfolio")
+      .then((res) => res.json())
+      .then((data) => setCommit(data.commit ?? null))
+      .catch(() => {});
+  }, []);
 
   return (
     <Modal onClose={onClose}>
@@ -109,11 +82,52 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
                 </span>
               ))}
             </div>
-
-            {/* Latest commit row */}
-            <LatestCommit project={project} palette={palette} />
           </div>
         ))}
+
+        {/* Most Recent Commit section */}
+        {commit && (
+          <div>
+            <h3 className="font-bold text-base mb-3" style={{ color: palette.text }}>
+              Most Recent Commit:{" "}
+              <span style={{ color: palette.foam }}>web-portfolio</span>
+            </h3>
+            <div
+              className="rounded-xl border p-4 flex items-center gap-3 text-xs"
+              style={{
+                backgroundColor: palette.surface,
+                borderColor: palette.highlightMed,
+              }}
+            >
+              <a
+                href={commit.htmlUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="truncate flex-1 hover:underline text-sm"
+                style={{ color: palette.text }}
+              >
+                {commit.message}
+              </a>
+              <span className="shrink-0 flex items-center gap-2">
+                <span>
+                  <span style={{ color: "#a6e3a1" }}>+{commit.additions}</span>
+                  {" / "}
+                  <span style={{ color: "#f38ba8" }}>-{commit.deletions}</span>
+                </span>
+                <span
+                  className="px-2 py-0.5 rounded-md"
+                  style={{
+                    backgroundColor: palette.overlay,
+                    color: palette.foam,
+                    fontFamily: "'JetBrains Mono', monospace",
+                  }}
+                >
+                  {commit.shortSha}
+                </span>
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </Modal>
   );
