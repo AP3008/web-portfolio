@@ -10,6 +10,9 @@ import { useTypingEffect } from "@/lib/useTypingEffect";
 import { TransitionOverlay } from "./TransitionOverlay";
 import { Navigator } from "./Navigator";
 import { ProjectTriangle } from "./ProjectTriangle";
+import { AboutSection } from "./AboutSection";
+import { ProjectsSection } from "./ProjectsSection";
+import { SocialsSection } from "./SocialsSection";
 
 const GREETING = "Hey! I'm Adam";
 const TYPING_SPEED_MS = 80;
@@ -168,7 +171,7 @@ export function TwoDExperience() {
             Featured Projects
           </h2>
           <a
-            href="#projects"
+            href="#all-projects"
             className="rounded border px-4 py-1.5 text-xs tracking-wider transition-all duration-200"
             style={{
               borderColor: "var(--rp-highlight-high)",
@@ -201,6 +204,15 @@ export function TwoDExperience() {
           Learn more about me! →
         </a>
       </section>
+
+      {/* About Section */}
+      <AboutSection />
+
+      {/* All Projects Section */}
+      <ProjectsSection />
+
+      {/* Socials Section */}
+      <SocialsSection />
     </div>
   );
 }
