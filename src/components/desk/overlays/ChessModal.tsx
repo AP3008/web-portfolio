@@ -235,7 +235,11 @@ export function ChessModal({ onClose }: ChessModalProps) {
           <div className="relative select-none">
             <div className="flex ml-8">
               {FILES.map((f) => (
-                <div key={f} className="w-[min(8vw,8vh)] h-5 flex items-center justify-center text-xs text-text-muted">
+                <div
+                  key={f}
+                  className="w-[min(8vw,8vh)] h-5 flex items-center justify-center text-xs font-semibold"
+                  style={{ color: "#e0def4" }}
+                >
                   {f}
                 </div>
               ))}
@@ -244,7 +248,11 @@ export function ChessModal({ onClose }: ChessModalProps) {
             <div className="flex">
               <div className="flex flex-col">
                 {Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className="w-8 h-[min(8vw,8vh)] flex items-center justify-center text-xs text-text-muted">
+                  <div
+                    key={i}
+                    className="w-8 h-[min(8vw,8vh)] flex items-center justify-center text-xs font-semibold"
+                    style={{ color: "#e0def4" }}
+                  >
                     {8 - i}
                   </div>
                 ))}
@@ -289,15 +297,30 @@ export function ChessModal({ onClose }: ChessModalProps) {
           </div>
 
           {/* Message */}
-          <p className={`text-sm text-center font-bold font-mono ${wrongMove ? "text-red-400" : "text-accent"}`}>
+          <div
+            className="w-full max-w-lg rounded-lg border px-4 py-2.5 text-center font-mono text-sm font-bold backdrop-blur-sm"
+            style={{
+              backgroundColor: "rgba(35, 33, 54, 0.85)",
+              borderColor: "#524f67",
+              color: wrongMove ? "#eb6f92" : solved ? "#f6c177" : "#9ccfd8",
+            }}
+          >
             {message}
-          </p>
+          </div>
 
           {/* Checkmate banner */}
           {solved && (
-            <div className="rounded border border-accent bg-accent/10 backdrop-blur-sm p-4 text-center max-w-lg">
-              <p className="text-accent font-bold mb-2">Checkmate!</p>
-              <p className="text-sm text-text-muted leading-relaxed">
+            <div
+              className="max-w-lg rounded border p-4 text-center backdrop-blur-sm"
+              style={{
+                borderColor: "#f6c177",
+                backgroundColor: "rgba(246, 193, 119, 0.12)",
+              }}
+            >
+              <p className="mb-2 font-bold" style={{ color: "#f6c177" }}>
+                Checkmate!
+              </p>
+              <p className="text-sm leading-relaxed" style={{ color: "#e0def4" }}>
                 {chessPuzzle.explanation}
               </p>
             </div>
