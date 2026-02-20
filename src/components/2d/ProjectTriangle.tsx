@@ -62,13 +62,17 @@ function FlipCard({
 
         {/* Back — revealed content */}
         <div
-          className="absolute inset-0 flex flex-col gap-3 overflow-hidden rounded-xl border p-4 sm:gap-4 sm:p-7"
+          className="absolute inset-0 flex flex-col gap-3 overflow-y-auto rounded-xl border p-4 sm:gap-4 sm:overflow-hidden sm:p-7"
           style={{
+            maxHeight: "min(88vw, 430px)",
             backfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
             background: "var(--rp-surface)",
             borderColor: "var(--rp-highlight-med)",
           }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+          onWheel={(e) => e.stopPropagation()}
         >
           <div className="flex items-start justify-between gap-3">
             <div>

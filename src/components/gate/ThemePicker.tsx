@@ -26,7 +26,7 @@ export function ThemePicker() {
 
   return (
     <div
-      className="flex flex-col items-center gap-6 rounded-lg border p-6"
+      className="flex w-full max-w-[20rem] flex-col gap-5 rounded-lg border p-4 sm:p-6"
       style={{
         background: "var(--rp-surface)",
         borderColor: "var(--rp-highlight-med)",
@@ -34,7 +34,7 @@ export function ThemePicker() {
     >
       {/* Rosé Pine label */}
       <span
-        className="text-3xl text-center"
+        className="text-center text-3xl"
         style={{
           fontFamily: "'Hurricane', cursive",
           color: "var(--rp-rose)",
@@ -44,14 +44,14 @@ export function ThemePicker() {
       </span>
 
       {/* Theme variant buttons */}
-      <div className="flex flex-col gap-2">
+      <div className="flex w-full flex-col gap-2">
         <span
           className="text-xs uppercase tracking-widest"
           style={{ color: "var(--rp-muted)" }}
         >
           Theme
         </span>
-        <div className="flex gap-2">
+        <div className="grid w-full grid-cols-3 gap-2">
           {VARIANT_LABELS.map(({ key, label }) => {
             const isActive = variant === key;
             const isHovered = hoveredVariant === key;
@@ -61,7 +61,7 @@ export function ThemePicker() {
                 onClick={() => setVariant(key)}
                 onMouseEnter={() => setHoveredVariant(key)}
                 onMouseLeave={() => setHoveredVariant(null)}
-                className="rounded px-4 py-1.5 text-sm font-medium tracking-wider transition-all duration-200"
+                className="w-full min-w-0 rounded px-2 py-1.5 text-xs font-medium tracking-wide transition-all duration-200 sm:px-4 sm:text-sm sm:tracking-wider"
                 style={{
                   background: isActive
                     ? "var(--rp-overlay)"
@@ -94,14 +94,14 @@ export function ThemePicker() {
       </div>
 
       {/* Text color circles */}
-      <div className="flex flex-col gap-2">
+      <div className="flex w-full flex-col gap-2">
         <span
           className="text-xs uppercase tracking-widest"
           style={{ color: "var(--rp-muted)" }}
         >
           Text Colour
         </span>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           {colorOptions.map((color) => (
             <button
               key={color}

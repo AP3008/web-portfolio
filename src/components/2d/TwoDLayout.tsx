@@ -2,7 +2,9 @@
 
 import { useState, useMemo, useEffect, type ReactNode } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ROUTES } from "@/lib/constants";
+import { useIsDesktop } from "@/lib/device";
 import { useThemeStore } from "@/store/useThemeStore";
 import { ROSE_PINE_PALETTES } from "@/lib/themes";
 import { TransitionOverlay } from "./TransitionOverlay";
@@ -19,6 +21,8 @@ export function TwoDLayout({
 }: TwoDLayoutProps) {
   const [navOpen, setNavOpen] = useState(false);
   const [showDesktopNotice, setShowDesktopNotice] = useState(false);
+  const pathname = usePathname();
+  const isDesktop = useIsDesktop();
 
   const variant = useThemeStore((s) => s.variant);
   const textColor = useThemeStore((s) => s.textColor);
@@ -49,13 +53,9 @@ export function TwoDLayout({
 
   useEffect(() => {
     const pending = sessionStorage.getItem("desktop_redirect_notice_pending");
-    const shown = sessionStorage.getItem("desktop_redirect_notice_shown");
     if (pending !== "1") return;
 
     sessionStorage.removeItem("desktop_redirect_notice_pending");
-    if (shown === "1") return;
-
-    sessionStorage.setItem("desktop_redirect_notice_shown", "1");
     const openTimer = setTimeout(() => setShowDesktopNotice(true), 0);
     const closeTimer = setTimeout(() => setShowDesktopNotice(false), 3500);
 
@@ -64,6 +64,10 @@ export function TwoDLayout({
       clearTimeout(closeTimer);
     };
   }, []);
+
+  const isMobile = !isDesktop;
+  const isTwoDHome = pathname === ROUTES.TWO_D;
+  const showBackButton = !(isMobile && isTwoDHome);
 
   return (
     <div
@@ -77,38 +81,40 @@ export function TwoDLayout({
       <TransitionOverlay color={palette.iris} />
 
       {/* Back button */}
-      <Link
-        href={backHref}
-        className="fixed top-5 left-4 z-30 flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs tracking-wider transition-all duration-200 sm:top-6 sm:left-6 sm:gap-2.5 sm:px-4 sm:py-2.5 sm:text-sm"
-        style={{
-          background: "var(--rp-surface)",
-          borderColor: "var(--rp-highlight-med)",
-          color: "var(--rp-subtle)",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = "var(--rp-iris)";
-          e.currentTarget.style.color = "var(--rp-text)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = "var(--rp-highlight-med)";
-          e.currentTarget.style.color = "var(--rp-subtle)";
-        }}
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+      {showBackButton && (
+        <Link
+          href={backHref}
+          className="fixed top-5 left-4 z-30 flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs tracking-wider transition-all duration-200 sm:top-6 sm:left-6 sm:gap-2.5 sm:px-4 sm:py-2.5 sm:text-sm"
+          style={{
+            background: "var(--rp-surface)",
+            borderColor: "var(--rp-highlight-med)",
+            color: "var(--rp-subtle)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "var(--rp-iris)";
+            e.currentTarget.style.color = "var(--rp-text)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "var(--rp-highlight-med)";
+            e.currentTarget.style.color = "var(--rp-subtle)";
+          }}
         >
-          <path d="M19 12H5" />
-          <path d="M12 19l-7-7 7-7" />
-        </svg>
-        BACK
-      </Link>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M19 12H5" />
+            <path d="M12 19l-7-7 7-7" />
+          </svg>
+          BACK
+        </Link>
+      )}
 
       {/* Navigator toggle */}
       <button
