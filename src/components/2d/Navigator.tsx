@@ -1,17 +1,24 @@
 "use client";
 
 import { ThemePicker } from "@/components/gate/ThemePicker";
+import { ASSETS } from "@/lib/constants";
 
 interface NavigatorProps {
   open: boolean;
   onClose: () => void;
 }
 
-const NAV_LINKS = [
+interface NavLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+const NAV_LINKS: NavLink[] = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Socials", href: "#socials" },
-  { label: "Resume", href: "#resume" },
+  { label: "Resume", href: ASSETS.RESUME_PDF, external: true },
 ];
 
 export function Navigator({ open, onClose }: NavigatorProps) {
@@ -60,11 +67,12 @@ export function Navigator({ open, onClose }: NavigatorProps) {
           >
             Navigate
           </span>
-          {NAV_LINKS.map(({ label, href }) => (
+          {NAV_LINKS.map(({ label, href, external }) => (
             <a
               key={label}
               href={href}
               onClick={onClose}
+              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               className="rounded px-4 py-2.5 text-sm tracking-wider transition-all duration-200"
               style={{ color: "var(--rp-subtle)" }}
               onMouseEnter={(e) => {
@@ -77,6 +85,9 @@ export function Navigator({ open, onClose }: NavigatorProps) {
               }}
             >
               {label}
+              {external && (
+                <span className="ml-2 text-xs" style={{ color: "var(--rp-muted)" }}>↗</span>
+              )}
             </a>
           ))}
         </nav>

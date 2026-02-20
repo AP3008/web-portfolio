@@ -275,7 +275,7 @@ export function ChessModal({ onClose }: ChessModalProps) {
                             src={PIECE_IMAGES[piece]}
                             alt={piece}
                             className={`object-contain drop-shadow-md pointer-events-none ${
-                              piece === "Q" || piece === "q" ? "w-[150%] h-[150%]" : "w-[80%] h-[80%]"
+                              piece === "Q" || piece === "q" ? "w-[80%] h-[80%]" : "w-[80%] h-[80%]"
                             }`}
                             draggable={false}
                           />

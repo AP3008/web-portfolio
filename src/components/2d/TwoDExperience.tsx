@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ROUTES } from "@/lib/constants";
 import { useThemeStore } from "@/store/useThemeStore";
 import { ROSE_PINE_PALETTES } from "@/lib/themes";
 import { useTypingEffect } from "@/lib/useTypingEffect";
@@ -55,6 +58,31 @@ export function TwoDExperience() {
       {/* GSAP entrance transition */}
       <TransitionOverlay color={palette.iris} />
 
+      {/* Back to Gatekeeper — top left */}
+      <Link
+        href={ROUTES.HOME}
+        className="fixed top-6 left-6 z-30 flex items-center gap-2 rounded-lg border px-3 py-2 text-xs tracking-wider transition-all duration-200"
+        style={{
+          background: "var(--rp-surface)",
+          borderColor: "var(--rp-highlight-med)",
+          color: "var(--rp-subtle)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = "var(--rp-iris)";
+          e.currentTarget.style.color = "var(--rp-text)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = "var(--rp-highlight-med)";
+          e.currentTarget.style.color = "var(--rp-subtle)";
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5" />
+          <path d="M12 19l-7-7 7-7" />
+        </svg>
+        BACK
+      </Link>
+
       {/* Navigator toggle — top right */}
       <button
         onClick={() => setNavOpen(true)}
@@ -85,32 +113,47 @@ export function TwoDExperience() {
       <Navigator open={navOpen} onClose={() => setNavOpen(false)} />
 
       {/* Hero Section */}
-      <section className="flex min-h-screen flex-col items-center justify-center px-8 md:px-16 lg:px-24">
-        <div className="flex max-w-2xl flex-col gap-6 text-center">
-          <h1
-            className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
-            style={{ color: "var(--rp-text)" }}
-          >
-            {displayed}
-            <span
-              className="inline-block w-0.75 ml-1 align-baseline"
-              style={{
-                height: "0.8em",
-                background: "var(--rp-text)",
-                animation: "blink-cursor 1.06s step-end infinite",
-              }}
+      <section className="flex min-h-screen items-center justify-center px-8 md:px-16 lg:px-24">
+        <div className="flex w-full max-w-5xl flex-col items-center gap-12 md:flex-row md:gap-16">
+          {/* Left — title & blurb */}
+          <div className="flex flex-1 flex-col gap-6 text-left">
+            <h1
+              className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
+              style={{ color: "var(--rp-text)" }}
+            >
+              {displayed}
+              <span
+                className="inline-block w-0.75 ml-1 align-baseline"
+                style={{
+                  height: "0.8em",
+                  background: "var(--rp-text)",
+                  animation: "blink-cursor 1.06s step-end infinite",
+                }}
+              />
+            </h1>
+            <p
+              className="text-sm leading-relaxed sm:text-base"
+              style={{ color: "var(--rp-subtle)" }}
+            >
+              I&apos;m a full-stack developer and computer science student with a
+              passion for building interactive, performant web experiences. From
+              immersive 3D portfolios to scalable backend systems, I love turning
+              complex ideas into elegant code. When I&apos;m not coding, you&apos;ll
+              find me at the gym, playing chess, or tinkering with new technologies.
+            </p>
+          </div>
+
+          {/* Right — drawing */}
+          <div className="flex flex-1 items-center justify-center">
+            <Image
+              src="/adam_drawing.png"
+              alt="Drawing of Adam"
+              width={400}
+              height={400}
+              className="max-w-full rounded-lg"
+              priority
             />
-          </h1>
-          <p
-            className="text-sm leading-relaxed sm:text-base"
-            style={{ color: "var(--rp-subtle)" }}
-          >
-            I&apos;m a full-stack developer and computer science student with a
-            passion for building interactive, performant web experiences. From
-            immersive 3D portfolios to scalable backend systems, I love turning
-            complex ideas into elegant code. When I&apos;m not coding, you&apos;ll
-            find me at the gym, playing chess, or tinkering with new technologies.
-          </p>
+          </div>
         </div>
       </section>
 
