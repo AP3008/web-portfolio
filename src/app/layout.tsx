@@ -16,6 +16,9 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Adam Porbanderwalla | Portfolio",
   description: "Interactive 3D developer portfolio",
+  icons: {
+    icon: "/favicon_logo.png",
+  },
 };
 
 export default function RootLayout({
