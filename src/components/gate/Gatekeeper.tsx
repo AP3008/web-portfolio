@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { ROUTES } from "@/lib/constants";
+import { useRouter } from "next/navigation";
+import { DESKTOP_MIN_WIDTH, ROUTES } from "@/lib/constants";
 import { useIsDesktop } from "@/lib/device";
 import { useTypingEffect } from "@/lib/useTypingEffect";
 import { useThemeStore } from "@/store/useThemeStore";
@@ -15,6 +16,7 @@ const FULL_NAME = "Adam Porbanderwalla";
 const TYPING_SPEED_MS = 80;
 
 export function Gatekeeper() {
+  const router = useRouter();
   const isDesktop = useIsDesktop();
   const [hovered, setHovered] = useState<HoveredSide>(null);
 
@@ -24,6 +26,12 @@ export function Gatekeeper() {
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
 
   const displayed = useTypingEffect(FULL_NAME, TYPING_SPEED_MS);
+
+  useEffect(() => {
+    if (window.innerWidth >= DESKTOP_MIN_WIDTH) return;
+    sessionStorage.setItem("desktop_redirect_notice_pending", "1");
+    router.replace(ROUTES.TWO_D);
+  }, [router]);
 
   const themeVars = useMemo(
     () =>
@@ -46,6 +54,8 @@ export function Gatekeeper() {
       }) as React.CSSProperties,
     [palette, textColor]
   );
+
+  if (!isDesktop) return null;
 
   return (
     <div
@@ -154,11 +164,6 @@ export function Gatekeeper() {
             >
               ENTER
             </div>
-            {!isDesktop && (
-              <span className="mt-2 text-xs" style={{ color: "var(--rp-love)" }}>
-                (Desktop only)
-              </span>
-            )}
           </div>
         </Link>
 

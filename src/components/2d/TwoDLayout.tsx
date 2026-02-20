@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, type ReactNode } from "react";
+import { useState, useMemo, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/constants";
 import { useThemeStore } from "@/store/useThemeStore";
@@ -18,6 +18,7 @@ export function TwoDLayout({
   backHref = ROUTES.HOME,
 }: TwoDLayoutProps) {
   const [navOpen, setNavOpen] = useState(false);
+  const [showDesktopNotice, setShowDesktopNotice] = useState(false);
 
   const variant = useThemeStore((s) => s.variant);
   const textColor = useThemeStore((s) => s.textColor);
@@ -46,6 +47,24 @@ export function TwoDLayout({
     [palette, textColor]
   );
 
+  useEffect(() => {
+    const pending = sessionStorage.getItem("desktop_redirect_notice_pending");
+    const shown = sessionStorage.getItem("desktop_redirect_notice_shown");
+    if (pending !== "1") return;
+
+    sessionStorage.removeItem("desktop_redirect_notice_pending");
+    if (shown === "1") return;
+
+    sessionStorage.setItem("desktop_redirect_notice_shown", "1");
+    const openTimer = setTimeout(() => setShowDesktopNotice(true), 0);
+    const closeTimer = setTimeout(() => setShowDesktopNotice(false), 3500);
+
+    return () => {
+      clearTimeout(openTimer);
+      clearTimeout(closeTimer);
+    };
+  }, []);
+
   return (
     <div
       className="rose-pine min-h-screen"
@@ -60,7 +79,7 @@ export function TwoDLayout({
       {/* Back button */}
       <Link
         href={backHref}
-        className="fixed top-6 left-6 z-30 flex items-center gap-2.5 rounded-lg border px-4 py-2.5 text-sm tracking-wider transition-all duration-200"
+        className="fixed top-5 left-4 z-30 flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs tracking-wider transition-all duration-200 sm:top-6 sm:left-6 sm:gap-2.5 sm:px-4 sm:py-2.5 sm:text-sm"
         style={{
           background: "var(--rp-surface)",
           borderColor: "var(--rp-highlight-med)",
@@ -76,8 +95,8 @@ export function TwoDLayout({
         }}
       >
         <svg
-          width="18"
-          height="18"
+          width="16"
+          height="16"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -94,7 +113,7 @@ export function TwoDLayout({
       {/* Navigator toggle */}
       <button
         onClick={() => setNavOpen(true)}
-        className="fixed top-6 right-6 z-30 rounded-lg border p-3 transition-all duration-200"
+        className="fixed top-5 right-4 z-30 rounded-lg border p-2 transition-all duration-200 sm:top-6 sm:right-6 sm:p-3"
         style={{
           background: "var(--rp-surface)",
           borderColor: "var(--rp-highlight-med)",
@@ -111,8 +130,8 @@ export function TwoDLayout({
         aria-label="Open navigator"
       >
         <svg
-          width="22"
-          height="22"
+          width="18"
+          height="18"
           viewBox="0 0 20 20"
           fill="none"
           stroke="currentColor"
@@ -126,6 +145,32 @@ export function TwoDLayout({
       </button>
 
       <Navigator open={navOpen} onClose={() => setNavOpen(false)} />
+
+      {showDesktopNotice && (
+        <div
+          className="fixed top-16 right-4 z-40 max-w-[19rem] rounded-lg border px-3 py-2.5 text-xs shadow-lg sm:top-20 sm:right-6"
+          style={{
+            background: "var(--rp-surface)",
+            borderColor: "var(--rp-highlight-med)",
+            color: "var(--rp-subtle)",
+          }}
+        >
+          <div className="flex items-start gap-2">
+            <span style={{ color: "var(--rp-foam)" }}>i</span>
+            <p className="leading-relaxed">
+              To experience the full website try on desktop
+            </p>
+            <button
+              onClick={() => setShowDesktopNotice(false)}
+              className="ml-auto text-xs transition-colors"
+              style={{ color: "var(--rp-muted)" }}
+              aria-label="Dismiss notice"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
 
       {children}
     </div>

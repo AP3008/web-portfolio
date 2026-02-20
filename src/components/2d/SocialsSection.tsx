@@ -5,10 +5,10 @@ import { socialLinks } from "@/components/desk/data/socials";
 export function SocialsSection() {
   return (
     <section
-      className="flex min-h-screen flex-col items-center justify-center gap-10 px-8 py-24 md:px-16 lg:px-24"
+      className="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-16 sm:gap-10 sm:px-8 sm:py-24 md:px-16 lg:px-24"
     >
       <h2
-        className="text-3xl font-bold tracking-tight sm:text-4xl"
+        className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
         style={{ color: "var(--rp-text)" }}
       >
         Socials
@@ -21,7 +21,7 @@ export function SocialsSection() {
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-5 rounded-xl border px-6 py-5 transition-all duration-200"
+            className="flex items-center gap-4 rounded-xl border px-4 py-3.5 transition-all duration-200 sm:gap-5 sm:px-6 sm:py-5"
             style={{
               background: "var(--rp-surface)",
               borderColor: "var(--rp-highlight-med)",
@@ -35,12 +35,12 @@ export function SocialsSection() {
           >
             {/* Icon */}
             <div
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full sm:h-12 sm:w-12"
               style={{ background: "var(--rp-overlay)" }}
             >
               <svg
                 viewBox={link.viewBox ?? "0 0 24 24"}
-                className="h-6 w-6"
+                className="h-5 w-5 sm:h-6 sm:w-6"
                 fill="var(--rp-iris)"
               >
                 <path d={link.iconPath} />
@@ -50,13 +50,13 @@ export function SocialsSection() {
             {/* Label + URL */}
             <div className="flex min-w-0 flex-col">
               <span
-                className="text-base font-medium"
+                className="text-sm font-medium sm:text-base"
                 style={{ color: "var(--rp-text)" }}
               >
                 {link.label}
               </span>
               <span
-                className="truncate text-sm"
+                className="truncate text-xs sm:text-sm"
                 style={{ color: "var(--rp-muted)" }}
               >
                 {link.url
@@ -68,7 +68,7 @@ export function SocialsSection() {
             {/* Arrow */}
             <svg
               viewBox="0 0 24 24"
-              className="ml-auto h-5 w-5 shrink-0"
+              className="ml-auto h-4 w-4 shrink-0 sm:h-5 sm:w-5"
               fill="none"
               stroke="var(--rp-muted)"
               strokeWidth={2}

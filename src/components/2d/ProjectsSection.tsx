@@ -20,10 +20,10 @@ export function ProjectsSection() {
 
   return (
     <section
-      className="flex min-h-screen flex-col items-center gap-10 px-8 py-24 md:px-16 lg:px-24"
+      className="flex min-h-screen flex-col items-center gap-8 px-4 py-16 sm:px-8 sm:py-24 md:px-16 lg:px-24"
     >
       <h2
-        className="text-3xl font-bold tracking-tight sm:text-4xl"
+        className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
         style={{ color: "var(--rp-text)" }}
       >
         All Projects
@@ -39,7 +39,7 @@ export function ProjectsSection() {
           return (
             <div
               key={project.id}
-              className="flex h-full flex-col gap-4 rounded-xl border p-7"
+              className="flex h-full flex-col gap-3 rounded-xl border p-4 sm:gap-4 sm:p-6 lg:p-7"
               style={{
                 background: "var(--rp-surface)",
                 borderColor: "var(--rp-highlight-med)",
@@ -49,14 +49,14 @@ export function ProjectsSection() {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h3
-                    className="text-xl font-semibold"
+                    className="text-lg font-semibold sm:text-xl"
                     style={{ color: "var(--rp-text)" }}
                   >
                     {project.title}
                   </h3>
                   {project.subtitle && (
                     <span
-                      className="text-sm"
+                      className="text-xs sm:text-sm"
                       style={{ color: "var(--rp-muted)" }}
                     >
                       {project.subtitle}
@@ -68,7 +68,7 @@ export function ProjectsSection() {
                     href={`https://github.com/${project.repoOwner}/${project.repoName}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="shrink-0 text-sm tracking-wider transition-colors duration-200"
+                    className="shrink-0 text-xs tracking-wider transition-colors duration-200 sm:text-sm"
                     style={{ color: "var(--rp-foam)" }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.color = "var(--rp-text)")
@@ -84,7 +84,7 @@ export function ProjectsSection() {
 
               {/* Description */}
               <p
-                className="text-base leading-relaxed"
+                className="text-sm leading-relaxed sm:text-base"
                 style={{ color: "var(--rp-subtle)" }}
               >
                 {project.description}
@@ -95,7 +95,7 @@ export function ProjectsSection() {
                 {project.techStack.map((tech) => (
                   <span
                     key={tech}
-                    className="rounded px-2.5 py-1 text-sm"
+                    className="rounded px-2 py-0.5 text-xs sm:px-2.5 sm:py-1 sm:text-sm"
                     style={{
                       background: "var(--rp-overlay)",
                       color: "var(--rp-iris)",
@@ -109,7 +109,7 @@ export function ProjectsSection() {
               {/* Latest commit */}
               {commit && (
                 <div
-                  className="mt-auto flex flex-col gap-2 border-t pt-4 text-sm sm:flex-row sm:items-center sm:gap-3"
+                  className="mt-auto flex flex-col gap-2 border-t pt-3 text-xs sm:pt-4 sm:text-sm sm:flex-row sm:items-center sm:gap-3"
                   style={{ borderColor: "var(--rp-highlight-low)" }}
                 >
                   <span style={{ color: "var(--rp-muted)" }}>
@@ -130,7 +130,7 @@ export function ProjectsSection() {
                         <circle cx="4" cy="4" r="4" fill="var(--rp-foam)" />
                       </svg>
                       <span
-                        className="rounded-md px-2 py-0.5"
+                        className="rounded-md px-1.5 py-0.5 sm:px-2"
                         style={{
                           backgroundColor: "var(--rp-overlay)",
                           color: "var(--rp-foam)",

@@ -35,7 +35,7 @@ export function Navigator({ open, onClose }: NavigatorProps) {
 
       {/* Panel */}
       <div
-        className="fixed top-0 right-0 z-50 flex h-full w-96 max-w-[92vw] flex-col gap-9 overflow-y-auto p-7 transition-transform duration-300 ease-out"
+        className="fixed top-0 right-0 z-50 flex h-full w-80 max-w-[92vw] flex-col gap-7 overflow-y-auto p-5 transition-transform duration-300 ease-out sm:w-96 sm:gap-9 sm:p-7"
         style={{
           background: "var(--rp-base)",
           borderLeft: "1px solid var(--rp-highlight-med)",
@@ -63,7 +63,7 @@ export function Navigator({ open, onClose }: NavigatorProps) {
         {/* Section Links */}
         <nav className="flex flex-col gap-1">
           <span
-            className="mb-2 text-sm uppercase tracking-widest"
+            className="mb-2 text-xs uppercase tracking-widest sm:text-sm"
             style={{ color: "var(--rp-muted)" }}
           >
             Navigate
@@ -76,7 +76,7 @@ export function Navigator({ open, onClose }: NavigatorProps) {
                 onClick={onClose}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded px-4 py-3 text-base tracking-wider transition-all duration-200"
+                className="rounded px-3 py-2.5 text-sm tracking-wider transition-all duration-200 sm:px-4 sm:py-3 sm:text-base"
                 style={{ color: "var(--rp-subtle)" }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = "var(--rp-text)";
@@ -88,14 +88,14 @@ export function Navigator({ open, onClose }: NavigatorProps) {
                 }}
               >
                 {label}
-                <span className="ml-2 text-sm" style={{ color: "var(--rp-muted)" }}>↗</span>
+                <span className="ml-2 text-xs sm:text-sm" style={{ color: "var(--rp-muted)" }}>↗</span>
               </a>
             ) : (
               <Link
                 key={label}
                 href={href}
                 onClick={onClose}
-                className="rounded px-4 py-3 text-base tracking-wider transition-all duration-200"
+                className="rounded px-3 py-2.5 text-sm tracking-wider transition-all duration-200 sm:px-4 sm:py-3 sm:text-base"
                 style={{ color: "var(--rp-subtle)" }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = "var(--rp-text)";

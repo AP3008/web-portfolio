@@ -16,12 +16,12 @@ export function TwoDExperience() {
   return (
     <TwoDLayout backHref={ROUTES.HOME}>
       {/* Hero Section */}
-      <section className="flex min-h-screen items-center justify-center px-8 md:px-16 lg:px-24">
-        <div className="flex w-full max-w-5xl flex-col items-center gap-12 md:flex-row md:gap-16">
+      <section className="flex min-h-screen items-center justify-center px-4 pt-24 pb-14 sm:px-8 md:px-16 lg:px-24">
+        <div className="flex w-full max-w-5xl flex-col items-center gap-8 md:flex-row md:gap-16">
           {/* Left — title & blurb */}
           <div className="flex flex-1 flex-col gap-6 text-left">
             <h1
-              className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl"
+              className="text-3xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
               style={{ color: "var(--rp-text)" }}
             >
               {displayed}
@@ -35,7 +35,7 @@ export function TwoDExperience() {
               />
             </h1>
             <p
-              className="text-base leading-relaxed sm:text-lg"
+              className="text-sm leading-relaxed sm:text-base md:text-lg"
               style={{ color: "var(--rp-subtle)" }}
             >
               Full Stack Developer | Computer Science @{" "}
@@ -68,7 +68,7 @@ export function TwoDExperience() {
               alt="Drawing of Adam"
               width={470}
               height={470}
-              className="max-w-full rounded-lg"
+              className="h-auto w-[78vw] max-w-[470px] rounded-lg"
               priority
             />
           </div>
@@ -76,18 +76,18 @@ export function TwoDExperience() {
       </section>
 
       {/* Featured Projects Section */}
-      <section className="flex flex-col items-center gap-10 px-8 py-24 md:px-16 lg:px-24">
+      <section className="flex flex-col items-center gap-8 px-4 py-16 sm:px-8 sm:py-24 md:px-16 lg:px-24">
         {/* Header */}
-        <div className="flex w-full max-w-xl items-center justify-between">
+        <div className="flex w-full max-w-xl items-center justify-between gap-3">
           <h2
-            className="text-3xl font-bold tracking-tight sm:text-4xl"
+            className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
             style={{ color: "var(--rp-text)" }}
           >
             Featured Projects
           </h2>
           <Link
             href="/2d/projects"
-            className="rounded border px-5 py-2 text-sm tracking-wider transition-all duration-200"
+            className="rounded border px-3 py-1.5 text-xs tracking-wider transition-all duration-200 sm:px-5 sm:py-2 sm:text-sm"
             style={{
               borderColor: "var(--rp-highlight-high)",
               color: "var(--rp-subtle)",
@@ -111,7 +111,7 @@ export function TwoDExperience() {
         {/* Learn more link */}
         <Link
           href="/2d/about"
-          className="text-base tracking-wider transition-colors duration-200"
+          className="text-sm tracking-wider transition-colors duration-200 sm:text-base"
           style={{ color: "var(--rp-foam)" }}
           onMouseEnter={(e) => (e.currentTarget.style.color = "var(--rp-text)")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "var(--rp-foam)")}
@@ -120,7 +120,7 @@ export function TwoDExperience() {
         </Link>
         <Link
           href="/2d/socials"
-          className="text-base tracking-wider transition-colors duration-200"
+          className="text-sm tracking-wider transition-colors duration-200 sm:text-base"
           style={{ color: "var(--rp-foam)" }}
           onMouseEnter={(e) => (e.currentTarget.style.color = "var(--rp-text)")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "var(--rp-foam)")}

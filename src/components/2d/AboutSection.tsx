@@ -5,6 +5,7 @@ import Link from "next/link";
 import { aboutData } from "@/components/desk/data/about";
 
 const BIO_LINKS: Record<string, { label: string; url: string }> = {
+  "{western}": { label: "Western University", url: "https://www.uwo.ca/index.html" },
   "{savify}": { label: "Savify", url: "https://savify.ca" },
   "{findmyprof}": {
     label: "FindMyProf",
@@ -17,7 +18,7 @@ const BIO_LINKS: Record<string, { label: string; url: string }> = {
 };
 
 function renderBioLine(text: string) {
-  const tokenPattern = /(\{savify\}|\{findmyprof\}|\{reflecta\})/g;
+  const tokenPattern = /(\{western\}|\{savify\}|\{findmyprof\}|\{reflecta\})/g;
   const parts = text.split(tokenPattern);
 
   return (
@@ -47,28 +48,28 @@ function renderBioLine(text: string) {
 export function AboutSection() {
   return (
     <section
-      className="flex min-h-screen flex-col items-center justify-center gap-10 px-8 py-24 md:px-16 lg:px-24"
+      className="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-16 sm:gap-10 sm:px-8 sm:py-24 md:px-16 lg:px-24"
     >
       <h2
-        className="text-3xl font-bold tracking-tight sm:text-4xl"
+        className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
         style={{ color: "var(--rp-text)" }}
       >
         About Me
       </h2>
 
-      <div className="flex w-full max-w-4xl flex-col items-center gap-10 md:flex-row md:items-start md:gap-14">
+      <div className="flex w-full max-w-4xl flex-col items-center gap-8 md:flex-row md:items-start md:gap-14">
         {/* Left — image + name */}
         <div className="flex shrink-0 flex-col items-center gap-4">
           <Image
             src="/adam_aboutme.png"
             alt="Adam Porbanderwalla"
-            width={220}
-            height={220}
+            width={160}
+            height={160}
             className="rounded-full border-2 object-cover"
             style={{ borderColor: "var(--rp-highlight-med)" }}
           />
           <h3
-            className="text-2xl font-bold"
+            className="text-xl font-bold sm:text-2xl"
             style={{ color: "var(--rp-text)" }}
           >
             {aboutData.name}
@@ -80,7 +81,7 @@ export function AboutSection() {
           {aboutData.bio.map((paragraph, i) => (
             <p
               key={i}
-              className="text-base leading-relaxed sm:text-lg"
+              className="text-sm leading-relaxed sm:text-base md:text-lg"
               style={{ color: "var(--rp-subtle)" }}
             >
               {renderBioLine(paragraph)}
@@ -95,13 +96,13 @@ export function AboutSection() {
                 href={link.url}
                 target={link.url.startsWith("mailto:") ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="flex h-14 w-14 items-center justify-center rounded-full border transition-opacity hover:opacity-80"
+                className="flex h-11 w-11 items-center justify-center rounded-full border transition-opacity hover:opacity-80 sm:h-14 sm:w-14"
                 style={{ borderColor: "var(--rp-highlight-med)" }}
                 title={link.label}
               >
                 <svg
                   viewBox={link.viewBox ?? "0 0 24 24"}
-                  className="h-6 w-6"
+                  className="h-5 w-5 sm:h-6 sm:w-6"
                   fill="var(--rp-iris)"
                 >
                   <path d={link.iconPath} />
@@ -114,7 +115,7 @@ export function AboutSection() {
 
       <Link
         href="/2d/projects"
-        className="text-base tracking-wider transition-colors duration-200"
+        className="text-sm tracking-wider transition-colors duration-200 sm:text-base"
         style={{ color: "var(--rp-foam)" }}
         onMouseEnter={(e) => (e.currentTarget.style.color = "var(--rp-text)")}
         onMouseLeave={(e) => (e.currentTarget.style.color = "var(--rp-foam)")}
