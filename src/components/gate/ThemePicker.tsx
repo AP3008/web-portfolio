@@ -26,7 +26,7 @@ export function ThemePicker() {
 
   return (
     <div
-      className="flex w-full max-w-[20rem] flex-col gap-5 rounded-lg border p-4 sm:p-6"
+      className="flex w-full flex-col items-center gap-6 rounded-lg border p-4 sm:w-auto sm:p-6"
       style={{
         background: "var(--rp-surface)",
         borderColor: "var(--rp-highlight-med)",
@@ -44,14 +44,14 @@ export function ThemePicker() {
       </span>
 
       {/* Theme variant buttons */}
-      <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-col gap-2 sm:w-auto">
         <span
           className="text-xs uppercase tracking-widest"
           style={{ color: "var(--rp-muted)" }}
         >
           Theme
         </span>
-        <div className="grid w-full grid-cols-3 gap-2">
+        <div className="flex flex-wrap gap-2 sm:flex-nowrap">
           {VARIANT_LABELS.map(({ key, label }) => {
             const isActive = variant === key;
             const isHovered = hoveredVariant === key;
@@ -61,7 +61,7 @@ export function ThemePicker() {
                 onClick={() => setVariant(key)}
                 onMouseEnter={() => setHoveredVariant(key)}
                 onMouseLeave={() => setHoveredVariant(null)}
-                className="w-full min-w-0 rounded px-2 py-1.5 text-xs font-medium tracking-wide transition-all duration-200 sm:px-4 sm:text-sm sm:tracking-wider"
+                className="rounded px-3 py-1.5 text-xs font-medium tracking-wide transition-all duration-200 sm:px-4 sm:text-sm sm:tracking-wider"
                 style={{
                   background: isActive
                     ? "var(--rp-overlay)"
