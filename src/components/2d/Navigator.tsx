@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ThemePicker } from "@/components/gate/ThemePicker";
 import { ASSETS } from "@/lib/constants";
 
@@ -15,9 +16,9 @@ interface NavLink {
 }
 
 const NAV_LINKS: NavLink[] = [
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Socials", href: "#socials" },
+  { label: "About", href: "/2d/about" },
+  { label: "Projects", href: "/2d/projects" },
+  { label: "Socials", href: "/2d/socials" },
   { label: "Resume", href: ASSETS.RESUME_PDF, external: true },
 ];
 
@@ -67,29 +68,48 @@ export function Navigator({ open, onClose }: NavigatorProps) {
           >
             Navigate
           </span>
-          {NAV_LINKS.map(({ label, href, external }) => (
-            <a
-              key={label}
-              href={href}
-              onClick={onClose}
-              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="rounded px-4 py-2.5 text-sm tracking-wider transition-all duration-200"
-              style={{ color: "var(--rp-subtle)" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "var(--rp-text)";
-                e.currentTarget.style.background = "var(--rp-highlight-low)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "var(--rp-subtle)";
-                e.currentTarget.style.background = "transparent";
-              }}
-            >
-              {label}
-              {external && (
+          {NAV_LINKS.map(({ label, href, external }) =>
+            external ? (
+              <a
+                key={label}
+                href={href}
+                onClick={onClose}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded px-4 py-2.5 text-sm tracking-wider transition-all duration-200"
+                style={{ color: "var(--rp-subtle)" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--rp-text)";
+                  e.currentTarget.style.background = "var(--rp-highlight-low)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--rp-subtle)";
+                  e.currentTarget.style.background = "transparent";
+                }}
+              >
+                {label}
                 <span className="ml-2 text-xs" style={{ color: "var(--rp-muted)" }}>↗</span>
-              )}
-            </a>
-          ))}
+              </a>
+            ) : (
+              <Link
+                key={label}
+                href={href}
+                onClick={onClose}
+                className="rounded px-4 py-2.5 text-sm tracking-wider transition-all duration-200"
+                style={{ color: "var(--rp-subtle)" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--rp-text)";
+                  e.currentTarget.style.background = "var(--rp-highlight-low)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--rp-subtle)";
+                  e.currentTarget.style.background = "transparent";
+                }}
+              >
+                {label}
+              </Link>
+            )
+          )}
         </nav>
       </div>
     </>

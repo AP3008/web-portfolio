@@ -29,8 +29,7 @@ export function ProjectsSection() {
 
   return (
     <section
-      id="all-projects"
-      className="flex flex-col items-center gap-10 px-8 py-24 md:px-16 lg:px-24"
+      className="flex min-h-screen flex-col items-center justify-center gap-10 px-8 py-24 md:px-16 lg:px-24"
     >
       <h2
         className="text-2xl font-bold tracking-tight sm:text-3xl"

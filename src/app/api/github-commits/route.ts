@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 
-const PROJECT_REPOS = ["garv130/FindMyProf", "adit1110/Reflecta", "AP3008/Learning-To-Fly"];
+const PROJECT_REPOS = [
+  "garv130/FindMyProf",
+  "adit1110/Reflecta",
+  "AP3008/Learning-To-Fly",
+  "AP3008/Bookey",
+  "AP3008/UWO-H4H-Webpage",
+  "AP3008/CityScope",
+  "lblommesteyn/wds-reciepts",
+  "AP3008/accountability",
+];
 const WEB_PORTFOLIO_REPO = "AP3008/web-portfolio";
 
 export const revalidate = 3600;

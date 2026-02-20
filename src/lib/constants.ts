@@ -6,6 +6,9 @@ export const ROUTES = {
   HOME: "/",
   THREE_D: "/3d",
   TWO_D: "/2d",
+  TWO_D_ABOUT: "/2d/about",
+  TWO_D_PROJECTS: "/2d/projects",
+  TWO_D_SOCIALS: "/2d/socials",
 } as const;
 
 /** Desk object identifiers */
