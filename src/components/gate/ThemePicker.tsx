@@ -46,7 +46,7 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
         className={isExpanded ? "text-center text-4xl sm:text-5xl" : "text-center text-3xl"}
         style={{
           fontFamily: "'Hurricane', cursive",
-          color: "var(--rp-rose)",
+          color: isExpanded ? textColor : "var(--rp-rose)",
         }}
       >
         Rosé Pine
@@ -72,14 +72,16 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
                 onMouseLeave={() => setHoveredVariant(null)}
                 className={
                   isExpanded
-                    ? "rounded px-5 py-2 text-sm font-semibold tracking-wider transition-all duration-200 sm:px-6 sm:py-2.5 sm:text-base"
+                    ? "rounded border px-5 py-2 text-sm font-semibold tracking-wider transition-all duration-200 sm:px-6 sm:py-2.5 sm:text-base"
                     : "rounded px-3 py-1.5 text-xs font-medium tracking-wide transition-all duration-200 sm:px-4 sm:text-sm sm:tracking-wider"
                 }
                 style={{
                   background: isActive
                     ? "var(--rp-overlay)"
                     : isHovered
-                      ? "var(--rp-highlight-low)"
+                      ? isExpanded
+                        ? "var(--rp-highlight-med)"
+                        : "var(--rp-highlight-low)"
                       : "transparent",
                   color: isActive
                     ? "var(--rp-iris)"
@@ -90,13 +92,19 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
                     ? "2px solid var(--rp-iris)"
                     : "2px solid transparent",
                   outlineOffset: "2px",
-                  border:
-                    "1px solid " +
-                    (isActive
-                      ? "var(--rp-iris)"
-                      : isHovered
-                        ? "var(--rp-highlight-high)"
-                        : "var(--rp-highlight-med)"),
+                  border: isExpanded
+                    ? "1px solid " +
+                      (isActive
+                        ? "var(--rp-iris)"
+                        : isHovered
+                          ? "var(--rp-highlight-high)"
+                          : "var(--rp-highlight-med)")
+                    : "1px solid " +
+                      (isActive
+                        ? "var(--rp-iris)"
+                        : isHovered
+                          ? "var(--rp-highlight-high)"
+                          : "var(--rp-highlight-med)"),
                 }}
               >
                 {label}
