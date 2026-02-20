@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Modal } from "./Modal";
 import { projects } from "../data/projects";
 import { useTypingEffect } from "@/lib/useTypingEffect";
@@ -8,21 +9,78 @@ import { useThemeStore } from "@/store/useThemeStore";
 import { ROSE_PINE_PALETTES } from "@/lib/themes";
 import type { CommitData } from "@/app/api/github-commits/route";
 
+const GITHUB_ICON_PATH =
+  "M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12";
+
 interface ProjectPortalModalProps {
   onClose: () => void;
 }
 
+function CommitRow({
+  commit,
+  palette,
+}: {
+  commit: CommitData;
+  palette: (typeof ROSE_PINE_PALETTES)[keyof typeof ROSE_PINE_PALETTES];
+}) {
+  return (
+    <div className="flex items-center gap-3 text-xs">
+      <a
+        href={commit.htmlUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="truncate flex-1 hover:underline text-sm"
+        style={{ color: palette.text }}
+      >
+        {commit.message}
+      </a>
+      <span className="shrink-0 flex items-center gap-2">
+        <span className="flex items-center gap-1.5">
+          <svg width="8" height="8" viewBox="0 0 8 8">
+            <circle cx="4" cy="4" r="4" fill={palette.foam} />
+          </svg>
+          <span
+            className="px-2 py-0.5 rounded-md"
+            style={{
+              backgroundColor: palette.overlay,
+              color: palette.foam,
+              fontFamily: "'JetBrains Mono', monospace",
+            }}
+          >
+            {commit.shortSha}
+          </span>
+        </span>
+        <span>
+          <span style={{ color: "#a6e3a1" }}>+{commit.additions}</span>
+          {" / "}
+          <span style={{ color: "#f38ba8" }}>-{commit.deletions}</span>
+        </span>
+      </span>
+    </div>
+  );
+}
+
 export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
+  const router = useRouter();
   const variant = useThemeStore((s) => s.variant);
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
   const title = useTypingEffect("Featured Projects", 80);
 
-  const [commits, setCommits] = useState<CommitData[]>([]);
+  const [latestByRepo, setLatestByRepo] = useState<Record<string, CommitData>>(
+    {}
+  );
+  const [webPortfolioCommits, setWebPortfolioCommits] = useState<CommitData[]>(
+    []
+  );
+  const [showViewAllConfirm, setShowViewAllConfirm] = useState(false);
 
   useEffect(() => {
     fetch("/api/github-commits")
       .then((res) => res.json())
-      .then((data) => setCommits(data.commits ?? []))
+      .then((data) => {
+        setLatestByRepo(data.latestByRepo ?? {});
+        setWebPortfolioCommits(data.webPortfolioCommits ?? []);
+      })
       .catch(() => {});
   }, []);
 
@@ -42,51 +100,105 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
         </h2>
 
         {/* Project cards */}
-        {projects.map((project) => (
-          <div
-            key={project.id}
-            className="rounded-xl border p-4 transition-colors"
-            style={{
-              backgroundColor: palette.surface,
-              borderColor: palette.highlightMed,
-            }}
-          >
-            <div className="flex items-center justify-between mb-1">
-              <h3 className="text-base font-bold" style={{ color: palette.text }}>
-                {project.title}
-              </h3>
-              <a
-                href={`https://github.com/${project.repoOwner}/${project.repoName}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs hover:underline"
-                style={{ color: palette.foam, fontFamily: "'JetBrains Mono', monospace" }}
-              >
-                {project.repoOwner}/{project.repoName}
-              </a>
-            </div>
-            <p className="text-sm mb-3 leading-relaxed" style={{ color: palette.subtle }}>
-              {project.description}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {project.techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="rounded-lg border px-2 py-0.5 text-xs"
-                  style={{
-                    borderColor: palette.highlightMed,
-                    color: palette.iris,
-                  }}
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
+        {projects.map((project) => {
+          const repoKey = `${project.repoOwner}/${project.repoName}`;
+          const commit = latestByRepo[repoKey];
 
-        {/* Recent Commits section */}
-        {commits.length > 0 && (
+          return (
+            <div
+              key={project.id}
+              className="rounded-xl border p-4 transition-colors"
+              style={{
+                backgroundColor: palette.surface,
+                borderColor: palette.highlightMed,
+              }}
+            >
+              {/* Header: title + GitHub icon */}
+              <div className="flex items-center justify-between mb-1">
+                <h3
+                  className="text-base font-bold"
+                  style={{ color: palette.text }}
+                >
+                  {project.title}
+                </h3>
+                <a
+                  href={`https://github.com/${repoKey}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-opacity hover:opacity-80"
+                  title={repoKey}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5"
+                    fill={palette.foam}
+                  >
+                    <path d={GITHUB_ICON_PATH} />
+                  </svg>
+                </a>
+              </div>
+
+              {/* Description */}
+              <p
+                className="text-sm mb-2 leading-relaxed"
+                style={{ color: palette.subtle }}
+              >
+                {project.description}
+              </p>
+
+              {/* Subtitle */}
+              <p
+                className="text-xs mb-3"
+                style={{ color: palette.muted }}
+              >
+                {project.subtitle}
+              </p>
+
+              {/* Tech stack */}
+              <div className="flex flex-wrap gap-2 mb-3">
+                {project.techStack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-lg border px-2 py-0.5 text-xs"
+                    style={{
+                      borderColor: palette.highlightMed,
+                      color: palette.iris,
+                    }}
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              {/* Latest commit for this project */}
+              {commit && (
+                <div
+                  className="border-t pt-3"
+                  style={{ borderColor: palette.highlightMed }}
+                >
+                  <CommitRow commit={commit} palette={palette} />
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        {/* View all Projects button */}
+        <button
+          onClick={() => setShowViewAllConfirm(true)}
+          className="rounded-xl border px-4 py-2.5 text-sm tracking-wider transition-opacity hover:opacity-80 self-start"
+          style={{
+            backgroundColor: palette.surface,
+            borderColor: palette.highlightMed,
+            color: palette.iris,
+            fontFamily: "'JetBrains Mono', monospace",
+          }}
+        >
+          View all Projects
+        </button>
+
+        {/* web-portfolio commits section */}
+        {webPortfolioCommits.length > 0 && (
           <div>
             <h3 className="font-bold text-base mb-3">
               <a
@@ -100,52 +212,70 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
               </a>
             </h3>
             <div className="flex flex-col gap-2">
-              {commits.map((c) => (
+              {webPortfolioCommits.map((c) => (
                 <div
                   key={c.sha}
-                  className="rounded-xl border p-4 flex items-center gap-3 text-xs"
+                  className="rounded-xl border p-4"
                   style={{
                     backgroundColor: palette.surface,
                     borderColor: palette.highlightMed,
                   }}
                 >
-                  <a
-                    href={c.htmlUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="truncate flex-1 hover:underline text-sm"
-                    style={{ color: palette.text }}
-                  >
-                    {c.message}
-                  </a>
-                  <span className="shrink-0 flex items-center gap-2">
-                    <span className="flex items-center gap-1.5">
-                      <svg width="8" height="8" viewBox="0 0 8 8">
-                        <circle cx="4" cy="4" r="4" fill={palette.foam} />
-                      </svg>
-                      <span
-                        className="px-2 py-0.5 rounded-md"
-                        style={{
-                          backgroundColor: palette.overlay,
-                          color: palette.foam,
-                          fontFamily: "'JetBrains Mono', monospace",
-                        }}
-                      >
-                        {c.shortSha}
-                      </span>
-                    </span>
-                    <span>
-                      <span style={{ color: "#a6e3a1" }}>+{c.additions}</span>
-                      {" / "}
-                      <span style={{ color: "#f38ba8" }}>-{c.deletions}</span>
-                    </span>
-                  </span>
+                  <CommitRow commit={c} palette={palette} />
                 </div>
               ))}
             </div>
           </div>
         )}
       </div>
+
+      {/* View all Projects confirmation dialog */}
+      {showViewAllConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div
+            className="rounded-2xl border p-6 shadow-2xl flex flex-col items-center gap-5"
+            style={{
+              backgroundColor: palette.base,
+              borderColor: palette.highlightMed,
+              fontFamily: "'JetBrains Mono', monospace",
+            }}
+          >
+            <p
+              className="text-base tracking-wider text-center"
+              style={{ color: palette.text }}
+            >
+              This will redirect you to the 2D webpage. Continue?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowViewAllConfirm(false)}
+                className="px-5 py-2 rounded-xl border text-sm tracking-wider transition-opacity hover:opacity-80"
+                style={{
+                  backgroundColor: palette.surface,
+                  borderColor: palette.highlightMed,
+                  color: palette.subtle,
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowViewAllConfirm(false);
+                  router.push("/2d");
+                }}
+                className="px-5 py-2 rounded-xl border text-sm tracking-wider transition-opacity hover:opacity-80"
+                style={{
+                  backgroundColor: palette.surface,
+                  borderColor: palette.highlightMed,
+                  color: palette.iris,
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Modal>
   );
 }

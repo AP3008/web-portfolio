@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-const REPO = "AP3008/web-portfolio";
+const PROJECT_REPOS = ["garv130/FindMyProf", "adit1110/Reflecta"];
+const WEB_PORTFOLIO_REPO = "AP3008/web-portfolio";
 
 export const revalidate = 3600;
 
@@ -30,62 +31,83 @@ export interface CommitData {
   deletions: number;
 }
 
+async function fetchCommitDetail(
+  repo: string,
+  item: GitHubCommitListItem
+): Promise<CommitData> {
+  let additions = 0;
+  let deletions = 0;
+
+  const detailRes = await fetch(
+    `https://api.github.com/repos/${repo}/commits/${item.sha}`,
+    {
+      headers: { Accept: "application/vnd.github+json" },
+      next: { revalidate: 3600 },
+    }
+  );
+
+  if (detailRes.ok) {
+    const detail: GitHubCommitDetail = await detailRes.json();
+    additions = detail.stats?.additions ?? 0;
+    deletions = detail.stats?.deletions ?? 0;
+  }
+
+  return {
+    sha: item.sha,
+    shortSha: item.sha.slice(0, 7),
+    message: item.commit.message.split("\n")[0],
+    htmlUrl: item.html_url,
+    additions,
+    deletions,
+  };
+}
+
+async function fetchLatestCommit(repo: string): Promise<CommitData | null> {
+  const res = await fetch(
+    `https://api.github.com/repos/${repo}/commits?per_page=1`,
+    {
+      headers: { Accept: "application/vnd.github+json" },
+      next: { revalidate: 3600 },
+    }
+  );
+  if (!res.ok) return null;
+  const items: GitHubCommitListItem[] = await res.json();
+  if (!items.length) return null;
+  return fetchCommitDetail(repo, items[0]);
+}
+
 export async function GET() {
   try {
-    // Step 1: Get latest 3 commits
-    const listRes = await fetch(
-      `https://api.github.com/repos/${REPO}/commits?per_page=3`,
-      {
-        headers: { Accept: "application/vnd.github+json" },
-        next: { revalidate: 3600 },
-      }
-    );
+    // Fetch latest commit for each project repo + 3 commits for web-portfolio, all in parallel
+    const [projectResults, wpListRes] = await Promise.all([
+      Promise.all(PROJECT_REPOS.map((repo) => fetchLatestCommit(repo))),
+      fetch(
+        `https://api.github.com/repos/${WEB_PORTFOLIO_REPO}/commits?per_page=3`,
+        {
+          headers: { Accept: "application/vnd.github+json" },
+          next: { revalidate: 3600 },
+        }
+      ),
+    ]);
 
-    if (!listRes.ok) {
-      return NextResponse.json(
-        { error: "Failed to fetch commits", commits: [] },
-        { status: listRes.status }
+    // Build latestByRepo map
+    const latestByRepo: Record<string, CommitData> = {};
+    PROJECT_REPOS.forEach((repo, i) => {
+      const result = projectResults[i];
+      if (result) latestByRepo[repo] = result;
+    });
+
+    // Build web-portfolio commits array
+    let webPortfolioCommits: CommitData[] = [];
+    if (wpListRes.ok) {
+      const wpItems: GitHubCommitListItem[] = await wpListRes.json();
+      webPortfolioCommits = await Promise.all(
+        wpItems.map((item) => fetchCommitDetail(WEB_PORTFOLIO_REPO, item))
       );
     }
 
-    const items: GitHubCommitListItem[] = await listRes.json();
-    if (!items.length) {
-      return NextResponse.json({ commits: [] });
-    }
-
-    // Step 2: Get LOC stats for each commit in parallel
-    const commits: CommitData[] = await Promise.all(
-      items.map(async (item) => {
-        let additions = 0;
-        let deletions = 0;
-
-        const detailRes = await fetch(
-          `https://api.github.com/repos/${REPO}/commits/${item.sha}`,
-          {
-            headers: { Accept: "application/vnd.github+json" },
-            next: { revalidate: 3600 },
-          }
-        );
-
-        if (detailRes.ok) {
-          const detail: GitHubCommitDetail = await detailRes.json();
-          additions = detail.stats?.additions ?? 0;
-          deletions = detail.stats?.deletions ?? 0;
-        }
-
-        return {
-          sha: item.sha,
-          shortSha: item.sha.slice(0, 7),
-          message: item.commit.message.split("\n")[0],
-          htmlUrl: item.html_url,
-          additions,
-          deletions,
-        };
-      })
-    );
-
     return NextResponse.json(
-      { commits },
+      { latestByRepo, webPortfolioCommits },
       {
         headers: {
           "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=7200",
@@ -93,6 +115,9 @@ export async function GET() {
       }
     );
   } catch {
-    return NextResponse.json({ error: "Internal error", commits: [] }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal error", latestByRepo: {}, webPortfolioCommits: [] },
+      { status: 500 }
+    );
   }
 }

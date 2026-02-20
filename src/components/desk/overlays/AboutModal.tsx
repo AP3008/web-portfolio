@@ -11,6 +11,29 @@ interface AboutModalProps {
   onClose: () => void;
 }
 
+function renderBioLine(
+  text: string,
+  palette: (typeof ROSE_PINE_PALETTES)[keyof typeof ROSE_PINE_PALETTES]
+) {
+  const parts = text.split("{savify}");
+  if (parts.length === 1) return <>{text}</>;
+  return (
+    <>
+      {parts[0]}
+      <a
+        href="https://savify.ca"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:underline"
+        style={{ color: palette.foam }}
+      >
+        Savify
+      </a>
+      {parts[1]}
+    </>
+  );
+}
+
 export function AboutModal({ onClose }: AboutModalProps) {
   const variant = useThemeStore((s) => s.variant);
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
@@ -31,40 +54,44 @@ export function AboutModal({ onClose }: AboutModalProps) {
           />
         </h2>
 
-        <div>
-          <h3 className="text-xl font-bold mb-1" style={{ color: palette.text }}>
-            {aboutData.name}
-          </h3>
-          <p className="text-sm" style={{ color: palette.gold }}>
-            GPA: {aboutData.gpa}
-          </p>
+        <h3 className="text-xl font-bold" style={{ color: palette.text }}>
+          {aboutData.name}
+        </h3>
+
+        {/* Bio paragraphs */}
+        <div className="flex flex-col gap-4">
+          {aboutData.bio.map((paragraph, i) => (
+            <p
+              key={i}
+              className="text-sm leading-relaxed"
+              style={{ color: palette.subtle }}
+            >
+              {renderBioLine(paragraph, palette)}
+            </p>
+          ))}
         </div>
 
-        <p className="text-sm leading-relaxed" style={{ color: palette.subtle }}>
-          {aboutData.bio}
-        </p>
-
-        <div>
-          <h4
-            className="text-sm font-bold mb-3 tracking-wider"
-            style={{ color: palette.muted }}
-          >
-            TECH STACK
-          </h4>
-          <div className="flex flex-wrap gap-2">
-            {aboutData.techStack.map((tech) => (
-              <span
-                key={tech}
-                className="rounded-lg border px-3 py-1 text-xs"
-                style={{
-                  borderColor: palette.highlightMed,
-                  color: palette.iris,
-                }}
+        {/* Contact links */}
+        <div className="flex items-center gap-4">
+          {aboutData.links.map((link) => (
+            <a
+              key={link.label}
+              href={link.url}
+              target={link.url.startsWith("mailto:") ? undefined : "_blank"}
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-10 h-10 rounded-full border transition-opacity hover:opacity-80"
+              style={{ borderColor: palette.highlightMed }}
+              title={link.label}
+            >
+              <svg
+                viewBox={link.viewBox ?? "0 0 24 24"}
+                className="w-5 h-5"
+                fill={palette.iris}
               >
-                {tech}
-              </span>
-            ))}
-          </div>
+                <path d={link.iconPath} />
+              </svg>
+            </a>
+          ))}
         </div>
       </div>
     </Modal>

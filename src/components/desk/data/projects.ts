@@ -2,6 +2,7 @@ export interface Project {
   id: string;
   title: string;
   description: string;
+  subtitle: string;
   techStack: string[];
   repoOwner: string;
   repoName: string;
@@ -9,21 +10,30 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: "project-1",
-    title: "3D Portfolio",
+    id: "findmyprof",
+    title: "FindMyProf",
     description:
-      "An immersive 3D portfolio built with React Three Fiber, featuring interactive desk objects, GSAP camera animations, and a functional terminal interface.",
-    techStack: ["Next.js", "React Three Fiber", "TypeScript", "GSAP", "Zustand"],
-    repoOwner: "AP3008",
-    repoName: "web-portfolio",
+      "A platform for undergraduate students to find research supervisors by automating the cold email process, making it easier for students to get in touch with professors.",
+    subtitle: "Built for ConUHacks 10 | 2026",
+    techStack: [
+      "TypeScript",
+      "Python",
+      "Web Scraping",
+      "Next.js",
+      "LangChain + LangGraph",
+      "MongoDB",
+    ],
+    repoOwner: "garv130",
+    repoName: "FindMyProf",
   },
   {
-    id: "project-2",
-    title: "Project Alpha",
+    id: "reflecta",
+    title: "Reflecta",
     description:
-      "A full-stack web application with real-time data processing and an intuitive dashboard interface.",
-    techStack: ["React", "Node.js", "PostgreSQL", "WebSocket"],
-    repoOwner: "AP3008",
-    repoName: "project-alpha",
+      "A journaling platform that gives users detailed insights into their reflection progress.",
+    subtitle: "Built for UofT Hacks 13 | 2026",
+    techStack: ["TypeScript", "Next.js", "Supabase+Auth", "Gemini API"],
+    repoOwner: "adit1110",
+    repoName: "Reflecta",
   },
 ];

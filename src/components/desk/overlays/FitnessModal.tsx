@@ -23,36 +23,45 @@ interface WorkoutDay {
 
 const ROUTINE: WorkoutDay[] = [
   {
-    title: "Push",
-    schedule: "Mon / Thu",
+    title: "Upper Body",
+    schedule: "Sat / Wed",
     exercises: [
-      { name: "Bench Press", sets: "4 x 8-10" },
-      { name: "Overhead Press", sets: "3 x 8-10" },
-      { name: "Incline DB Press", sets: "3 x 10-12" },
-      { name: "Lateral Raises", sets: "3 x 12-15" },
-      { name: "Tricep Pushdowns", sets: "3 x 10-12" },
+      { name: "Barbell Chest Movement (Heavy)", sets: "3x 6-8 reps" },
+      { name: "Back Exercise", sets: "3x 8-12 reps" },
+      { name: "Light Slow Negative Chest Exercise", sets: "3x 10-15 reps" },
+      { name: "Heavy Back Exercise", sets: "3x 6-8 reps" },
+      { name: "Bicep Exercise", sets: "" },
+      { name: "Tricep Exercise superset w/ Traps", sets: "" },
     ],
   },
   {
-    title: "Pull",
+    title: "Lower Body",
+    schedule: "Sun / Thu",
+    exercises: [
+      { name: "Barbell Leg Movement (Heavy)", sets: "3x 6-8 reps" },
+      { name: "Hamstring Exercise", sets: "3x 8-12 reps" },
+      { name: "Seated Horizontal Calf Extension", sets: "3x Till Failure + lengthened partials" },
+      { name: "Quad Exercise (light, slow negative)", sets: "3x 10-15 reps" },
+      { name: "Standing Calf Raises (Heavy)", sets: "3x Till Failure + lengthened partials" },
+      { name: "Rear Delt Exercise", sets: "3x 10-15" },
+    ],
+  },
+  {
+    title: "Shoulders",
+    schedule: "Mon",
+    exercises: [
+      { name: "Heavy Shoulder Press", sets: "3x 6-10 reps" },
+      { name: "Side Lateral (normal weight)", sets: "3x 10-15 reps" },
+      { name: "Rear Delt Exercise", sets: "3x 10-15" },
+      { name: "Heavy Side Delt", sets: "3x 6-10 reps" },
+      { name: "Heavy Traps", sets: "3x Till Failure" },
+    ],
+  },
+  {
+    title: "Active Rest",
     schedule: "Tue / Fri",
     exercises: [
-      { name: "Deadlift", sets: "3 x 5" },
-      { name: "Barbell Rows", sets: "4 x 8-10" },
-      { name: "Pull-ups", sets: "3 x 8-12" },
-      { name: "Face Pulls", sets: "3 x 12-15" },
-      { name: "Barbell Curls", sets: "3 x 10-12" },
-    ],
-  },
-  {
-    title: "Legs",
-    schedule: "Wed / Sat",
-    exercises: [
-      { name: "Squats", sets: "4 x 6-8" },
-      { name: "Romanian Deadlift", sets: "3 x 8-10" },
-      { name: "Leg Press", sets: "3 x 10-12" },
-      { name: "Leg Curls", sets: "3 x 10-12" },
-      { name: "Calf Raises", sets: "4 x 12-15" },
+      { name: "Light Cardio", sets: "15 mins" },
     ],
   },
 ];
@@ -106,7 +115,7 @@ export function FitnessModal({ onClose }: FitnessModalProps) {
 
         {/* Subtitle */}
         <p className="text-sm" style={{ color: palette.muted }}>
-          Push / Pull / Legs — 6 days on, 1 rest
+          Upper / Lower / Shoulders — 5 days on, 2 active rest
         </p>
 
         {/* Workout days */}
