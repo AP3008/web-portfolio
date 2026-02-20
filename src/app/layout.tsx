@@ -17,7 +17,9 @@ export const metadata: Metadata = {
   title: "Adam Porbanderwalla | Portfolio",
   description: "Interactive 3D developer portfolio",
   icons: {
-    icon: "/favicon_logo.png",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
   },
 };
 
