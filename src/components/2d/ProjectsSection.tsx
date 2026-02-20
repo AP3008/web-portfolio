@@ -4,13 +4,10 @@ import { useState, useEffect } from "react";
 import { projects } from "@/components/desk/data/projects";
 import type { CommitData } from "@/app/api/github-commits/route";
 
-const PROJECTS_PER_PAGE = 3;
-
 export function ProjectsSection() {
   const [latestByRepo, setLatestByRepo] = useState<Record<string, CommitData>>(
     {}
   );
-  const [page, setPage] = useState(0);
 
   useEffect(() => {
     fetch("/api/github-commits")
@@ -21,15 +18,9 @@ export function ProjectsSection() {
       .catch(() => {});
   }, []);
 
-  const totalPages = Math.ceil(projects.length / PROJECTS_PER_PAGE);
-  const pageProjects = projects.slice(
-    page * PROJECTS_PER_PAGE,
-    (page + 1) * PROJECTS_PER_PAGE
-  );
-
   return (
     <section
-      className="flex min-h-screen flex-col items-center justify-center gap-10 px-8 py-24 md:px-16 lg:px-24"
+      className="flex min-h-screen flex-col items-center gap-10 px-8 py-24 md:px-16 lg:px-24"
     >
       <h2
         className="text-2xl font-bold tracking-tight sm:text-3xl"
@@ -38,8 +29,8 @@ export function ProjectsSection() {
         All Projects
       </h2>
 
-      <div className="flex w-full max-w-3xl flex-col gap-5">
-        {pageProjects.map((project) => {
+      <div className="grid w-full max-w-7xl grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {projects.map((project) => {
           const hasRepo = project.repoOwner && project.repoName;
           const commit = hasRepo
             ? latestByRepo[`${project.repoOwner}/${project.repoName}`]
@@ -48,7 +39,7 @@ export function ProjectsSection() {
           return (
             <div
               key={project.id}
-              className="flex flex-col gap-3 rounded-xl border p-6"
+              className="flex h-full flex-col gap-3 rounded-xl border p-6"
               style={{
                 background: "var(--rp-surface)",
                 borderColor: "var(--rp-highlight-med)",
@@ -63,12 +54,14 @@ export function ProjectsSection() {
                   >
                     {project.title}
                   </h3>
-                  <span
-                    className="text-xs"
-                    style={{ color: "var(--rp-muted)" }}
-                  >
-                    {project.subtitle}
-                  </span>
+                  {project.subtitle && (
+                    <span
+                      className="text-xs"
+                      style={{ color: "var(--rp-muted)" }}
+                    >
+                      {project.subtitle}
+                    </span>
+                  )}
                 </div>
                 {hasRepo && (
                   <a
@@ -116,7 +109,7 @@ export function ProjectsSection() {
               {/* Latest commit */}
               {commit && (
                 <div
-                  className="flex flex-col gap-2 border-t pt-3 text-xs sm:flex-row sm:items-center sm:gap-3"
+                  className="mt-auto flex flex-col gap-2 border-t pt-3 text-xs sm:flex-row sm:items-center sm:gap-3"
                   style={{ borderColor: "var(--rp-highlight-low)" }}
                 >
                   <span style={{ color: "var(--rp-muted)" }}>
@@ -163,40 +156,6 @@ export function ProjectsSection() {
           );
         })}
       </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => setPage((p) => Math.max(0, p - 1))}
-            disabled={page === 0}
-            className="rounded border px-4 py-1.5 text-xs tracking-wider transition-all duration-200 disabled:opacity-30"
-            style={{
-              borderColor: "var(--rp-highlight-high)",
-              color: "var(--rp-subtle)",
-            }}
-          >
-            ← PREV
-          </button>
-          <span
-            className="text-xs"
-            style={{ color: "var(--rp-muted)" }}
-          >
-            {page + 1} / {totalPages}
-          </span>
-          <button
-            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-            disabled={page === totalPages - 1}
-            className="rounded border px-4 py-1.5 text-xs tracking-wider transition-all duration-200 disabled:opacity-30"
-            style={{
-              borderColor: "var(--rp-highlight-high)",
-              color: "var(--rp-subtle)",
-            }}
-          >
-            NEXT →
-          </button>
-        </div>
-      )}
     </section>
   );
 }

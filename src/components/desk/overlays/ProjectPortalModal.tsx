@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
 import { Modal } from "./Modal";
 import { projects } from "../data/projects";
 import { useTypingEffect } from "@/lib/useTypingEffect";
@@ -61,7 +60,6 @@ function CommitRow({
 }
 
 export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
-  const router = useRouter();
   const variant = useThemeStore((s) => s.variant);
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
   const title = useTypingEffect("Featured Projects", 80);
@@ -72,7 +70,6 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
   const [webPortfolioCommits, setWebPortfolioCommits] = useState<CommitData[]>(
     []
   );
-  const [showViewAllConfirm, setShowViewAllConfirm] = useState(false);
 
   useEffect(() => {
     fetch("/api/github-commits")
@@ -183,20 +180,6 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
           );
         })}
 
-        {/* View all Projects button */}
-        <button
-          onClick={() => setShowViewAllConfirm(true)}
-          className="rounded-xl border px-4 py-2.5 text-base tracking-wider transition-opacity hover:opacity-80 self-start"
-          style={{
-            backgroundColor: palette.surface,
-            borderColor: palette.highlightMed,
-            color: palette.iris,
-            fontFamily: "'JetBrains Mono', monospace",
-          }}
-        >
-          View all Projects
-        </button>
-
         {/* web-portfolio commits section */}
         {webPortfolioCommits.length > 0 && (
           <div>
@@ -228,54 +211,6 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
           </div>
         )}
       </div>
-
-      {/* View all Projects confirmation dialog */}
-      {showViewAllConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div
-            className="rounded-2xl border p-6 shadow-2xl flex flex-col items-center gap-5"
-            style={{
-              backgroundColor: palette.base,
-              borderColor: palette.highlightMed,
-              fontFamily: "'JetBrains Mono', monospace",
-            }}
-          >
-            <p
-              className="text-base tracking-wider text-center"
-              style={{ color: palette.text }}
-            >
-              This will redirect you to the 2D webpage. Continue?
-            </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowViewAllConfirm(false)}
-                className="px-5 py-2 rounded-xl border text-sm tracking-wider transition-opacity hover:opacity-80"
-                style={{
-                  backgroundColor: palette.surface,
-                  borderColor: palette.highlightMed,
-                  color: palette.subtle,
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  setShowViewAllConfirm(false);
-                  router.push("/2d");
-                }}
-                className="px-5 py-2 rounded-xl border text-sm tracking-wider transition-opacity hover:opacity-80"
-                style={{
-                  backgroundColor: palette.surface,
-                  borderColor: palette.highlightMed,
-                  color: palette.iris,
-                }}
-              >
-                Continue
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </Modal>
   );
 }

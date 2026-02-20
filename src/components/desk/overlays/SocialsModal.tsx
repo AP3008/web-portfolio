@@ -38,7 +38,7 @@ export function SocialsModal({ onClose }: SocialsModalProps) {
         className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
       >
         {/* Phone body */}
-        <div className="flex flex-col bg-black border-2 border-orange-500 rounded-[3rem] w-[280px] h-[580px] p-3 shadow-lg shadow-orange-500/20">
+        <div className="flex flex-col bg-black border-2 border-orange-500 rounded-[3rem] w-[300px] h-[620px] max-w-[86vw] max-h-[84vh] p-3 shadow-lg shadow-orange-500/20 sm:w-[320px] sm:h-[680px]">
           {/* Notch */}
           <div className="flex justify-center pt-2 pb-3">
             <div className="w-20 h-5 bg-black border border-orange-500/30 rounded-full" />
