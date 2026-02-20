@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useThemeStore } from "@/store/useThemeStore";
 import {
+  ROSE_PINE_PALETTES,
   TEXT_COLOR_OPTIONS,
   TEXT_COLOR_OPTIONS_DAWN,
 } from "@/lib/themes";
@@ -26,6 +27,7 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
 
   const [hoveredVariant, setHoveredVariant] = useState<ThemeVariant | null>(null);
   const isExpanded = mode === "expanded";
+  const palette = ROSE_PINE_PALETTES[variant];
 
   const colorOptions = variant === "dawn" ? TEXT_COLOR_OPTIONS_DAWN : TEXT_COLOR_OPTIONS;
 
@@ -37,8 +39,8 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
           : "flex w-full flex-col items-center gap-6 rounded-lg border p-4 sm:w-auto sm:p-6"
       }
       style={{
-        background: "var(--rp-surface)",
-        borderColor: "var(--rp-highlight-med)",
+        background: palette.surface,
+        borderColor: palette.highlightMed,
       }}
     >
       {/* Rosé Pine label */}
@@ -46,7 +48,7 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
         className={isExpanded ? "text-center text-4xl sm:text-5xl" : "text-center text-3xl"}
         style={{
           fontFamily: "'Hurricane', cursive",
-          color: isExpanded ? textColor : "var(--rp-rose)",
+          color: isExpanded ? textColor : palette.rose,
         }}
       >
         Rosé Pine
@@ -56,7 +58,7 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
       <div className="flex w-full flex-col gap-2 sm:w-auto">
         <span
           className={isExpanded ? "text-sm uppercase tracking-widest" : "text-xs uppercase tracking-widest"}
-          style={{ color: "var(--rp-muted)" }}
+          style={{ color: palette.muted }}
         >
           Theme
         </span>
@@ -70,42 +72,45 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
                 onClick={() => setVariant(key)}
                 onMouseEnter={() => setHoveredVariant(key)}
                 onMouseLeave={() => setHoveredVariant(null)}
+                disabled={isActive}
                 className={
                   isExpanded
-                    ? "rounded border px-5 py-2 text-sm font-semibold tracking-wider transition-all duration-200 sm:px-6 sm:py-2.5 sm:text-base"
-                    : "rounded px-3 py-1.5 text-xs font-medium tracking-wide transition-all duration-200 sm:px-4 sm:text-sm sm:tracking-wider"
+                    ? "rounded border px-5 py-2 text-sm font-semibold tracking-wider transition-colors duration-150 disabled:cursor-default disabled:opacity-100 sm:px-6 sm:py-2.5 sm:text-base"
+                    : "rounded px-3 py-1.5 text-xs font-medium tracking-wide transition-colors duration-150 disabled:cursor-default disabled:opacity-100 sm:px-4 sm:text-sm sm:tracking-wider"
                 }
                 style={{
                   background: isActive
-                    ? "var(--rp-overlay)"
+                    ? palette.overlay
                     : isHovered
                       ? isExpanded
-                        ? "var(--rp-highlight-med)"
-                        : "var(--rp-highlight-low)"
+                        ? palette.highlightMed
+                        : palette.highlightLow
                       : "transparent",
                   color: isActive
-                    ? "var(--rp-iris)"
+                    ? palette.iris
                     : isHovered
-                      ? "var(--rp-text)"
-                      : "var(--rp-subtle)",
+                      ? textColor
+                      : palette.subtle,
                   outline: isActive
-                    ? "2px solid var(--rp-iris)"
+                    ? `2px solid ${palette.iris}`
                     : "2px solid transparent",
                   outlineOffset: "2px",
+                  cursor: isActive ? "default" : "pointer",
                   border: isExpanded
                     ? "1px solid " +
                       (isActive
-                        ? "var(--rp-iris)"
+                        ? palette.iris
                         : isHovered
-                          ? "var(--rp-highlight-high)"
-                          : "var(--rp-highlight-med)")
+                          ? palette.highlightHigh
+                          : palette.highlightMed)
                     : "1px solid " +
                       (isActive
-                        ? "var(--rp-iris)"
+                        ? palette.iris
                         : isHovered
-                          ? "var(--rp-highlight-high)"
-                          : "var(--rp-highlight-med)"),
+                          ? palette.highlightHigh
+                          : palette.highlightMed),
                 }}
+                aria-pressed={isActive}
               >
                 {label}
               </button>
@@ -118,7 +123,7 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
       <div className="flex w-full flex-col gap-2">
         <span
           className={isExpanded ? "text-sm uppercase tracking-widest" : "text-xs uppercase tracking-widest"}
-          style={{ color: "var(--rp-muted)" }}
+          style={{ color: palette.muted }}
         >
           Text Colour
         </span>
