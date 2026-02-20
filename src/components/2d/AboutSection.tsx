@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { aboutData } from "@/components/desk/data/about";
 
 const BIO_LINKS: Record<string, { label: string; url: string }> = {
@@ -49,7 +50,7 @@ export function AboutSection() {
       className="flex min-h-screen flex-col items-center justify-center gap-10 px-8 py-24 md:px-16 lg:px-24"
     >
       <h2
-        className="text-2xl font-bold tracking-tight sm:text-3xl"
+        className="text-3xl font-bold tracking-tight sm:text-4xl"
         style={{ color: "var(--rp-text)" }}
       >
         About Me
@@ -61,13 +62,13 @@ export function AboutSection() {
           <Image
             src="/adam_aboutme.png"
             alt="Adam Porbanderwalla"
-            width={180}
-            height={180}
+            width={220}
+            height={220}
             className="rounded-full border-2 object-cover"
             style={{ borderColor: "var(--rp-highlight-med)" }}
           />
           <h3
-            className="text-xl font-bold"
+            className="text-2xl font-bold"
             style={{ color: "var(--rp-text)" }}
           >
             {aboutData.name}
@@ -79,7 +80,7 @@ export function AboutSection() {
           {aboutData.bio.map((paragraph, i) => (
             <p
               key={i}
-              className="text-sm leading-relaxed sm:text-base"
+              className="text-base leading-relaxed sm:text-lg"
               style={{ color: "var(--rp-subtle)" }}
             >
               {renderBioLine(paragraph)}
@@ -94,13 +95,13 @@ export function AboutSection() {
                 href={link.url}
                 target={link.url.startsWith("mailto:") ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="flex h-11 w-11 items-center justify-center rounded-full border transition-opacity hover:opacity-80"
+                className="flex h-14 w-14 items-center justify-center rounded-full border transition-opacity hover:opacity-80"
                 style={{ borderColor: "var(--rp-highlight-med)" }}
                 title={link.label}
               >
                 <svg
                   viewBox={link.viewBox ?? "0 0 24 24"}
-                  className="h-5 w-5"
+                  className="h-6 w-6"
                   fill="var(--rp-iris)"
                 >
                   <path d={link.iconPath} />
@@ -110,6 +111,16 @@ export function AboutSection() {
           </div>
         </div>
       </div>
+
+      <Link
+        href="/2d/projects"
+        className="text-base tracking-wider transition-colors duration-200"
+        style={{ color: "var(--rp-foam)" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--rp-text)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--rp-foam)")}
+      >
+        Checkout all of my projects! →
+      </Link>
     </section>
   );
 }

@@ -21,7 +21,7 @@ export function TwoDExperience() {
           {/* Left — title & blurb */}
           <div className="flex flex-1 flex-col gap-6 text-left">
             <h1
-              className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
+              className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl"
               style={{ color: "var(--rp-text)" }}
             >
               {displayed}
@@ -35,14 +35,29 @@ export function TwoDExperience() {
               />
             </h1>
             <p
-              className="text-sm leading-relaxed sm:text-base"
+              className="text-base leading-relaxed sm:text-lg"
               style={{ color: "var(--rp-subtle)" }}
             >
-              I&apos;m a full-stack developer and computer science student with a
-              passion for building interactive, performant web experiences. From
-              immersive 3D portfolios to scalable backend systems, I love turning
-              complex ideas into elegant code. When I&apos;m not coding, you&apos;ll
-              find me at the gym, playing chess, or tinkering with new technologies.
+              Full Stack Developer | Computer Science @{" "}
+              <a
+                href="https://www.uwo.ca/index.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-1 underline-offset-2 hover:decoration-2"
+                style={{ color: "var(--rp-foam)" }}
+              >
+                Western
+              </a>{" "}
+              | SWE @{" "}
+              <a
+                href="https://savify.ca"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-1 underline-offset-2 hover:decoration-2"
+                style={{ color: "var(--rp-foam)" }}
+              >
+                Savify
+              </a>
             </p>
           </div>
 
@@ -51,8 +66,8 @@ export function TwoDExperience() {
             <Image
               src="/adam_drawing.png"
               alt="Drawing of Adam"
-              width={400}
-              height={400}
+              width={470}
+              height={470}
               className="max-w-full rounded-lg"
               priority
             />
@@ -65,14 +80,14 @@ export function TwoDExperience() {
         {/* Header */}
         <div className="flex w-full max-w-xl items-center justify-between">
           <h2
-            className="text-2xl font-bold tracking-tight sm:text-3xl"
+            className="text-3xl font-bold tracking-tight sm:text-4xl"
             style={{ color: "var(--rp-text)" }}
           >
             Featured Projects
           </h2>
           <Link
             href="/2d/projects"
-            className="rounded border px-4 py-1.5 text-xs tracking-wider transition-all duration-200"
+            className="rounded border px-5 py-2 text-sm tracking-wider transition-all duration-200"
             style={{
               borderColor: "var(--rp-highlight-high)",
               color: "var(--rp-subtle)",
@@ -96,12 +111,21 @@ export function TwoDExperience() {
         {/* Learn more link */}
         <Link
           href="/2d/about"
-          className="text-sm tracking-wider transition-colors duration-200"
+          className="text-base tracking-wider transition-colors duration-200"
           style={{ color: "var(--rp-foam)" }}
           onMouseEnter={(e) => (e.currentTarget.style.color = "var(--rp-text)")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "var(--rp-foam)")}
         >
           Learn more about me! →
+        </Link>
+        <Link
+          href="/2d/socials"
+          className="text-base tracking-wider transition-colors duration-200"
+          style={{ color: "var(--rp-foam)" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--rp-text)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--rp-foam)")}
+        >
+          Connect with me! →
         </Link>
       </section>
     </TwoDLayout>

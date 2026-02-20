@@ -23,7 +23,7 @@ function FlipCard({
   return (
     <div
       className="relative cursor-pointer"
-      style={{ width: 400, height: 400, perspective: "900px" }}
+      style={{ width: 430, height: 430, perspective: "900px" }}
       onClick={onClick}
     >
       <div
@@ -43,13 +43,13 @@ function FlipCard({
           }}
         >
           <span
-            className="text-4xl font-bold"
+            className="text-5xl font-bold"
             style={{ color: "var(--rp-muted)" }}
           >
             ?
           </span>
           <span
-            className="text-xs tracking-wider"
+            className="text-sm tracking-wider"
             style={{ color: "var(--rp-muted)" }}
           >
             CLICK TO REVEAL
@@ -58,7 +58,7 @@ function FlipCard({
 
         {/* Back — revealed content */}
         <div
-          className="absolute inset-0 flex flex-col gap-3 overflow-hidden rounded-xl border p-6"
+          className="absolute inset-0 flex flex-col gap-4 overflow-hidden rounded-xl border p-7"
           style={{
             backfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
@@ -69,24 +69,26 @@ function FlipCard({
           <div className="flex items-start justify-between gap-3">
             <div>
               <h3
-                className="text-lg font-semibold"
+                className="text-xl font-semibold"
                 style={{ color: "var(--rp-text)" }}
               >
                 {project.title}
               </h3>
-              <span
-                className="text-xs"
-                style={{ color: "var(--rp-muted)" }}
-              >
-                {project.subtitle}
-              </span>
+              {project.subtitle && (
+                <span
+                  className="text-sm"
+                  style={{ color: "var(--rp-muted)" }}
+                >
+                  {project.subtitle}
+                </span>
+              )}
             </div>
             {hasRepo && (
               <a
                 href={`https://github.com/${project.repoOwner}/${project.repoName}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="shrink-0 text-xs tracking-wider transition-colors duration-200"
+                className="shrink-0 text-sm tracking-wider transition-colors duration-200"
                 style={{ color: "var(--rp-foam)" }}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -96,7 +98,7 @@ function FlipCard({
           </div>
 
           <p
-            className="text-sm leading-relaxed"
+            className="text-base leading-relaxed"
             style={{ color: "var(--rp-subtle)" }}
           >
             {project.description}
@@ -106,7 +108,7 @@ function FlipCard({
             {project.techStack.map((tech) => (
               <span
                 key={tech}
-                className="rounded px-2 py-0.5 text-xs"
+                className="rounded px-2.5 py-1 text-sm"
                 style={{
                   background: "var(--rp-overlay)",
                   color: "var(--rp-iris)",
@@ -120,11 +122,11 @@ function FlipCard({
           {/* Latest commit */}
           {commit && (
             <div
-              className="mt-auto flex flex-col gap-2 border-t pt-3 text-xs"
+              className="mt-auto flex flex-col gap-2 border-t pt-4 text-sm"
               style={{ borderColor: "var(--rp-highlight-low)" }}
             >
               <span
-                className="text-xs"
+                className="text-sm"
                 style={{ color: "var(--rp-muted)" }}
               >
                 Latest commit
@@ -145,7 +147,7 @@ function FlipCard({
                     <circle cx="4" cy="4" r="4" fill="var(--rp-foam)" />
                   </svg>
                   <span
-                    className="rounded-md px-1.5 py-0.5"
+                    className="rounded-md px-2 py-0.5"
                     style={{
                       backgroundColor: "var(--rp-overlay)",
                       color: "var(--rp-foam)",

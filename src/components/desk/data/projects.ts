@@ -106,4 +106,13 @@ export const projects: Project[] = [
     repoOwner: "AP3008",
     repoName: "accountability",
   },
+  {
+    id: "web-portfolio",
+    title: "Web Portfolio",
+    description: "The website that you're on right now!",
+    subtitle: "",
+    techStack: ["Next.js", "TypeScript", "React", "Three.js", "Tailwind CSS"],
+    repoOwner: "AP3008",
+    repoName: "web-portfolio",
+  },
 ];

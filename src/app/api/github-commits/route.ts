@@ -9,6 +9,7 @@ const PROJECT_REPOS = [
   "AP3008/CityScope",
   "lblommesteyn/wds-reciepts",
   "AP3008/accountability",
+  "AP3008/web-portfolio",
 ];
 const WEB_PORTFOLIO_REPO = "AP3008/web-portfolio";
 

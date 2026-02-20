@@ -60,7 +60,7 @@ export function TwoDLayout({
       {/* Back button */}
       <Link
         href={backHref}
-        className="fixed top-6 left-6 z-30 flex items-center gap-2 rounded-lg border px-3 py-2 text-xs tracking-wider transition-all duration-200"
+        className="fixed top-6 left-6 z-30 flex items-center gap-2.5 rounded-lg border px-4 py-2.5 text-sm tracking-wider transition-all duration-200"
         style={{
           background: "var(--rp-surface)",
           borderColor: "var(--rp-highlight-med)",
@@ -76,8 +76,8 @@ export function TwoDLayout({
         }}
       >
         <svg
-          width="16"
-          height="16"
+          width="18"
+          height="18"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -94,7 +94,7 @@ export function TwoDLayout({
       {/* Navigator toggle */}
       <button
         onClick={() => setNavOpen(true)}
-        className="fixed top-6 right-6 z-30 rounded-lg border p-2.5 transition-all duration-200"
+        className="fixed top-6 right-6 z-30 rounded-lg border p-3 transition-all duration-200"
         style={{
           background: "var(--rp-surface)",
           borderColor: "var(--rp-highlight-med)",
@@ -111,8 +111,8 @@ export function TwoDLayout({
         aria-label="Open navigator"
       >
         <svg
-          width="20"
-          height="20"
+          width="22"
+          height="22"
           viewBox="0 0 20 20"
           fill="none"
           stroke="currentColor"
