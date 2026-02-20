@@ -17,6 +17,7 @@ export interface PortfolioState {
   interactionsEnabled: boolean;
   terminalFocused: boolean;
   showExitConfirm: boolean;
+  terminalAnimDone: boolean;
 
   // Performance
   quality: "high" | "medium" | "low";
@@ -35,6 +36,7 @@ export interface PortfolioActions {
 
   setTerminalFocused: (focused: boolean) => void;
   setShowExitConfirm: (show: boolean) => void;
+  setTerminalAnimDone: (done: boolean) => void;
   setQuality: (quality: PortfolioState["quality"]) => void;
 }
 
@@ -49,6 +51,7 @@ export const usePortfolioStore = create<PortfolioState & PortfolioActions>()(
     interactionsEnabled: false,
     terminalFocused: false,
     showExitConfirm: false,
+    terminalAnimDone: false,
     quality: "high",
 
     // Actions
@@ -58,7 +61,7 @@ export const usePortfolioStore = create<PortfolioState & PortfolioActions>()(
         interactionsEnabled: phase === "desk",
         // Clear hover/focus when returning to non-desk phases
         ...(phase !== "focused" && phase !== "desk"
-          ? { hoveredObjectId: null, focusedObjectId: null, activeModal: null }
+          ? { hoveredObjectId: null, focusedObjectId: null, activeModal: null, terminalAnimDone: false }
           : {}),
       }),
 
@@ -105,6 +108,7 @@ export const usePortfolioStore = create<PortfolioState & PortfolioActions>()(
 
     setTerminalFocused: (focused) => set({ terminalFocused: focused }),
     setShowExitConfirm: (show) => set({ showExitConfirm: show }),
+    setTerminalAnimDone: (done) => set({ terminalAnimDone: done }),
 
     setQuality: (quality) => set({ quality }),
   })

@@ -18,6 +18,7 @@ export const projects: Project[] = [
     techStack: [
       "TypeScript",
       "Python",
+      "FastAPI",
       "Web Scraping",
       "Next.js",
       "LangChain + LangGraph",
@@ -37,13 +38,13 @@ export const projects: Project[] = [
     repoName: "Reflecta",
   },
   {
-    id: "placeholder",
-    title: "Coming Soon",
+    id: "learningtofly",
+    title: "Learning to Fly",
     description:
-      "A new project is in the works. Stay tuned for updates!",
-    subtitle: "TBD",
-    techStack: ["???"],
-    repoOwner: "",
-    repoName: "",
+      "A repo focused on holding myself accountable to learning, and mini projects that I believe would be fun to build.",
+    subtitle: "Ongoing",
+    techStack: ["Check out the repo to see..."],
+    repoOwner: "AP3008",
+    repoName: "Learning-To-Fly",
   },
 ];

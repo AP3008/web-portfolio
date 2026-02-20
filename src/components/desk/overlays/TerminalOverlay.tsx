@@ -8,6 +8,7 @@ interface TerminalLine {
   type: "input" | "output";
   text: string;
   hint?: string;
+  link?: string;
 }
 
 const PROMPT = "PS C:\\Users\\Adam>";
@@ -18,11 +19,24 @@ const HELP_TEXT = `Available commands:
   whoami      — Display bio summary
   clear       — Clear terminal
   cd [object] — Focus on an object
+  emacs       — Try it
+  vim         — Try it
+  nvim        — Show nvim config
+  ghostty     — Apply Ghostty theme
   exit        — Exit terminal`;
 
 const WHOAMI_TEXT = `Adam Porbanderwalla
-Software Engineer | 3.9 GPA
-Building immersive web experiences with React, Three.js, and TypeScript.`;
+Full-Stack Developer | Future 10,000x Engineer`;
+
+const GHOSTTY_CONFIG = `# --- Ghostty Configuration 1.2.3 ---
+
+# Theme & Appearance
+theme = Rose Pine
+background-opacity = 0.90
+window-colorspace = display-p3
+macos-titlebar-style = transparent
+# Optional: makes the padding look uniform on all sides
+window-padding-balance = true`;
 
 const objectAliases: Record<string, DeskObjectId> = {
   monitor: "monitor",
@@ -45,7 +59,20 @@ const objectAliases: Record<string, DeskObjectId> = {
   socials: "phone",
 };
 
-function renderLineText(text: string, hint?: string) {
+function renderLineText(text: string, hint?: string, link?: string) {
+  if (link) {
+    return (
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline decoration-1 underline-offset-2 hover:decoration-2"
+        style={{ color: "var(--rp-foam, #9ccfd8)" }}
+      >
+        {text}
+      </a>
+    );
+  }
   if (!hint) return text;
   const idx = text.indexOf(hint);
   if (idx === -1) return text;
@@ -74,6 +101,7 @@ export function TerminalOverlay() {
     { type: "output", text: 'Type "help" to get started.', hint: "help" },
   ]);
   const [input, setInput] = useState("");
+  const [ghosttyActive, setGhosttyActive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -97,17 +125,28 @@ export function TerminalOverlay() {
       const parts = trimmed.split(/\s+/);
       const command = parts[0];
 
-      let output = "";
-
       if (command === "help") {
-        output = HELP_TEXT;
+        setLines((prev) => [
+          ...prev,
+          { type: "input", text: `${PROMPT} ${cmd}` },
+          { type: "output", text: HELP_TEXT },
+        ]);
       } else if (command === "ls") {
-        output = Object.values(DESK_OBJECTS)
+        const output = Object.values(DESK_OBJECTS)
           .filter((o) => o.interactive !== false)
           .map((o) => `  ${o.label.toLowerCase()}`)
           .join("\n");
+        setLines((prev) => [
+          ...prev,
+          { type: "input", text: `${PROMPT} ${cmd}` },
+          { type: "output", text: output },
+        ]);
       } else if (command === "whoami") {
-        output = WHOAMI_TEXT;
+        setLines((prev) => [
+          ...prev,
+          { type: "input", text: `${PROMPT} ${cmd}` },
+          { type: "output", text: WHOAMI_TEXT },
+        ]);
       } else if (command === "clear") {
         setLines([]);
         return;
@@ -115,7 +154,12 @@ export function TerminalOverlay() {
         const target = parts.slice(1).join("-");
         const objectId = objectAliases[target];
         if (objectId) {
-          output = `Focusing on ${DESK_OBJECTS[objectId].label}...`;
+          const output = `Focusing on ${DESK_OBJECTS[objectId].label}...`;
+          setLines((prev) => [
+            ...prev,
+            { type: "input", text: `${PROMPT} ${cmd}` },
+            { type: "output", text: output },
+          ]);
           setTimeout(() => {
             setTerminalFocused(false);
             focusObject(objectId);
@@ -125,22 +169,48 @@ export function TerminalOverlay() {
             }
           }, 300);
         } else {
-          output = `cd: no such object: ${parts[1] || "(none)"}`;
+          setLines((prev) => [
+            ...prev,
+            { type: "input", text: `${PROMPT} ${cmd}` },
+            { type: "output", text: `cd: no such object: ${parts[1] || "(none)"}` },
+          ]);
         }
+      } else if (command === "emacs") {
+        setLines((prev) => [
+          ...prev,
+          { type: "input", text: `${PROMPT} ${cmd}` },
+          { type: "output", text: "Who uses emacs... Try vim" },
+        ]);
+      } else if (command === "vim") {
+        setLines((prev) => [
+          ...prev,
+          { type: "input", text: `${PROMPT} ${cmd}` },
+          { type: "output", text: "I think you meant nvim" },
+        ]);
+      } else if (command === "nvim") {
+        setLines((prev) => [
+          ...prev,
+          { type: "input", text: `${PROMPT} ${cmd}` },
+          { type: "output", text: "A smart individual!\nCheckout my configs for nvim:" },
+          { type: "output", text: "https://github.com/AP3008/dotfiles", link: "https://github.com/AP3008/dotfiles" },
+        ]);
+      } else if (command === "ghostty") {
+        setGhosttyActive(true);
+        setLines([
+          { type: "output", text: "My Ghostty Theme Applied" },
+        ]);
       } else if (command === "exit") {
         returnToDesk();
         return;
       } else if (command === "") {
         return;
       } else {
-        output = `command not found: ${command}`;
+        setLines((prev) => [
+          ...prev,
+          { type: "input", text: `${PROMPT} ${cmd}` },
+          { type: "output", text: `command not found: ${command}` },
+        ]);
       }
-
-      setLines((prev) => [
-        ...prev,
-        { type: "input", text: `${PROMPT} ${cmd}` },
-        { type: "output", text: output },
-      ]);
     },
     [focusObject, openModal, returnToDesk, setTerminalFocused]
   );
@@ -164,16 +234,28 @@ export function TerminalOverlay() {
   return (
     <div
       onClick={handleContainerClick}
-      className="fixed inset-0 z-40 bg-background/95 backdrop-blur-sm p-6 flex flex-col font-mono text-sm cursor-text"
+      className="fixed inset-0 z-40 backdrop-blur-sm p-6 flex flex-col font-mono text-sm cursor-text"
+      style={{
+        backgroundColor: ghosttyActive ? "rgba(25, 23, 36, 0.90)" : "rgba(10, 10, 10, 0.95)",
+        color: ghosttyActive ? "#9ccfd8" : undefined,
+        ...(ghosttyActive ? { fontFamily: "'JetBrains Mono', monospace" } : {}),
+      }}
     >
       {/* Terminal header */}
-      <div className="flex items-center justify-between border-b border-border pb-2 mb-2">
-        <span className="text-text-muted text-xs tracking-wider">
-          Windows PowerShell
+      <div
+        className="flex items-center justify-between pb-2 mb-2"
+        style={{ borderBottom: `1px solid ${ghosttyActive ? "#403d52" : "var(--border)"}` }}
+      >
+        <span
+          className="text-xs tracking-wider"
+          style={{ color: ghosttyActive ? "#6e6a86" : "var(--text-muted)" }}
+        >
+          {ghosttyActive ? "Ghostty" : "Windows PowerShell"}
         </span>
         <button
           onClick={(e) => { e.stopPropagation(); returnToDesk(); }}
-          className="text-text-muted hover:text-accent transition-colors text-xs"
+          className="text-xs transition-colors"
+          style={{ color: ghosttyActive ? "#6e6a86" : "var(--text-muted)" }}
         >
           [ESC]
         </button>
@@ -182,24 +264,28 @@ export function TerminalOverlay() {
       {/* Terminal output + inline prompt */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto text-foreground"
+        className="flex-1 overflow-y-auto"
+        style={{ color: ghosttyActive ? "#9ccfd8" : "var(--foreground)" }}
       >
         {lines.map((line, i) => (
           <div
             key={i}
-            className="whitespace-pre-wrap leading-relaxed text-foreground"
+            className="whitespace-pre-wrap leading-relaxed"
           >
-            {renderLineText(line.text, line.hint)}
+            {renderLineText(line.text, line.hint, line.link)}
           </div>
         ))}
 
         {/* Active prompt line with inline input */}
         <div className="whitespace-pre-wrap leading-relaxed flex items-center">
-          <span className="text-foreground shrink-0">{PROMPT}&nbsp;</span>
-          <span className="text-foreground">{input}</span>
+          <span className="shrink-0">{PROMPT}&nbsp;</span>
+          <span>{input}</span>
           <span
-            className="inline-block w-[8px] h-[1.1em] bg-foreground ml-[1px]"
-            style={{ animation: "blink-cursor 1.06s step-end infinite" }}
+            className="inline-block w-[8px] h-[1.1em] ml-[1px]"
+            style={{
+              backgroundColor: ghosttyActive ? "#9ccfd8" : "var(--foreground)",
+              animation: "blink-cursor 1.06s step-end infinite",
+            }}
           />
         </div>
       </div>
