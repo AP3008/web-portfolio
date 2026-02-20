@@ -35,6 +35,7 @@ export type ModalType =
   | "chess"
   | "fitness"
   | "socials"
+  | "theme"
   | null;
 
 /** Scene phases */
@@ -231,16 +232,17 @@ export const DESK_OBJECTS: Record<DeskObjectId, DeskObjectConfig> = {
   },
   linux_char: {
     label: "LINUX CHARACTER",
-    cameraTarget: [0, 0, 0],
-    cameraPosition: [0, 0, 0],
+    hudLabel: "Theme Store",
+    cameraTarget: [2.35, 0.0, -0.1],
+    cameraPosition: [2.35, 1, 1],
     position: [2.35, 0.0, 1.25],
     placeholderSize: [0.1, 0.15, 0.1],
     color: "#555555",
     modelUrl: "/models/linux-char.glb",
     scale: [0.75, 0.75, 0.75],
     rotation: [0, 0, 0],
-    modal: null,
-    interactive: false,
+    modal: "theme",
+    interactive: true,
   },
 };
 

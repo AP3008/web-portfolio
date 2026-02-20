@@ -14,19 +14,28 @@ const VARIANT_LABELS: { key: ThemeVariant; label: string }[] = [
   { key: "dawn", label: "Dawn" },
 ];
 
-export function ThemePicker() {
+interface ThemePickerProps {
+  mode?: "compact" | "expanded";
+}
+
+export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
   const variant = useThemeStore((s) => s.variant);
   const textColor = useThemeStore((s) => s.textColor);
   const setVariant = useThemeStore((s) => s.setVariant);
   const setTextColor = useThemeStore((s) => s.setTextColor);
 
   const [hoveredVariant, setHoveredVariant] = useState<ThemeVariant | null>(null);
+  const isExpanded = mode === "expanded";
 
   const colorOptions = variant === "dawn" ? TEXT_COLOR_OPTIONS_DAWN : TEXT_COLOR_OPTIONS;
 
   return (
     <div
-      className="flex w-full flex-col items-center gap-6 rounded-lg border p-4 sm:w-auto sm:p-6"
+      className={
+        isExpanded
+          ? "flex w-full max-w-2xl flex-col items-center gap-8 rounded-xl border p-6 sm:p-8"
+          : "flex w-full flex-col items-center gap-6 rounded-lg border p-4 sm:w-auto sm:p-6"
+      }
       style={{
         background: "var(--rp-surface)",
         borderColor: "var(--rp-highlight-med)",
@@ -34,7 +43,7 @@ export function ThemePicker() {
     >
       {/* Rosé Pine label */}
       <span
-        className="text-center text-3xl"
+        className={isExpanded ? "text-center text-4xl sm:text-5xl" : "text-center text-3xl"}
         style={{
           fontFamily: "'Hurricane', cursive",
           color: "var(--rp-rose)",
@@ -46,7 +55,7 @@ export function ThemePicker() {
       {/* Theme variant buttons */}
       <div className="flex w-full flex-col gap-2 sm:w-auto">
         <span
-          className="text-xs uppercase tracking-widest"
+          className={isExpanded ? "text-sm uppercase tracking-widest" : "text-xs uppercase tracking-widest"}
           style={{ color: "var(--rp-muted)" }}
         >
           Theme
@@ -61,7 +70,11 @@ export function ThemePicker() {
                 onClick={() => setVariant(key)}
                 onMouseEnter={() => setHoveredVariant(key)}
                 onMouseLeave={() => setHoveredVariant(null)}
-                className="rounded px-3 py-1.5 text-xs font-medium tracking-wide transition-all duration-200 sm:px-4 sm:text-sm sm:tracking-wider"
+                className={
+                  isExpanded
+                    ? "rounded px-5 py-2 text-sm font-semibold tracking-wider transition-all duration-200 sm:px-6 sm:py-2.5 sm:text-base"
+                    : "rounded px-3 py-1.5 text-xs font-medium tracking-wide transition-all duration-200 sm:px-4 sm:text-sm sm:tracking-wider"
+                }
                 style={{
                   background: isActive
                     ? "var(--rp-overlay)"
@@ -96,24 +109,28 @@ export function ThemePicker() {
       {/* Text color circles */}
       <div className="flex w-full flex-col gap-2">
         <span
-          className="text-xs uppercase tracking-widest"
+          className={isExpanded ? "text-sm uppercase tracking-widest" : "text-xs uppercase tracking-widest"}
           style={{ color: "var(--rp-muted)" }}
         >
           Text Colour
         </span>
-        <div className="flex flex-wrap gap-3">
+        <div className={isExpanded ? "flex flex-wrap gap-4" : "flex flex-wrap gap-3"}>
           {colorOptions.map((color) => (
             <button
               key={color}
               onClick={() => setTextColor(color)}
-              className="h-7 w-7 rounded-full transition-all duration-200"
+              className={
+                isExpanded
+                  ? "h-10 w-10 rounded-full transition-all duration-200"
+                  : "h-7 w-7 rounded-full transition-all duration-200"
+              }
               style={{
                 background: color,
                 outline:
                   textColor === color
                     ? `2px solid ${color}`
                     : "2px solid transparent",
-                outlineOffset: "3px",
+                outlineOffset: isExpanded ? "4px" : "3px",
               }}
               aria-label={`Set text color to ${color}`}
             />
