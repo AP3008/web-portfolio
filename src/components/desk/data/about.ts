@@ -9,7 +9,7 @@ export const aboutData = {
   name: "Adam Porbanderwalla",
   bio: [
     "Currently a student at Western University studying Computer Science. I am currently working at {savify} as a Software Engineer. I enjoy building cool things that solve my issues as well as issues for others. As a young software engineer I love working with many different technologies, but right now I enjoy working most with Python and Rust.",
-    "Some of my favourite projects include FindMyProf — a platform that helps undergrad students find research opportunities, and Reflecta — a modern journaling website. These were built for ConU Hacks and UofT Hacks respectively, but I aim to work as a Full-Stack Developer.",
+    "Some of my favourite projects include {findmyprof} — a platform that helps undergrad students find research opportunities, and {reflecta} — a modern journaling website. These were built for ConU Hacks and UofT Hacks respectively, but I aim to work as a Full-Stack Developer.",
     "Other than software, I enjoy body building, and volunteering.",
   ],
   links: [

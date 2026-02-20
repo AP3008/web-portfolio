@@ -36,4 +36,14 @@ export const projects: Project[] = [
     repoOwner: "adit1110",
     repoName: "Reflecta",
   },
+  {
+    id: "placeholder",
+    title: "Coming Soon",
+    description:
+      "A new project is in the works. Stay tuned for updates!",
+    subtitle: "TBD",
+    techStack: ["???"],
+    repoOwner: "",
+    repoName: "",
+  },
 ];

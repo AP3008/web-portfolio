@@ -9,7 +9,7 @@ import { ROSE_PINE_PALETTES } from "@/lib/themes";
 import { useTypingEffect } from "@/lib/useTypingEffect";
 import { TransitionOverlay } from "./TransitionOverlay";
 import { Navigator } from "./Navigator";
-import { ProjectCarousel } from "./ProjectCarousel";
+import { ProjectTriangle } from "./ProjectTriangle";
 
 const GREETING = "Hey! I'm Adam";
 const TYPING_SPEED_MS = 80;
@@ -187,8 +187,8 @@ export function TwoDExperience() {
           </a>
         </div>
 
-        {/* Carousel */}
-        <ProjectCarousel />
+        {/* Triangle flip cards */}
+        <ProjectTriangle />
 
         {/* Learn more link */}
         <a
