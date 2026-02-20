@@ -63,7 +63,10 @@ export function ExitOverlay() {
                 Cancel
               </button>
               <button
-                onClick={() => router.push("/")}
+                onClick={() => {
+                  setShowExitConfirm(false);
+                  router.push("/");
+                }}
                 className="px-5 py-2 rounded-xl border text-sm tracking-wider transition-opacity hover:opacity-80"
                 style={{
                   backgroundColor: palette.surface,
