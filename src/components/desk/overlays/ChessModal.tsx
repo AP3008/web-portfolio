@@ -199,7 +199,7 @@ export function ChessModal({ onClose }: ChessModalProps) {
           setMoveIndex(1);
         } else if (moveIndex === 2) {
           // White played Rd8# — checkmate!
-          setMessage("");
+          setMessage("Checkmate!");
           setSolved(true);
         }
       } else {
@@ -305,26 +305,16 @@ export function ChessModal({ onClose }: ChessModalProps) {
               color: wrongMove ? "#eb6f92" : solved ? "#f6c177" : "#9ccfd8",
             }}
           >
-            {message}
-          </div>
-
-          {/* Checkmate banner */}
-          {solved && (
-            <div
-              className="max-w-lg rounded border p-4 text-center backdrop-blur-sm"
-              style={{
-                borderColor: "#f6c177",
-                backgroundColor: "rgba(246, 193, 119, 0.12)",
-              }}
-            >
-              <p className="mb-2 font-bold" style={{ color: "#f6c177" }}>
-                Checkmate!
-              </p>
-              <p className="text-sm leading-relaxed" style={{ color: "#e0def4" }}>
+            <p>{message}</p>
+            {solved && (
+              <p
+                className="mt-2 text-xs font-normal leading-relaxed sm:text-sm"
+                style={{ color: "#e0def4" }}
+              >
                 {chessPuzzle.explanation}
               </p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </>
