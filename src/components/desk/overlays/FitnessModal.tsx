@@ -76,7 +76,7 @@ export function FitnessModal({ onClose }: FitnessModalProps) {
       <div className="flex flex-col gap-6">
         {/* Title with typing effect */}
         <h2
-          className="text-2xl font-bold"
+          className="text-3xl font-bold"
           style={{ color: palette.text }}
         >
           {title}
@@ -94,7 +94,7 @@ export function FitnessModal({ onClose }: FitnessModalProps) {
           href="https://hevy.com/user/adamp3008"
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-xl px-4 py-3 text-sm transition-opacity hover:opacity-80 inline-flex items-center gap-2"
+          className="rounded-xl px-4 py-3 text-base transition-opacity hover:opacity-80 inline-flex items-center gap-2"
           style={{
             backgroundColor: palette.overlay,
             color: palette.iris,
@@ -114,7 +114,7 @@ export function FitnessModal({ onClose }: FitnessModalProps) {
         </a>
 
         {/* Subtitle */}
-        <p className="text-sm" style={{ color: palette.muted }}>
+        <p className="text-base" style={{ color: palette.muted }}>
           Upper / Lower / Shoulders — 5 days on, 2 active rest
         </p>
 
@@ -131,12 +131,12 @@ export function FitnessModal({ onClose }: FitnessModalProps) {
             >
               <div className="flex items-baseline justify-between mb-3">
                 <h3
-                  className="font-bold text-base"
+                  className="font-bold text-lg"
                   style={{ color: palette.iris }}
                 >
                   {day.title}
                 </h3>
-                <span className="text-xs" style={{ color: palette.muted }}>
+                <span className="text-sm" style={{ color: palette.muted }}>
                   {day.schedule}
                 </span>
               </div>
@@ -146,10 +146,10 @@ export function FitnessModal({ onClose }: FitnessModalProps) {
                     key={ex.name}
                     className="flex items-center justify-between"
                   >
-                    <span className="text-sm" style={{ color: palette.text }}>
+                    <span className="text-base" style={{ color: palette.text }}>
                       {ex.name}
                     </span>
-                    <span className="text-sm" style={{ color: palette.subtle }}>
+                    <span className="text-base" style={{ color: palette.subtle }}>
                       {ex.sets}
                     </span>
                   </div>

@@ -24,12 +24,12 @@ function CommitRow({
   palette: (typeof ROSE_PINE_PALETTES)[keyof typeof ROSE_PINE_PALETTES];
 }) {
   return (
-    <div className="flex items-center gap-3 text-xs">
+    <div className="flex items-center gap-3 text-sm">
       <a
         href={commit.htmlUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="truncate flex-1 hover:underline text-sm"
+        className="truncate flex-1 hover:underline text-base"
         style={{ color: palette.text }}
       >
         {commit.message}
@@ -88,7 +88,7 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
     <Modal onClose={onClose}>
       <div className="flex flex-col gap-6">
         {/* Title with typing effect */}
-        <h2 className="text-2xl font-bold" style={{ color: palette.text }}>
+        <h2 className="text-3xl font-bold" style={{ color: palette.text }}>
           {title}
           <span
             className="inline-block w-[2px] h-[1.1em] ml-1 align-middle"
@@ -116,7 +116,7 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
               {/* Header: title + GitHub icon */}
               <div className="flex items-center justify-between mb-1">
                 <h3
-                  className="text-base font-bold"
+                  className="text-lg font-bold"
                   style={{ color: palette.text }}
                 >
                   {project.title}
@@ -140,7 +140,7 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
 
               {/* Description */}
               <p
-                className="text-sm mb-2 leading-relaxed"
+                className="text-base mb-2 leading-relaxed"
                 style={{ color: palette.subtle }}
               >
                 {project.description}
@@ -148,7 +148,7 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
 
               {/* Subtitle */}
               <p
-                className="text-xs mb-3"
+                className="text-sm mb-3"
                 style={{ color: palette.muted }}
               >
                 {project.subtitle}
@@ -159,7 +159,7 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
                 {project.techStack.map((tech) => (
                   <span
                     key={tech}
-                    className="rounded-lg border px-2 py-0.5 text-xs"
+                    className="rounded-lg border px-2.5 py-1 text-sm"
                     style={{
                       borderColor: palette.highlightMed,
                       color: palette.iris,
@@ -186,7 +186,7 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
         {/* View all Projects button */}
         <button
           onClick={() => setShowViewAllConfirm(true)}
-          className="rounded-xl border px-4 py-2.5 text-sm tracking-wider transition-opacity hover:opacity-80 self-start"
+          className="rounded-xl border px-4 py-2.5 text-base tracking-wider transition-opacity hover:opacity-80 self-start"
           style={{
             backgroundColor: palette.surface,
             borderColor: palette.highlightMed,
@@ -200,7 +200,7 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
         {/* web-portfolio commits section */}
         {webPortfolioCommits.length > 0 && (
           <div>
-            <h3 className="font-bold text-base mb-3">
+            <h3 className="font-bold text-lg mb-3">
               <a
                 href="https://github.com/AP3008/web-portfolio"
                 target="_blank"

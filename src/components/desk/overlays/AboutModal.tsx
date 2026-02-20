@@ -43,7 +43,7 @@ export function AboutModal({ onClose }: AboutModalProps) {
     <Modal onClose={onClose}>
       <div className="flex flex-col gap-6">
         {/* Title with typing effect */}
-        <h2 className="text-2xl font-bold" style={{ color: palette.text }}>
+        <h2 className="text-3xl font-bold" style={{ color: palette.text }}>
           {title}
           <span
             className="inline-block w-[2px] h-[1.1em] ml-1 align-middle"
@@ -54,16 +54,25 @@ export function AboutModal({ onClose }: AboutModalProps) {
           />
         </h2>
 
-        <h3 className="text-xl font-bold" style={{ color: palette.text }}>
-          {aboutData.name}
-        </h3>
+        {/* Profile image + name */}
+        <div className="flex items-center gap-5">
+          <img
+            src="/adam_drawing.png"
+            alt="Adam Porbanderwalla"
+            className="w-24 h-24 rounded-full object-cover border-2"
+            style={{ borderColor: palette.highlightMed }}
+          />
+          <h3 className="text-xl font-bold" style={{ color: palette.text }}>
+            {aboutData.name}
+          </h3>
+        </div>
 
         {/* Bio paragraphs */}
         <div className="flex flex-col gap-4">
           {aboutData.bio.map((paragraph, i) => (
             <p
               key={i}
-              className="text-sm leading-relaxed"
+              className="text-base leading-relaxed"
               style={{ color: palette.subtle }}
             >
               {renderBioLine(paragraph, palette)}

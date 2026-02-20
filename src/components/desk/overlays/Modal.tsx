@@ -51,7 +51,7 @@ export function Modal({ children, onClose }: ModalProps) {
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
       >
         <div
-          className="h-[calc(100vh-6rem)] w-[calc(100vw-6rem)] max-w-350 overflow-y-auto rounded-2xl border p-6 shadow-2xl"
+          className="h-[calc(100vh-6rem)] w-[calc(100vw-6rem)] max-w-350 overflow-y-auto rounded-2xl border p-8 shadow-2xl text-base"
           style={{
             backgroundColor: palette.base,
             borderColor: palette.highlightMed,
