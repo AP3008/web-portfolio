@@ -8,6 +8,7 @@ import { useIsDesktop } from "@/lib/device";
 import { useTypingEffect } from "@/lib/useTypingEffect";
 import { useThemeStore } from "@/store/useThemeStore";
 import { ROSE_PINE_PALETTES } from "@/lib/themes";
+import { PersonalSocialLinks } from "@/components/PersonalSocialLinks";
 import { ThemePicker } from "./ThemePicker";
 
 type HoveredSide = "left" | "right" | null;
@@ -92,6 +93,7 @@ export function Gatekeeper() {
           >
             Full-Stack Developer | Studying Computer Science
           </p>
+          <PersonalSocialLinks align="center" />
         </div>
 
         {/* Right — Palette Selector */}

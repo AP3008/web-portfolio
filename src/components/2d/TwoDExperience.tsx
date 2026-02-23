@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ROUTES } from "@/lib/constants";
 import { useTypingEffect } from "@/lib/useTypingEffect";
+import { PersonalSocialLinks } from "@/components/PersonalSocialLinks";
 import { TwoDLayout } from "./TwoDLayout";
 import { ProjectTriangle } from "./ProjectTriangle";
 
@@ -59,6 +60,7 @@ export function TwoDExperience() {
                 Savify
               </a>
             </p>
+            <PersonalSocialLinks align="left" />
           </div>
 
           {/* Right — drawing */}
