@@ -115,4 +115,14 @@ export const projects: Project[] = [
     repoOwner: "AP3008",
     repoName: "web-portfolio",
   },
+  {
+    id: "theia",
+    title: "Theia",
+    description:
+      "Theia was regarded as the goddess from which all files proceeded",
+    subtitle: "",
+    techStack: ["Golang", "Charm Bracelet", "TUI", "OS"],
+    repoOwner: "AP3008",
+    repoName: "Theia",
+  },
 ];

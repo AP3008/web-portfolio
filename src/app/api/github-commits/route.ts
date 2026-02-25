@@ -10,6 +10,7 @@ const PROJECT_REPOS = [
   "lblommesteyn/wds-reciepts",
   "AP3008/accountability",
   "AP3008/web-portfolio",
+  "AP3008/Theia",
 ];
 const WEB_PORTFOLIO_REPO = "AP3008/web-portfolio";
 
