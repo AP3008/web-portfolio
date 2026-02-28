@@ -1,7 +1,9 @@
+import type { ReactNode } from "react";
+
 export interface Project {
   id: string;
   title: string;
-  description: string;
+  description: ReactNode;
   subtitle: string;
   techStack: string[];
   repoOwner: string;
@@ -118,8 +120,12 @@ export const projects: Project[] = [
   {
     id: "theia",
     title: "Theia",
-    description:
-      "Theia was regarded as the goddess from which all files proceeded",
+    description: (
+      <>
+        <em>&quot;Theia was regarded as the goddess from which all files proceeded&quot;</em>{" "}
+        A TUI File explorer built in Go
+      </>
+    ),
     subtitle: "",
     techStack: ["Golang", "Charm Bracelet", "TUI", "OS"],
     repoOwner: "AP3008",
