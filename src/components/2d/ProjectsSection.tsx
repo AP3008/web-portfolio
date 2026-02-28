@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { projects } from "@/components/desk/data/projects";
 import type { CommitData } from "@/app/api/github-commits/route";
 
@@ -8,6 +8,15 @@ export function ProjectsSection() {
   const [latestByRepo, setLatestByRepo] = useState<Record<string, CommitData>>(
     {}
   );
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const equalizeHeights = useCallback(() => {
+    const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+    // Reset to auto so we can measure natural heights
+    cards.forEach((card) => (card.style.height = "auto"));
+    const maxHeight = Math.max(...cards.map((card) => card.offsetHeight));
+    cards.forEach((card) => (card.style.height = `${maxHeight}px`));
+  }, []);
 
   useEffect(() => {
     fetch("/api/github-commits")
@@ -17,6 +26,16 @@ export function ProjectsSection() {
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    equalizeHeights();
+
+    const observer = new ResizeObserver(() => equalizeHeights());
+    const grid = cardRefs.current[0]?.parentElement;
+    if (grid) observer.observe(grid);
+
+    return () => observer.disconnect();
+  }, [latestByRepo, equalizeHeights]);
 
   return (
     <section
@@ -30,7 +49,7 @@ export function ProjectsSection() {
       </h2>
 
       <div className="grid w-full max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => {
+        {projects.map((project, i) => {
           const hasRepo = project.repoOwner && project.repoName;
           const commit = hasRepo
             ? latestByRepo[`${project.repoOwner}/${project.repoName}`]
@@ -39,6 +58,7 @@ export function ProjectsSection() {
           return (
             <div
               key={project.id}
+              ref={(el) => { cardRefs.current[i] = el; }}
               className="flex h-full flex-col gap-3 rounded-xl border p-4 sm:gap-4 sm:p-6 lg:p-7"
               style={{
                 background: "var(--rp-surface)",
