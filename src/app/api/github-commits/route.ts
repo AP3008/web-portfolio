@@ -11,6 +11,7 @@ const PROJECT_REPOS = [
   "AP3008/accountability",
   "AP3008/web-portfolio",
   "AP3008/Theia",
+  "AP3008/Duolingo-Streak",
 ];
 const WEB_PORTFOLIO_REPO = "AP3008/web-portfolio";
 

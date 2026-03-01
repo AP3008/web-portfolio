@@ -131,4 +131,14 @@ export const projects: Project[] = [
     repoOwner: "AP3008",
     repoName: "Theia",
   },
+  {
+    id: "duolingo-streak-api",
+    title: "Duolingo Streak API",
+    description:
+      "An API that returns the users duolingo streak, or an SVG of the users duolingo streak with a small design that they can use on websites or github README.",
+    subtitle: "",
+    techStack: ["Golang", "net/http", "REST API", "Vercel"],
+    repoOwner: "AP3008",
+    repoName: "Duolingo-Streak",
+  },
 ];
