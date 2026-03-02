@@ -204,18 +204,12 @@ function RandomFlipCard({
 
 function GitHubStreakCard() {
   return (
-    <div
-      className="flex items-center justify-center rounded-xl border p-4"
-      style={{
-        background: "var(--rp-surface)",
-        borderColor: "var(--rp-highlight-med)",
-      }}
-    >
+    <div className="flex items-center justify-center">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="https://streak-stats.demolab.com?user=AP3008&theme=rose-pine&hide_border=true&date_format=M%20j%5B%2C%20Y%5D"
+        src="https://streak-stats.demolab.com?user=AP3008&theme=rose-pine&hide_border=true&date_format=M%20j%5B%2C%20Y%5D&border_radius=12&background=00000000"
         alt="GitHub Streak"
-        className="w-full"
+        className="w-full max-w-2xl rounded-xl"
       />
     </div>
   );
@@ -441,11 +435,11 @@ export function HomeShowcase() {
         >
           Current Streaks
         </h2>
-        <div className="grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-3">
-          <GitHubStreakCard />
+        <div className="grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
           <DuolingoStreakCard streak={streak} />
           <PlaceholderStreakCard />
         </div>
+        <GitHubStreakCard />
       </div>
     </div>
   );
