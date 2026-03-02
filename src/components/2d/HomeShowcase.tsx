@@ -435,11 +435,19 @@ export function HomeShowcase() {
         >
           Current Streaks
         </h2>
+        <div className="flex w-full flex-col items-center gap-2">
+          <GitHubStreakCard />
+          <span
+            className="text-xs tracking-widest uppercase"
+            style={{ color: "var(--rp-muted)" }}
+          >
+            github stats
+          </span>
+        </div>
         <div className="grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
           <DuolingoStreakCard streak={streak} />
           <PlaceholderStreakCard />
         </div>
-        <GitHubStreakCard />
       </div>
     </div>
   );
