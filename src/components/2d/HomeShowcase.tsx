@@ -31,7 +31,7 @@ function DuolingoStreak({ streak }: { streak: number | null }) {
       {streak !== null ? (
         <div className="relative flex flex-col items-center gap-5">
           {/* Duo icon */}
-          <Image src="/duo.svg" alt="Duo" width={72} height={72} className="h-16 w-16 sm:h-18 sm:w-18" />
+          <Image src="/duo.svg" alt="Duo" width={115} height={115} className="h-36 w-36 sm:h-36 sm:w-36" />
 
           {/* Streak digits in individual boxes */}
           <div className="flex items-center gap-2 sm:gap-3">
@@ -71,7 +71,7 @@ function DuolingoStreak({ streak }: { streak: number | null }) {
         </div>
       ) : (
         <div className="flex flex-col items-center gap-3">
-          <Image src="/duo.svg" alt="Duo" width={56} height={56} className="h-14 w-14" />
+          <Image src="/duo.svg" alt="Duo" width={96} height={96} className="h-20 w-20 sm:h-24 sm:w-24" />
           <div className="flex items-center gap-2">
             {[0, 1, 2].map((i) => (
               <span
