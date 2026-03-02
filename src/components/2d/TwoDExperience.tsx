@@ -6,7 +6,7 @@ import { ROUTES } from "@/lib/constants";
 import { useTypingEffect } from "@/lib/useTypingEffect";
 import { PersonalSocialLinks } from "@/components/PersonalSocialLinks";
 import { TwoDLayout } from "./TwoDLayout";
-import { ProjectTriangle } from "./ProjectTriangle";
+import { HomeShowcase } from "./HomeShowcase";
 
 const GREETING = "Hey! I'm Adam";
 const TYPING_SPEED_MS = 80;
@@ -77,38 +77,9 @@ export function TwoDExperience() {
         </div>
       </section>
 
-      {/* Featured Projects Section */}
+      {/* Showcase Section */}
       <section className="flex flex-col items-center gap-8 px-4 py-16 sm:px-8 sm:py-24 md:px-16 lg:px-24">
-        {/* Header */}
-        <div className="flex w-full max-w-xl items-center justify-between gap-3">
-          <h2
-            className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
-            style={{ color: "var(--rp-text)" }}
-          >
-            Featured Projects
-          </h2>
-          <Link
-            href="/2d/projects"
-            className="rounded border px-3 py-1.5 text-xs tracking-wider transition-all duration-200 sm:px-5 sm:py-2 sm:text-sm"
-            style={{
-              borderColor: "var(--rp-highlight-high)",
-              color: "var(--rp-subtle)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "var(--rp-iris)";
-              e.currentTarget.style.color = "var(--rp-iris)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "var(--rp-highlight-high)";
-              e.currentTarget.style.color = "var(--rp-subtle)";
-            }}
-          >
-            VIEW ALL
-          </Link>
-        </div>
-
-        {/* Triangle flip cards */}
-        <ProjectTriangle />
+        <HomeShowcase />
 
         {/* Learn more link */}
         <Link
