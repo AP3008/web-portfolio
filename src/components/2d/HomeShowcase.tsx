@@ -6,97 +6,7 @@ import Link from "next/link";
 import { projects, type Project } from "@/components/desk/data/projects";
 import type { CommitData } from "@/app/api/github-commits/route";
 
-function DuolingoStreak({ streak }: { streak: number | null }) {
-  const digits = streak !== null ? String(streak).split("") : [];
-
-  return (
-    <div
-      className="relative flex flex-col items-center justify-center gap-6 overflow-hidden rounded-xl border"
-      style={{
-        background: "var(--rp-surface)",
-        borderColor: "var(--rp-highlight-med)",
-        width: "min(88vw, 430px)",
-        height: "min(88vw, 430px)",
-      }}
-    >
-      {/* Subtle radial glow behind the number */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(circle at 50% 45%, var(--rp-overlay) 0%, transparent 70%)",
-        }}
-      />
-
-      {streak !== null ? (
-        <div className="relative flex flex-col items-center gap-5">
-          {/* Duo icon */}
-          <Image src="/duo.svg" alt="Duo" width={115} height={115} className="h-36 w-36 sm:h-36 sm:w-36" />
-
-          {/* Streak digits in individual boxes */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {digits.map((d, i) => (
-              <span
-                key={i}
-                className="flex items-center justify-center rounded-lg text-4xl font-bold tabular-nums sm:text-5xl"
-                style={{
-                  width: "3.2rem",
-                  height: "4rem",
-                  background: "var(--rp-overlay)",
-                  color: "var(--rp-gold)",
-                  borderBottom: "3px solid var(--rp-gold)",
-                }}
-              >
-                {d}
-              </span>
-            ))}
-          </div>
-
-          {/* Label */}
-          <span
-            className="text-xs tracking-widest uppercase sm:text-sm"
-            style={{ color: "var(--rp-muted)" }}
-          >
-            Day Duolingo Streak
-          </span>
-
-          {/* Progress bar accent */}
-          <div
-            className="h-1 rounded-full"
-            style={{
-              width: "60%",
-              background: `linear-gradient(90deg, var(--rp-gold), var(--rp-love))`,
-            }}
-          />
-        </div>
-      ) : (
-        <div className="flex flex-col items-center gap-3">
-          <Image src="/duo.svg" alt="Duo" width={96} height={96} className="h-20 w-20 sm:h-24 sm:w-24" />
-          <div className="flex items-center gap-2">
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                className="animate-pulse rounded-lg"
-                style={{
-                  width: "3.2rem",
-                  height: "4rem",
-                  background: "var(--rp-overlay)",
-                  animationDelay: `${i * 150}ms`,
-                }}
-              />
-            ))}
-          </div>
-          <span
-            className="text-xs tracking-widest uppercase"
-            style={{ color: "var(--rp-muted)" }}
-          >
-            Loading streak...
-          </span>
-        </div>
-      )}
-    </div>
-  );
-}
+/* ─── Random Flip Card ─── */
 
 function RandomFlipCard({
   project,
@@ -147,7 +57,7 @@ function RandomFlipCard({
             className="px-4 text-center text-sm tracking-wider sm:text-base"
             style={{ color: "var(--rp-muted)" }}
           >
-            Check out a random project
+            Click to reveal random project
           </span>
           <span
             className="text-xs tracking-wider sm:text-sm"
@@ -290,6 +200,151 @@ function RandomFlipCard({
   );
 }
 
+/* ─── Streak Cards ─── */
+
+function GitHubStreakCard() {
+  return (
+    <div
+      className="flex items-center justify-center rounded-xl border p-4"
+      style={{
+        background: "var(--rp-surface)",
+        borderColor: "var(--rp-highlight-med)",
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="https://streak-stats.demolab.com?user=AP3008&theme=rose-pine&hide_border=true&date_format=M%20j%5B%2C%20Y%5D"
+        alt="GitHub Streak"
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+function DuolingoStreakCard({ streak }: { streak: number | null }) {
+  const digits = streak !== null ? String(streak).split("") : [];
+
+  return (
+    <div
+      className="relative flex flex-col items-center justify-center gap-4 overflow-hidden rounded-xl border p-6"
+      style={{
+        background: "var(--rp-surface)",
+        borderColor: "var(--rp-highlight-med)",
+      }}
+    >
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 40%, var(--rp-overlay) 0%, transparent 70%)",
+        }}
+      />
+
+      {streak !== null ? (
+        <div className="relative flex flex-col items-center gap-4">
+          <Image
+            src="/duo.svg"
+            alt="Duo"
+            width={115}
+            height={115}
+            className="h-36 w-36 sm:h-36 sm:w-36"
+          />
+          <div className="flex items-center gap-2">
+            {digits.map((d, i) => (
+              <span
+                key={i}
+                className="flex items-center justify-center rounded-lg text-3xl font-bold tabular-nums sm:text-4xl"
+                style={{
+                  width: "2.8rem",
+                  height: "3.5rem",
+                  background: "var(--rp-overlay)",
+                  color: "var(--rp-gold)",
+                  borderBottom: "3px solid var(--rp-gold)",
+                }}
+              >
+                {d}
+              </span>
+            ))}
+          </div>
+          <span
+            className="text-xs tracking-widest uppercase"
+            style={{ color: "var(--rp-muted)" }}
+          >
+            Day Duolingo Streak
+          </span>
+          <div
+            className="h-1 rounded-full"
+            style={{
+              width: "60%",
+              background: "linear-gradient(90deg, var(--rp-gold), var(--rp-love))",
+            }}
+          />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center gap-3">
+          <Image
+            src="/duo.svg"
+            alt="Duo"
+            width={96}
+            height={96}
+            className="h-20 w-20"
+          />
+          <div className="flex items-center gap-2">
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className="animate-pulse rounded-lg"
+                style={{
+                  width: "2.8rem",
+                  height: "3.5rem",
+                  background: "var(--rp-overlay)",
+                  animationDelay: `${i * 150}ms`,
+                }}
+              />
+            ))}
+          </div>
+          <span
+            className="text-xs tracking-widest uppercase"
+            style={{ color: "var(--rp-muted)" }}
+          >
+            Loading streak...
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PlaceholderStreakCard() {
+  return (
+    <div
+      className="flex flex-col items-center justify-center gap-4 rounded-xl border p-6"
+      style={{
+        background: "var(--rp-surface)",
+        borderColor: "var(--rp-highlight-med)",
+      }}
+    >
+      <span className="text-4xl" style={{ color: "var(--rp-iris)" }}>
+        🏆
+      </span>
+      <span
+        className="text-3xl font-bold sm:text-4xl"
+        style={{ color: "var(--rp-iris)" }}
+      >
+        —
+      </span>
+      <span
+        className="text-xs tracking-widest uppercase"
+        style={{ color: "var(--rp-muted)" }}
+      >
+        More coming soon
+      </span>
+    </div>
+  );
+}
+
+/* ─── Main Showcase ─── */
+
 export function HomeShowcase() {
   const [streak, setStreak] = useState<number | null>(null);
   const [latestByRepo, setLatestByRepo] = useState<
@@ -299,19 +354,16 @@ export function HomeShowcase() {
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const pickNextProject = useCallback(
-    (seen: Set<string>) => {
-      let available = projects.filter((p) => !seen.has(p.id));
-      if (available.length === 0) {
-        setSeenIds(new Set());
-        available = projects;
-      }
-      const pick = available[Math.floor(Math.random() * available.length)];
-      setSeenIds((prev) => new Set(prev).add(pick.id));
-      setCurrentProject(pick);
-    },
-    [],
-  );
+  const pickNextProject = useCallback((seen: Set<string>) => {
+    let available = projects.filter((p) => !seen.has(p.id));
+    if (available.length === 0) {
+      setSeenIds(new Set());
+      available = projects;
+    }
+    const pick = available[Math.floor(Math.random() * available.length)];
+    setSeenIds((prev) => new Set(prev).add(pick.id));
+    setCurrentProject(pick);
+  }, []);
 
   useEffect(() => {
     pickNextProject(seenIds);
@@ -351,29 +403,50 @@ export function HomeShowcase() {
       : undefined;
 
   return (
-    <div className="flex w-full flex-col items-center gap-8">
-      <div className="grid w-full max-w-[920px] grid-cols-1 items-center justify-items-center gap-8 md:grid-cols-2">
-        <DuolingoStreak streak={streak} />
+    <div className="flex w-full flex-col items-center gap-16">
+      {/* Section 1: Random Project */}
+      <div className="flex flex-col items-center gap-6">
+        <h2
+          className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
+          style={{ color: "var(--rp-text)" }}
+        >
+          Random Project
+        </h2>
         <RandomFlipCard
           project={currentProject}
           isFlipped={isFlipped}
           onClick={handleCardClick}
           commit={commit}
         />
+        <Link
+          href="/2d/projects"
+          className="text-xs tracking-wider transition-colors duration-200 sm:text-sm"
+          style={{ color: "var(--rp-subtle)" }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = "var(--rp-iris)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = "var(--rp-subtle)";
+          }}
+        >
+          VIEW ALL PROJECTS →
+        </Link>
       </div>
-      <Link
-        href="/2d/projects"
-        className="text-xs tracking-wider transition-colors duration-200 sm:text-sm"
-        style={{ color: "var(--rp-subtle)" }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.color = "var(--rp-iris)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.color = "var(--rp-subtle)";
-        }}
-      >
-        VIEW ALL PROJECTS →
-      </Link>
+
+      {/* Section 2: Current Streaks */}
+      <div className="flex w-full flex-col items-center gap-6">
+        <h2
+          className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
+          style={{ color: "var(--rp-text)" }}
+        >
+          Current Streaks
+        </h2>
+        <div className="grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-3">
+          <GitHubStreakCard />
+          <DuolingoStreakCard streak={streak} />
+          <PlaceholderStreakCard />
+        </div>
+      </div>
     </div>
   );
 }
