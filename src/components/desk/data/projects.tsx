@@ -141,4 +141,13 @@ export const projects: Project[] = [
     repoOwner: "AP3008",
     repoName: "Duolingo-Streak",
   },
+  {
+    id: "bmo",
+    title: "BMO",
+    description: "Agentic Desktop Assistant",
+    subtitle: "",
+    techStack: ["Tauri", "Rust", "React", "TypeScript", "TailwindCSS"],
+    repoOwner: "AP3008",
+    repoName: "BMO",
+  },
 ];
