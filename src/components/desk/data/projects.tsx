@@ -5,12 +5,35 @@ export interface Project {
   title: string;
   description: ReactNode;
   subtitle: string;
+  award?: string;
   techStack: string[];
   repoOwner: string;
   repoName: string;
+  devpostUrl?: string;
 }
 
 export const projects: Project[] = [
+  {
+    id: "janus",
+    title: "Janus",
+    description:
+      "Token compression proxy for coding agents that all runs locally.",
+    subtitle: "Built for GenAI Genesis | 2026",
+    award: "1st in Google Sustainability Track",
+    techStack: [
+      "Rust",
+      "Tokio",
+      "Axum",
+      "Ratatui",
+      "tree-sitter",
+      "fastembed",
+      "Redis",
+      "Docker",
+    ],
+    repoOwner: "AP3008",
+    repoName: "Janus",
+    devpostUrl: "https://devpost.com/software/janus-u9e3cl",
+  },
   {
     id: "findmyprof",
     title: "FindMyProf",
@@ -28,6 +51,7 @@ export const projects: Project[] = [
     ],
     repoOwner: "garv130",
     repoName: "FindMyProf",
+    devpostUrl: "https://devpost.com/software/findmyprof",
   },
   {
     id: "reflecta",
@@ -38,6 +62,7 @@ export const projects: Project[] = [
     techStack: ["TypeScript", "Next.js", "Supabase+Auth", "Gemini API"],
     repoOwner: "adit1110",
     repoName: "Reflecta",
+    devpostUrl: "https://devpost.com/software/reflecto",
   },
   {
     id: "learningtofly",

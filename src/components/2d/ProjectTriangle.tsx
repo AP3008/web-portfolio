@@ -2,10 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { projects, type Project } from "@/components/desk/data/projects";
+import {
+  GITHUB_ICON_PATH,
+  DEVPOST_ICON_PATH,
+} from "@/components/desk/data/socials";
 import type { CommitData } from "@/app/api/github-commits/route";
 
 // Define the triangle order: top, bottom-left, bottom-right
-const TRIANGLE_ORDER = ["findmyprof", "reflecta", "learningtofly"] as const;
+const TRIANGLE_ORDER = ["janus", "findmyprof", "reflecta"] as const;
 
 function FlipCard({
   project,
@@ -90,19 +94,52 @@ function FlipCard({
                   {project.subtitle}
                 </span>
               )}
+              {project.award && (
+                <span
+                  className="block text-xs font-semibold sm:text-sm"
+                  style={{ color: "var(--rp-gold)" }}
+                >
+                  {project.award}
+                </span>
+              )}
             </div>
-            {hasRepo && (
-              <a
-                href={`https://github.com/${project.repoOwner}/${project.repoName}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shrink-0 text-xs tracking-wider transition-colors duration-200 sm:text-sm"
-                style={{ color: "var(--rp-foam)" }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                REPO →
-              </a>
-            )}
+            <div
+              className="flex shrink-0 items-center gap-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {hasRepo && (
+                <a
+                  href={`https://github.com/${project.repoOwner}/${project.repoName}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-opacity hover:opacity-70"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4 sm:h-5 sm:w-5"
+                    fill="var(--rp-foam)"
+                  >
+                    <path d={GITHUB_ICON_PATH} />
+                  </svg>
+                </a>
+              )}
+              {project.devpostUrl && (
+                <a
+                  href={project.devpostUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-opacity hover:opacity-70"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4 sm:h-5 sm:w-5"
+                    fill="var(--rp-foam)"
+                  >
+                    <path d={DEVPOST_ICON_PATH} />
+                  </svg>
+                </a>
+              )}
+            </div>
           </div>
 
           <p
@@ -180,7 +217,7 @@ function FlipCard({
 }
 
 export function ProjectTriangle() {
-  const [revealedId, setRevealedId] = useState<string>("findmyprof");
+  const [revealedId, setRevealedId] = useState<string>("janus");
   const [latestByRepo, setLatestByRepo] = useState<Record<string, CommitData>>(
     {}
   );
