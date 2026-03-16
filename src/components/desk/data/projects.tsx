@@ -18,7 +18,7 @@ export const projects: Project[] = [
     title: "Janus",
     description:
       "Token compression proxy for coding agents that all runs locally.",
-    subtitle: 'Built for "GenAI Genesis | 2026"',
+    subtitle: "Built for GenAI Genesis | 2026",
     award: "1st in Google Sustainability Track",
     techStack: [
       "Rust",
