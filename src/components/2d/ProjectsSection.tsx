@@ -2,6 +2,10 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { projects } from "@/components/desk/data/projects";
+import {
+  GITHUB_ICON_PATH,
+  DEVPOST_ICON_PATH,
+} from "@/components/desk/data/socials";
 import type { CommitData } from "@/app/api/github-commits/route";
 
 export function ProjectsSection() {
@@ -82,24 +86,49 @@ export function ProjectsSection() {
                       {project.subtitle}
                     </span>
                   )}
+                  {project.award && (
+                    <span
+                      className="block text-xs font-semibold sm:text-sm"
+                      style={{ color: "var(--rp-gold)" }}
+                    >
+                      {project.award}
+                    </span>
+                  )}
                 </div>
-                {hasRepo && (
-                  <a
-                    href={`https://github.com/${project.repoOwner}/${project.repoName}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 text-xs tracking-wider transition-colors duration-200 sm:text-sm"
-                    style={{ color: "var(--rp-foam)" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color = "var(--rp-text)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "var(--rp-foam)")
-                    }
-                  >
-                    REPO →
-                  </a>
-                )}
+                <div className="flex shrink-0 items-center gap-2">
+                  {hasRepo && (
+                    <a
+                      href={`https://github.com/${project.repoOwner}/${project.repoName}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="transition-opacity hover:opacity-70"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-4 w-4 sm:h-5 sm:w-5"
+                        fill="var(--rp-foam)"
+                      >
+                        <path d={GITHUB_ICON_PATH} />
+                      </svg>
+                    </a>
+                  )}
+                  {project.devpostUrl && (
+                    <a
+                      href={project.devpostUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="transition-opacity hover:opacity-70"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-4 w-4 sm:h-5 sm:w-5"
+                        fill="var(--rp-foam)"
+                      >
+                        <path d={DEVPOST_ICON_PATH} />
+                      </svg>
+                    </a>
+                  )}
+                </div>
               </div>
 
               {/* Description */}

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 const PROJECT_REPOS = [
+  "AP3008/Janus",
   "garv130/FindMyProf",
   "adit1110/Reflecta",
   "AP3008/Learning-To-Fly",
