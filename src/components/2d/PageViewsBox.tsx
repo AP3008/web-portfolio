@@ -36,7 +36,7 @@ export function PageViewsBox() {
   }
 
   const display =
-    state.status === "loaded" ? state.count.toLocaleString("en-US") : "—";
+    state.status === "loaded" ? state.count.toLocaleString("en-US") : "0";
 
   return (
     <span

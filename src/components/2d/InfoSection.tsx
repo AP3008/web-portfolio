@@ -104,11 +104,13 @@ export function InfoSection() {
 
           {/* Page Views */}
           <div
-            className="min-w-[200px] flex-1 rounded-xl border p-4 sm:p-6"
+            className="flex min-w-[200px] flex-1 flex-col rounded-xl border p-4 sm:p-6"
             style={boxStyle}
           >
             <BoxTitle icon={<EyeIcon />} label="Page Views" />
-            <PageViewsBox />
+            <div className="flex flex-1 items-center justify-center">
+              <PageViewsBox />
+            </div>
           </div>
         </div>
       </div>
