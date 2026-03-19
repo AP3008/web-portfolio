@@ -6,7 +6,7 @@ const LeafletMap = dynamic(() => import("./LeafletMapInner"), {
   ssr: false,
   loading: () => (
     <div
-      className="h-[200px] w-full animate-pulse rounded-lg"
+      className="h-full w-full animate-pulse rounded-lg"
       style={{ background: "var(--rp-overlay)" }}
     />
   ),

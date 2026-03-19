@@ -83,34 +83,6 @@ export function InfoSection() {
   return (
     <section className="px-4 py-12 sm:px-8 sm:py-16 md:px-16 lg:px-24">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
-        {/* Bio text */}
-        <p
-          className="text-sm leading-relaxed sm:text-base"
-          style={{ color: "var(--rp-subtle)" }}
-        >
-          I&apos;m currently studying computer science at{" "}
-          <a
-            href="https://www.uwo.ca/index.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline decoration-1 underline-offset-2 hover:decoration-2"
-            style={{ color: "var(--rp-foam)" }}
-          >
-            Western University
-          </a>{" "}
-          and working at{" "}
-          <a
-            href="https://savify.ca"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline decoration-1 underline-offset-2 hover:decoration-2"
-            style={{ color: "var(--rp-foam)" }}
-          >
-            Savify
-          </a>
-          .
-        </p>
-
         {/* Three-box row */}
         <div className="flex flex-wrap gap-4">
           {/* Theme */}
@@ -121,11 +93,13 @@ export function InfoSection() {
 
           {/* Currently Living In */}
           <div
-            className="min-w-[280px] flex-1 rounded-xl border p-4 sm:p-6"
+            className="flex min-w-[280px] flex-1 flex-col rounded-xl border p-4 sm:p-6"
             style={boxStyle}
           >
-            <BoxTitle icon={<LocationPinIcon />} label="Currently Living In" />
-            <LocationMap />
+            <BoxTitle icon={<LocationPinIcon />} label="Living In | London, ON, Canada" />
+            <div className="min-h-[200px] flex-1 overflow-hidden rounded-lg">
+              <LocationMap />
+            </div>
           </div>
 
           {/* Page Views */}
