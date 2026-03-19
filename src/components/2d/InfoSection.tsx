@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { ThemePicker } from "@/components/gate/ThemePicker";
 import { LocationMap } from "./LocationMap";
 import { PageViewsBox } from "./PageViewsBox";
@@ -80,6 +80,13 @@ const boxStyle: React.CSSProperties = {
 };
 
 export function InfoSection() {
+  const [mapReady, setMapReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setMapReady(true), 900);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section className="px-4 py-12 sm:px-8 sm:py-16 md:px-16 lg:px-24">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
@@ -98,7 +105,14 @@ export function InfoSection() {
           >
             <BoxTitle icon={<LocationPinIcon />} label="Living In | London, ON, Canada" />
             <div className="min-h-[200px] flex-1 overflow-hidden rounded-lg">
-              <LocationMap />
+              {mapReady ? (
+                <LocationMap />
+              ) : (
+                <div
+                  className="h-full w-full animate-pulse rounded-lg"
+                  style={{ background: "var(--rp-overlay)" }}
+                />
+              )}
             </div>
           </div>
 
