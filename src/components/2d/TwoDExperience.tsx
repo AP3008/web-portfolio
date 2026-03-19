@@ -7,6 +7,7 @@ import { useTypingEffect } from "@/lib/useTypingEffect";
 import { PersonalSocialLinks } from "@/components/PersonalSocialLinks";
 import { TwoDLayout } from "./TwoDLayout";
 import { ProjectTriangle } from "./ProjectTriangle";
+import { InfoSection } from "./InfoSection";
 
 const GREETING = "Hey! I'm Adam";
 const TYPING_SPEED_MS = 80;
@@ -76,6 +77,8 @@ export function TwoDExperience() {
           </div>
         </div>
       </section>
+
+      <InfoSection />
 
       {/* Featured Projects Section */}
       <section className="flex flex-col items-center gap-8 px-4 py-16 sm:px-8 sm:py-24 md:px-16 lg:px-24">

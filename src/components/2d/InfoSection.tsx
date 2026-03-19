@@ -1,0 +1,143 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { ThemePicker } from "@/components/gate/ThemePicker";
+import { LocationMap } from "./LocationMap";
+import { PageViewsBox } from "./PageViewsBox";
+
+function PaletteIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+      <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+      <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+      <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125C12.99 18.975 13 18.482 13 18c0-1.105.895-2 2-2h1.148C19.1 16 21 14.1 21 11.724 21 6.313 17.016 2 12 2z" />
+    </svg>
+  );
+}
+
+function LocationPinIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+function EyeIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+function BoxTitle({ icon, label }: { icon: ReactNode; label: string }) {
+  return (
+    <div
+      className="mb-4 flex items-center gap-1.5 text-xs uppercase tracking-widest"
+      style={{ color: "var(--rp-muted)" }}
+    >
+      {icon}
+      {label}
+    </div>
+  );
+}
+
+const boxStyle: React.CSSProperties = {
+  background: "var(--rp-surface)",
+  borderColor: "var(--rp-highlight-med)",
+};
+
+export function InfoSection() {
+  return (
+    <section className="px-4 py-12 sm:px-8 sm:py-16 md:px-16 lg:px-24">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
+        {/* Bio text */}
+        <p
+          className="text-sm leading-relaxed sm:text-base"
+          style={{ color: "var(--rp-subtle)" }}
+        >
+          I&apos;m currently studying computer science at{" "}
+          <a
+            href="https://www.uwo.ca/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-1 underline-offset-2 hover:decoration-2"
+            style={{ color: "var(--rp-foam)" }}
+          >
+            Western University
+          </a>{" "}
+          and working at{" "}
+          <a
+            href="https://savify.ca"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-1 underline-offset-2 hover:decoration-2"
+            style={{ color: "var(--rp-foam)" }}
+          >
+            Savify
+          </a>
+          .
+        </p>
+
+        {/* Three-box row */}
+        <div className="flex flex-wrap gap-4">
+          {/* Theme */}
+          <div className="rounded-xl border p-4 sm:p-6" style={boxStyle}>
+            <BoxTitle icon={<PaletteIcon />} label="Theme" />
+            <ThemePicker mode="compact" />
+          </div>
+
+          {/* Currently Living In */}
+          <div
+            className="min-w-[280px] flex-1 rounded-xl border p-4 sm:p-6"
+            style={boxStyle}
+          >
+            <BoxTitle icon={<LocationPinIcon />} label="Currently Living In" />
+            <LocationMap />
+          </div>
+
+          {/* Page Views */}
+          <div
+            className="min-w-[200px] flex-1 rounded-xl border p-4 sm:p-6"
+            style={boxStyle}
+          >
+            <BoxTitle icon={<EyeIcon />} label="Page Views" />
+            <PageViewsBox />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
