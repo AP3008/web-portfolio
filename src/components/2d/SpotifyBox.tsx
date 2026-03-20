@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useThemeStore } from "@/store/useThemeStore";
 import type { SpotifyTrack } from "@/app/api/spotify/route";
 
 type State =
@@ -10,6 +11,7 @@ type State =
 
 export function SpotifyBox() {
   const [state, setState] = useState<State>({ status: "loading" });
+  const variant = useThemeStore((s) => s.variant);
 
   useEffect(() => {
     fetch("/api/spotify")
@@ -21,10 +23,12 @@ export function SpotifyBox() {
       .catch(() => setState({ status: "error" }));
   }, []);
 
+  const spotifyTheme = variant === "dawn" ? "1" : "0";
+
   if (state.status === "loading") {
     return (
       <div
-        className="h-[80px] w-full animate-pulse rounded-lg"
+        className="h-20 w-full animate-pulse rounded-lg"
         style={{ background: "var(--rp-overlay)" }}
       />
     );
@@ -43,13 +47,15 @@ export function SpotifyBox() {
 
   return (
     <iframe
-      src={`https://open.spotify.com/embed/track/${state.track.trackId}?utm_source=generator&theme=0`}
+      src={`https://open.spotify.com/embed/track/${state.track.trackId}?utm_source=generator&theme=${spotifyTheme}`}
       width="100%"
-      height="152"
-      frameBorder="0"
+      height="80"
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       loading="lazy"
-      style={{ borderRadius: "0.5rem" }}
+      style={{
+        borderRadius: "0.5rem",
+        border: "none",
+      }}
     />
   );
 }

@@ -3,7 +3,6 @@
 import { useState, useEffect, type ReactNode } from "react";
 import { ThemePicker } from "@/components/gate/ThemePicker";
 import { LocationMap } from "./LocationMap";
-import { SpotifyBox } from "./SpotifyBox";
 
 function PaletteIcon() {
   return (
@@ -122,8 +121,18 @@ export function InfoSection() {
             className="flex min-w-[280px] flex-1 flex-col rounded-xl border p-4 sm:p-6"
             style={boxStyle}
           >
-            <BoxTitle icon={<MusicIcon />} label="Last Played" />
-            <SpotifyBox />
+            <BoxTitle icon={<MusicIcon />} label="Coming Soon" />
+            <div
+              className="flex min-h-20 flex-1 items-center justify-center rounded-lg"
+              style={{ background: "var(--rp-overlay)" }}
+            >
+              <span
+                className="text-sm tracking-wide"
+                style={{ color: "var(--rp-muted)" }}
+              >
+                —
+              </span>
+            </div>
           </div>
         </div>
       </div>

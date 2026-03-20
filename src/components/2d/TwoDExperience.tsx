@@ -7,6 +7,7 @@ import { useTypingEffect } from "@/lib/useTypingEffect";
 import { PersonalSocialLinks } from "@/components/PersonalSocialLinks";
 import { TwoDLayout } from "./TwoDLayout";
 import { ProjectTriangle } from "./ProjectTriangle";
+import { InfoBar } from "./InfoBar";
 import { InfoSection } from "./InfoSection";
 
 const GREETING = "Hey! I'm Adam";
@@ -133,6 +134,8 @@ export function TwoDExperience() {
           Connect with me! →
         </Link>
       </section>
+
+      <InfoBar />
     </TwoDLayout>
   );
 }
