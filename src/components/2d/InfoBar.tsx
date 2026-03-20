@@ -81,6 +81,7 @@ export function InfoBar() {
           timeZone: "America/Toronto",
           hour: "2-digit",
           minute: "2-digit",
+          second: "2-digit",
           hour12: false,
         })
       );
@@ -108,7 +109,7 @@ export function InfoBar() {
   return (
     <section className="px-4 py-4 sm:px-8 md:px-16 lg:px-24" style={{ background: "var(--rp-base)" }}>
       <div
-        className="mx-auto flex w-full max-w-5xl flex-col gap-3 rounded-xl border px-4 py-3 md:flex-row md:items-center md:gap-4"
+        className="mx-auto flex w-full max-w-5xl flex-col items-center gap-3 rounded-xl border px-4 py-3 md:flex-row md:gap-4"
         style={{
           background: "var(--rp-surface)",
           borderColor: "var(--rp-highlight-med)",

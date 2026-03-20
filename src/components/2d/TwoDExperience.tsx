@@ -93,7 +93,7 @@ export function TwoDExperience() {
           </h2>
           <Link
             href="/2d/projects"
-            className="rounded border px-3 py-1.5 text-xs tracking-wider transition-all duration-200 sm:px-5 sm:py-2 sm:text-sm"
+            className="rounded border px-3 py-1.5 text-center text-xs tracking-wider transition-all duration-200 sm:px-5 sm:py-2 sm:text-sm"
             style={{
               borderColor: "var(--rp-highlight-high)",
               color: "var(--rp-subtle)",
