@@ -3,7 +3,7 @@
 import { useState, useEffect, type ReactNode } from "react";
 import { ThemePicker } from "@/components/gate/ThemePicker";
 import { LocationMap } from "./LocationMap";
-import { PageViewsBox } from "./PageViewsBox";
+import { SpotifyBox } from "./SpotifyBox";
 
 function PaletteIcon() {
   return (
@@ -44,7 +44,7 @@ function LocationPinIcon() {
   );
 }
 
-function EyeIcon() {
+function MusicIcon() {
   return (
     <svg
       width="14"
@@ -56,8 +56,9 @@ function EyeIcon() {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-      <circle cx="12" cy="12" r="3" />
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="18" cy="16" r="3" />
     </svg>
   );
 }
@@ -116,15 +117,13 @@ export function InfoSection() {
             </div>
           </div>
 
-          {/* Page Views */}
+          {/* Last Played */}
           <div
-            className="flex min-w-[200px] flex-1 flex-col rounded-xl border p-4 sm:p-6"
+            className="flex min-w-[280px] flex-1 flex-col rounded-xl border p-4 sm:p-6"
             style={boxStyle}
           >
-            <BoxTitle icon={<EyeIcon />} label="Page Views" />
-            <div className="flex flex-1 items-center justify-center">
-              <PageViewsBox />
-            </div>
+            <BoxTitle icon={<MusicIcon />} label="Last Played" />
+            <SpotifyBox />
           </div>
         </div>
       </div>
