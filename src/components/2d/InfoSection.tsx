@@ -3,12 +3,13 @@
 import { useState, useEffect, type ReactNode } from "react";
 import { ThemePicker } from "@/components/gate/ThemePicker";
 import { LocationMap } from "./LocationMap";
+import { ColourMatrix } from "./ColourMatrix";
 
 function PaletteIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="18"
+      height="18"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -28,8 +29,8 @@ function PaletteIcon() {
 function LocationPinIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="18"
+      height="18"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -43,29 +44,10 @@ function LocationPinIcon() {
   );
 }
 
-function MusicIcon() {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M9 18V5l12-2v13" />
-      <circle cx="6" cy="18" r="3" />
-      <circle cx="18" cy="16" r="3" />
-    </svg>
-  );
-}
-
 function BoxTitle({ icon, label }: { icon: ReactNode; label: string }) {
   return (
     <div
-      className="mb-4 flex items-center gap-1.5 text-xs uppercase tracking-widest"
+      className="mb-4 flex items-center gap-2 text-sm uppercase tracking-widest"
       style={{ color: "var(--rp-muted)" }}
     >
       {icon}
@@ -116,23 +98,12 @@ export function InfoSection() {
             </div>
           </div>
 
-          {/* Last Played */}
+          {/* Colour Matrix */}
           <div
             className="flex min-w-[280px] flex-1 flex-col rounded-xl border p-4 sm:p-6"
             style={boxStyle}
           >
-            <BoxTitle icon={<MusicIcon />} label="Coming Soon" />
-            <div
-              className="flex min-h-20 flex-1 items-center justify-center rounded-lg"
-              style={{ background: "var(--rp-overlay)" }}
-            >
-              <span
-                className="text-sm tracking-wide"
-                style={{ color: "var(--rp-muted)" }}
-              >
-                —
-              </span>
-            </div>
+            <ColourMatrix />
           </div>
         </div>
       </div>
