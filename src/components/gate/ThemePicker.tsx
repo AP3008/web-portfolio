@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect, useCallback } from "react";
 import { useThemeStore } from "@/store/useThemeStore";
 import {
   ROSE_PINE_PALETTES,
@@ -30,6 +30,42 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
   const palette = ROSE_PINE_PALETTES[variant];
 
   const colorOptions = variant === "dawn" ? TEXT_COLOR_OPTIONS_DAWN : TEXT_COLOR_OPTIONS;
+
+  // Floating ring for color circles
+  const circleRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [ringStyle, setRingStyle] = useState<React.CSSProperties | null>(null);
+  const hasAnimated = useRef(false);
+
+  const updateRing = useCallback(() => {
+    const idx = (colorOptions as readonly string[]).indexOf(textColor);
+    const btn = circleRefs.current[idx];
+    const container = containerRef.current;
+    if (!btn || !container) { setRingStyle(null); return; }
+    const offset = isExpanded ? 4 : 3;
+    setRingStyle({
+      left: btn.offsetLeft - offset - 2,
+      top: btn.offsetTop - offset - 2,
+      width: btn.offsetWidth + (offset + 2) * 2,
+      height: btn.offsetHeight + (offset + 2) * 2,
+    });
+  }, [textColor, colorOptions, isExpanded]);
+
+  useLayoutEffect(() => {
+    // Skip transition on first render
+    if (!hasAnimated.current) {
+      hasAnimated.current = true;
+    }
+    updateRing();
+  }, [updateRing]);
+
+  useLayoutEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver(() => updateRing());
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, [updateRing]);
 
   return (
     <div
@@ -127,24 +163,35 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
         >
           Text Colour
         </span>
-        <div className={isExpanded ? "flex flex-wrap gap-4" : "flex flex-wrap gap-3"}>
-          {colorOptions.map((color) => (
+        <div
+          ref={containerRef}
+          className={isExpanded ? "relative flex flex-wrap gap-4" : "relative flex flex-wrap gap-3"}
+        >
+          {ringStyle && (
+            <div
+              style={{
+                position: "absolute",
+                borderRadius: "9999px",
+                border: `2px solid ${textColor}`,
+                pointerEvents: "none",
+                transition: hasAnimated.current
+                  ? "all 300ms cubic-bezier(0.4, 0, 0.2, 1)"
+                  : "none",
+                ...ringStyle,
+              }}
+            />
+          )}
+          {colorOptions.map((color, i) => (
             <button
               key={color}
+              ref={(el) => { circleRefs.current[i] = el; }}
               onClick={() => setTextColor(color)}
               className={
                 isExpanded
-                  ? "h-10 w-10 rounded-full transition-all duration-200"
-                  : "h-7 w-7 rounded-full transition-all duration-200"
+                  ? "h-10 w-10 rounded-full"
+                  : "h-7 w-7 rounded-full"
               }
-              style={{
-                background: color,
-                outline:
-                  textColor === color
-                    ? `2px solid ${color}`
-                    : "2px solid transparent",
-                outlineOffset: isExpanded ? "4px" : "3px",
-              }}
+              style={{ background: color }}
               aria-label={`Set text color to ${color}`}
             />
           ))}
