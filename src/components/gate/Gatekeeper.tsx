@@ -10,6 +10,7 @@ import { useThemeStore } from "@/store/useThemeStore";
 import { ROSE_PINE_PALETTES } from "@/lib/themes";
 import { PersonalSocialLinks } from "@/components/PersonalSocialLinks";
 import { ThemePicker } from "./ThemePicker";
+import { InfoBar } from "@/components/2d/InfoBar";
 
 type HoveredSide = "left" | "right" | null;
 
@@ -101,6 +102,8 @@ export function Gatekeeper() {
           <ThemePicker />
         </div>
       </section>
+
+      <InfoBar />
 
       {/* Section 2 — Full-Page Experience Chooser */}
       <section

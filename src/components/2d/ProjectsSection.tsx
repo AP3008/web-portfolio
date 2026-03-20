@@ -7,6 +7,7 @@ import {
   DEVPOST_ICON_PATH,
 } from "@/components/desk/data/socials";
 import type { CommitData } from "@/app/api/github-commits/route";
+import { InfoBar } from "./InfoBar";
 
 export function ProjectsSection() {
   const [latestByRepo, setLatestByRepo] = useState<Record<string, CommitData>>(
@@ -205,6 +206,8 @@ export function ProjectsSection() {
           );
         })}
       </div>
+
+      <InfoBar />
     </section>
   );
 }

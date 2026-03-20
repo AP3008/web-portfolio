@@ -31,8 +31,8 @@ function ClockIcon() {
 function CommitIcon() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="24"
+      height="24"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -106,7 +106,7 @@ export function InfoBar() {
   }, []);
 
   return (
-    <section className="px-4 py-4 sm:px-8 md:px-16 lg:px-24">
+    <section className="px-4 py-4 sm:px-8 md:px-16 lg:px-24" style={{ background: "var(--rp-base)" }}>
       <div
         className="mx-auto flex w-full max-w-5xl flex-col gap-3 rounded-xl border px-4 py-3 md:flex-row md:items-center md:gap-4"
         style={{
@@ -140,13 +140,13 @@ export function InfoBar() {
               href={commit.htmlUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-sm"
+              className="font-mono text-base"
               style={{ color: "inherit" }}
             >
               {commit.shortSha}
             </a>
           ) : (
-            <span className="font-mono text-sm" style={{ color: "var(--rp-muted)" }}>
+            <span className="font-mono text-base" style={{ color: "var(--rp-muted)" }}>
               ———
             </span>
           )}

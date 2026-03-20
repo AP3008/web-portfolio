@@ -1,6 +1,7 @@
 "use client";
 
 import { socialLinks } from "@/components/desk/data/socials";
+import { InfoBar } from "./InfoBar";
 
 export function SocialsSection() {
   return (
@@ -80,6 +81,8 @@ export function SocialsSection() {
           </a>
         ))}
       </div>
+
+      <InfoBar />
     </section>
   );
 }

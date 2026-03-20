@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { aboutData } from "@/components/desk/data/about";
+import { InfoBar } from "./InfoBar";
 
 const BIO_LINKS: Record<string, { label: string; url: string }> = {
   "{western}": { label: "Western University", url: "https://www.uwo.ca/index.html" },
@@ -112,6 +113,8 @@ export function AboutSection() {
           </div>
         </div>
       </div>
+
+      <InfoBar />
 
       <Link
         href="/2d/projects"
