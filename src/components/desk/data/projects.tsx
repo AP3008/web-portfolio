@@ -175,4 +175,22 @@ export const projects: Project[] = [
     repoOwner: "AP3008",
     repoName: "BMO",
   },
+  {
+    id: "argo-labs",
+    title: "Argo Labs",
+    description:
+      "CNN model built from scratch to classify tumors in the brain based off MRI scans.",
+    subtitle: "",
+    techStack: [
+      "Jupyter Notebook",
+      "Google Colab",
+      "PyTorch",
+      "torchvision",
+      "FastAPI",
+      "Vite + React",
+      "Three.js",
+    ],
+    repoOwner: "AP3008",
+    repoName: "dataquest26",
+  },
 ];
