@@ -180,7 +180,7 @@ export const projects: Project[] = [
     title: "Argo Labs",
     description:
       "CNN model built from scratch to classify tumors in the brain based off MRI scans.",
-    subtitle: "",
+    subtitle: "Built for DataQuest | 2026",
     techStack: [
       "Jupyter Notebook",
       "Google Colab",
