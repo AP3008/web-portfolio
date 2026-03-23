@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useThemeStore } from "@/store/useThemeStore";
 import { socialLinks } from "@/components/desk/data/socials";
 import { SpotifyBox } from "./SpotifyBox";
@@ -72,6 +72,8 @@ export function InfoBar() {
     shortSha: string;
     htmlUrl: string;
   } | null>(null);
+  const [views, setViews] = useState<number | null>(null);
+  const viewTracked = useRef(false);
 
   // Live clock — London, Ontario (Eastern Time)
   useEffect(() => {
@@ -89,6 +91,27 @@ export function InfoBar() {
     update();
     const id = setInterval(update, 1000);
     return () => clearInterval(id);
+  }, []);
+
+  // Fetch page views and increment (ref guard prevents double-fire in StrictMode)
+  useEffect(() => {
+    if (viewTracked.current) return;
+    viewTracked.current = true;
+
+    fetch("/api/track-view", { method: "POST" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data.count === "number") setViews(data.count);
+      })
+      .catch(() => {
+        // Fallback: just fetch current count
+        fetch("/api/views")
+          .then((res) => res.json())
+          .then((data) => {
+            if (typeof data.count === "number") setViews(data.count);
+          })
+          .catch(() => {});
+      });
   }, []);
 
   // Fetch latest web-portfolio commit
@@ -168,7 +191,9 @@ export function InfoBar() {
           <EyeIcon />
           <span>
             Page Views:{" "}
-            <span style={{ color: "var(--rp-text)" }}>1,234</span>
+            <span style={{ color: "var(--rp-text)" }}>
+              {views !== null ? views.toLocaleString() : "—"}
+            </span>
           </span>
         </div>
 

@@ -73,20 +73,25 @@ export function ColourMatrix() {
 
   const handleTileClick = useCallback(
     (row: number, col: number) => {
+      // Optimistic update
       setMatrix((prev) => {
         const next = prev.map((r) => [...r]);
         next[row][col] = prev[row][col] === 1 ? 0 : 1;
-
-        fetch("/api/colour-matrix", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ matrix: next }),
-        }).catch(() => {
-          // Revert on failure
-          setMatrix(prev);
-        });
-
         return next;
+      });
+
+      // POST toggle to API
+      fetch("/api/colour-matrix", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ row, col }),
+      }).catch(() => {
+        // Revert on failure
+        setMatrix((prev) => {
+          const reverted = prev.map((r) => [...r]);
+          reverted[row][col] = prev[row][col] === 1 ? 0 : 1;
+          return reverted;
+        });
       });
     },
     []
