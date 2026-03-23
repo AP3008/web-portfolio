@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ThemePicker } from "@/components/gate/ThemePicker";
+import { SpotifyBox } from "./SpotifyBox";
 import { ASSETS } from "@/lib/constants";
 
 interface NavigatorProps {
@@ -60,6 +61,9 @@ export function Navigator({ open, onClose }: NavigatorProps) {
 
         {/* Theme Picker */}
         <ThemePicker />
+
+        {/* Spotify Player */}
+        <SpotifyBox />
 
         {/* Section Links */}
         <nav className="flex flex-col gap-1">
