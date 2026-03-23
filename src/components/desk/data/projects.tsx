@@ -176,6 +176,16 @@ export const projects: Project[] = [
     repoName: "BMO",
   },
   {
+    id: "web-portfolio-api",
+    title: "Web Portfolio API",
+    description:
+      "Backend for this webpage, storing the page views, colour matrix, etc.",
+    subtitle: "",
+    techStack: ["Golang", "net/http", "CRUD", "PostgreSQL", "Neon"],
+    repoOwner: "AP3008",
+    repoName: "web-portfolio-api",
+  },
+  {
     id: "argo-labs",
     title: "Argo Labs",
     description:
