@@ -15,6 +15,7 @@ const PROJECT_REPOS = [
   "AP3008/Duolingo-Streak",
   "AP3008/BMO",
   "AP3008/dataquest26",
+  "AP3008/web-portfolio-api",
 ];
 const WEB_PORTFOLIO_REPO = "AP3008/web-portfolio";
 
