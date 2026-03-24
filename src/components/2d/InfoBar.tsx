@@ -147,6 +147,8 @@ export function InfoBar() {
           <span style={{ color: textColor }}>{time || "—"}</span>
         </div>
 
+        <span className="hidden md:inline" style={{ color: "var(--rp-muted)" }}>-</span>
+
         {/* Commit */}
         <div
           className="flex shrink-0 items-center gap-2 text-base transition-colors duration-200"
@@ -176,12 +178,16 @@ export function InfoBar() {
           )}
         </div>
 
+        <span className="hidden md:inline" style={{ color: "var(--rp-muted)" }}>-</span>
+
         {/* Spotify Player — centered, fills available space */}
         <div className="flex min-w-0 flex-1 justify-center">
           <div className="w-full max-w-[360px]">
             <SpotifyBox />
           </div>
         </div>
+
+        <span className="hidden md:inline" style={{ color: "var(--rp-muted)" }}>-</span>
 
         {/* Page Views */}
         <div
@@ -196,6 +202,8 @@ export function InfoBar() {
             </span>
           </span>
         </div>
+
+        <span className="hidden md:inline" style={{ color: "var(--rp-muted)" }}>-</span>
 
         {/* Social Icons */}
         <div className="flex shrink-0 items-center gap-3">

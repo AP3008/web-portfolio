@@ -4,6 +4,7 @@ import { useState, useEffect, type ReactNode } from "react";
 import { ThemePicker } from "@/components/gate/ThemePicker";
 import { LocationMap } from "./LocationMap";
 import { ColourMatrix } from "./ColourMatrix";
+import { WeatherTime } from "./WeatherTime";
 
 function PaletteIcon() {
   return (
@@ -85,7 +86,7 @@ export function InfoSection() {
             className="flex min-w-[280px] flex-1 flex-col rounded-xl border p-4 sm:p-6"
             style={boxStyle}
           >
-            <BoxTitle icon={<LocationPinIcon />} label="Living In | London, ON, Canada" />
+            <BoxTitle icon={<LocationPinIcon />} label="Living In" />
             <div className="min-h-[200px] flex-1 overflow-hidden rounded-lg">
               {mapReady ? (
                 <LocationMap />
@@ -95,6 +96,15 @@ export function InfoSection() {
                   style={{ background: "var(--rp-overlay)" }}
                 />
               )}
+            </div>
+            <div className="mt-3 flex items-center justify-between">
+              <span
+                className="text-sm uppercase tracking-widest"
+                style={{ color: "var(--rp-subtle)" }}
+              >
+                LONDON, ON
+              </span>
+              <WeatherTime />
             </div>
           </div>
 
