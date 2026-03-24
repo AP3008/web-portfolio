@@ -12,6 +12,11 @@ const LeafletMap = dynamic(() => import("./LeafletMapInner"), {
   ),
 });
 
-export function LocationMap() {
-  return <LeafletMap />;
+interface LocationMapProps {
+  recenterTrigger?: number;
+  onOffCenter?: (offCenter: boolean) => void;
+}
+
+export function LocationMap({ recenterTrigger, onOffCenter }: LocationMapProps) {
+  return <LeafletMap recenterTrigger={recenterTrigger} onOffCenter={onOffCenter} />;
 }

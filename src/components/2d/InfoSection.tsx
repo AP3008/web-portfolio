@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { ThemePicker } from "@/components/gate/ThemePicker";
 import { LocationMap } from "./LocationMap";
 import { ColourMatrix } from "./ColourMatrix";
 import { WeatherTime } from "./WeatherTime";
+import { useThemeStore } from "@/store/useThemeStore";
 
 function PaletteIcon() {
   return (
@@ -64,10 +65,17 @@ const boxStyle: React.CSSProperties = {
 
 export function InfoSection() {
   const [mapReady, setMapReady] = useState(false);
+  const [recenterTrigger, setRecenterTrigger] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const textColor = useThemeStore((s) => s.textColor);
 
   useEffect(() => {
     const timer = setTimeout(() => setMapReady(true), 900);
     return () => clearTimeout(timer);
+  }, []);
+
+  const handleRecenter = useCallback(() => {
+    setRecenterTrigger((t) => t + 1);
   }, []);
 
   return (
@@ -86,10 +94,25 @@ export function InfoSection() {
             className="flex min-w-[280px] flex-1 flex-col rounded-xl border p-4 sm:p-6"
             style={boxStyle}
           >
-            <BoxTitle icon={<LocationPinIcon />} label="Living In" />
+            <div
+              className="mb-4 flex items-center gap-2 text-sm uppercase tracking-widest"
+              style={{
+                color: isHovered ? textColor : "var(--rp-muted)",
+                cursor: "pointer",
+                transition: "color 0.2s ease",
+              }}
+              onClick={handleRecenter}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <LocationPinIcon />
+              Living In
+            </div>
             <div className="min-h-[200px] flex-1 overflow-hidden rounded-lg">
               {mapReady ? (
-                <LocationMap />
+                <LocationMap
+                  recenterTrigger={recenterTrigger}
+                />
               ) : (
                 <div
                   className="h-full w-full animate-pulse rounded-lg"
