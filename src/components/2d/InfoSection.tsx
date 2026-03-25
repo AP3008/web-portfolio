@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { ThemePicker } from "@/components/gate/ThemePicker";
 import { LocationMap } from "./LocationMap";
 import { ColourMatrix } from "./ColourMatrix";
-import { WeatherTime } from "./WeatherTime";
+import { WeatherTime, WeatherIcon, weatherColor, useWeather } from "./WeatherTime";
 import { useThemeStore } from "@/store/useThemeStore";
 
 function PaletteIcon() {
@@ -68,6 +68,7 @@ export function InfoSection() {
   const [recenterTrigger, setRecenterTrigger] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const textColor = useThemeStore((s) => s.textColor);
+  const weather = useWeather();
 
   useEffect(() => {
     const timer = setTimeout(() => setMapReady(true), 900);
@@ -121,12 +122,19 @@ export function InfoSection() {
               )}
             </div>
             <div className="mt-3 flex items-center justify-between">
-              <span
-                className="text-sm uppercase tracking-widest"
-                style={{ color: "var(--rp-subtle)" }}
-              >
-                LONDON, ON
-              </span>
+              <div className="flex items-center gap-1.5">
+                {weather && (
+                  <span style={{ color: weatherColor(weather.condition) }}>
+                    <WeatherIcon condition={weather.condition} isDay={weather.isDay} />
+                  </span>
+                )}
+                <span
+                  className="text-sm uppercase tracking-widest"
+                  style={{ color: "var(--rp-subtle)" }}
+                >
+                  LONDON, ON
+                </span>
+              </div>
               <WeatherTime />
             </div>
           </div>

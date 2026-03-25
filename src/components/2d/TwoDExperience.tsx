@@ -9,6 +9,7 @@ import { TwoDLayout } from "./TwoDLayout";
 import { ProjectTriangle } from "./ProjectTriangle";
 import { InfoBar } from "./InfoBar";
 import { InfoSection } from "./InfoSection";
+import { WorkExperience } from "./WorkExperience";
 
 const GREETING = "Hey! I'm Adam";
 const TYPING_SPEED_MS = 80;
@@ -80,6 +81,8 @@ export function TwoDExperience() {
       </section>
 
       <InfoSection />
+
+      <WorkExperience />
 
       {/* Featured Projects Section */}
       <section className="flex flex-col items-center gap-8 px-4 py-16 sm:px-8 sm:py-24 md:px-16 lg:px-24">
