@@ -8,9 +8,9 @@ export interface AboutLink {
 export const aboutData = {
   name: "Adam Porbanderwalla",
   bio: [
-    "Currently a student at {western} studying Computer Science. I am currently working at {savify} as a Software Engineer. I enjoy building cool things that solve my issues as well as issues for others. As a young software engineer I love working with many different technologies, but right now I enjoy working most with Python and Rust.",
-    "Some of my favourite projects include {findmyprof} — a platform that helps undergrad students find research opportunities, and {reflecta} — a modern journaling website. These were built for ConU Hacks and UofT Hacks respectively, and I hope to continue making awesome software.",
-    "My goal is to work as a Full-Stack Developer, but outside of software I enjoy bodybuilding, and volunteering.",
+    "Currently studying Computer Science at {western}. Working on a startup made with other students from Western called {savify}. I love to spend my free time building and learning, with a major focus on Full-Stack Development.",
+    "I love participating and organizing hackathons, one of my more notable projects is {janus} which won 1st in the Google Sustainability AI Hack track at {genaigenesis} as a solo competitor against 1200+ participants with over 200+ submissions. I have also helped organize {ignitionhacks} as a Development & UI/UX Executive, from creating Figma's for the instagram and webpage to implementing them on the website.",
+    "Outside of software I enjoy bodybuilding, music and volunteering. But my ultimate goal is to work as a Full-Stack Developer.",
   ],
   links: [
     {

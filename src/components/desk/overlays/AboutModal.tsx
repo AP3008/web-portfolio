@@ -14,15 +14,16 @@ interface AboutModalProps {
 const BIO_LINKS: Record<string, { label: string; url: string }> = {
   "{western}": { label: "Western University", url: "https://www.uwo.ca/index.html" },
   "{savify}": { label: "Savify", url: "https://savify.ca" },
-  "{findmyprof}": { label: "FindMyProf", url: "https://github.com/garv130/FindMyProf" },
-  "{reflecta}": { label: "Reflecta", url: "https://github.com/adit1110/Reflecta" },
+  "{janus}": { label: "Janus", url: "https://github.com/AP3008/Janus" },
+  "{genaigenesis}": { label: "GenAIGenesis 2026", url: "https://devpost.com/software/janus-u9e3cl" },
+  "{ignitionhacks}": { label: "Ignition Hacks V7", url: "https://www.ignitionhacks.org/" },
 };
 
 function renderBioLine(
   text: string,
   palette: (typeof ROSE_PINE_PALETTES)[keyof typeof ROSE_PINE_PALETTES]
 ) {
-  const tokenPattern = /(\{western\}|\{savify\}|\{findmyprof\}|\{reflecta\})/g;
+  const tokenPattern = /(\{western\}|\{savify\}|\{janus\}|\{genaigenesis\}|\{ignitionhacks\})/g;
   const parts = text.split(tokenPattern);
 
   return (
