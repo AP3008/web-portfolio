@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-type Condition = "clear" | "clouds" | "rain" | "snow" | "thunderstorm" | "drizzle" | "mist";
+export type Condition = "clear" | "clouds" | "rain" | "snow" | "thunderstorm" | "drizzle" | "mist";
 
 function SunIcon() {
   return (
@@ -80,7 +80,7 @@ function MistIcon() {
   );
 }
 
-function WeatherIcon({ condition, isDay }: { condition: Condition; isDay: boolean }) {
+export function WeatherIcon({ condition, isDay }: { condition: Condition; isDay: boolean }) {
   switch (condition) {
     case "clear":
       return isDay ? <SunIcon /> : <MoonIcon />;
@@ -100,9 +100,34 @@ function WeatherIcon({ condition, isDay }: { condition: Condition; isDay: boolea
   }
 }
 
+export function weatherColor(condition: Condition): string {
+  switch (condition) {
+    case "clear": return "var(--rp-gold)";
+    case "clouds": return "var(--rp-muted)";
+    case "rain":
+    case "drizzle": return "var(--rp-pine)";
+    case "snow": return "var(--rp-text)";
+    case "thunderstorm": return "var(--rp-love)";
+    case "mist": return "var(--rp-subtle)";
+    default: return "var(--rp-muted)";
+  }
+}
+
+export function useWeather() {
+  const [weather, setWeather] = useState<{ condition: Condition; isDay: boolean } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/weather")
+      .then((res) => res.json())
+      .then((data) => setWeather(data))
+      .catch(() => {});
+  }, []);
+
+  return weather;
+}
+
 export function WeatherTime() {
   const [time, setTime] = useState("");
-  const [weather, setWeather] = useState<{ condition: Condition; isDay: boolean } | null>(null);
 
   useEffect(() => {
     const update = () => {
@@ -121,19 +146,11 @@ export function WeatherTime() {
     return () => clearInterval(id);
   }, []);
 
-  useEffect(() => {
-    fetch("/api/weather")
-      .then((res) => res.json())
-      .then((data) => setWeather(data))
-      .catch(() => {});
-  }, []);
-
   return (
     <div
       className="flex items-center gap-1.5 text-sm tracking-widest"
       style={{ color: "var(--rp-muted)" }}
     >
-      {weather && <WeatherIcon condition={weather.condition} isDay={weather.isDay} />}
       <span>{time || "—"}</span>
     </div>
   );

@@ -67,7 +67,8 @@ function EyeIcon() {
 
 export function InfoBar() {
   const textColor = useThemeStore((s) => s.textColor);
-  const [time, setTime] = useState("");
+  const [elapsed, setElapsed] = useState("00:00:00");
+  const startRef = useRef(Date.now());
   const [commit, setCommit] = useState<{
     shortSha: string;
     htmlUrl: string;
@@ -75,18 +76,14 @@ export function InfoBar() {
   const [views, setViews] = useState<number | null>(null);
   const viewTracked = useRef(false);
 
-  // Live clock — London, Ontario (Eastern Time)
+  // Browse timer — time spent on the site
   useEffect(() => {
     const update = () => {
-      setTime(
-        new Date().toLocaleTimeString("en-CA", {
-          timeZone: "America/Toronto",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        })
-      );
+      const diff = Math.floor((Date.now() - startRef.current) / 1000);
+      const h = String(Math.floor(diff / 3600)).padStart(2, "0");
+      const m = String(Math.floor((diff % 3600) / 60)).padStart(2, "0");
+      const s = String(diff % 60).padStart(2, "0");
+      setElapsed(`${h}:${m}:${s}`);
     };
     update();
     const id = setInterval(update, 1000);
@@ -138,13 +135,14 @@ export function InfoBar() {
           borderColor: "var(--rp-highlight-med)",
         }}
       >
-        {/* Clock */}
+        {/* Browse Timer */}
         <div
           className="flex shrink-0 items-center gap-2 text-base"
           style={{ color: "var(--rp-muted)" }}
+          title="Time you've spent browsing the webpage."
         >
           <ClockIcon />
-          <span style={{ color: textColor }}>{time || "—"}</span>
+          <span style={{ color: textColor }}>{elapsed}</span>
         </div>
 
         <span className="hidden md:inline" style={{ color: "var(--rp-muted)" }}>-</span>
