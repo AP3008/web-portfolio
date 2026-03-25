@@ -14,7 +14,7 @@ const WORK_EXPERIENCE: WorkEntry[] = [
     role: "Full-Stack Developer",
     dates: "Jan 2026 – Present",
     description:
-      "Architected and shipped a responsive marketing landing page in Next.js + React, integrating authentication flows with the startup's backend for a product backed by $10K in pre-seed funding.",
+      "Shipped marketing landing page in Next.js + React, integrating authentication with the startup's backend for a startup backed by $10K in pre-seed funding.",
     url: "https://savify.ca",
   },
   {
@@ -33,40 +33,17 @@ const WORK_EXPERIENCE: WorkEntry[] = [
   },
 ];
 
-function BriefcaseIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-    </svg>
-  );
-}
-
 export function WorkExperience() {
   return (
     <section className="px-4 py-12 sm:px-8 sm:py-16 md:px-16 lg:px-24">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
         {/* Header */}
-        <div className="flex items-center gap-3">
-          <span style={{ color: "var(--rp-muted)" }}>
-            <BriefcaseIcon />
-          </span>
-          <h2
-            className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
-            style={{ color: "var(--rp-text)" }}
-          >
-            Work Experience
-          </h2>
-        </div>
+        <h2
+          className="text-center text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
+          style={{ color: "var(--rp-text)" }}
+        >
+          Work Experience
+        </h2>
 
         {/* Entries */}
         <div className="flex flex-col gap-4">
