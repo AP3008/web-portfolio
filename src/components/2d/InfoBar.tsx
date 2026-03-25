@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useThemeStore } from "@/store/useThemeStore";
+import { useBrowseTimerStore } from "@/store/useBrowseTimerStore";
 import { socialLinks } from "@/components/desk/data/socials";
 import { SpotifyBox } from "./SpotifyBox";
 
@@ -67,8 +68,8 @@ function EyeIcon() {
 
 export function InfoBar() {
   const textColor = useThemeStore((s) => s.textColor);
+  const { totalSeconds, sessionStart, flush } = useBrowseTimerStore();
   const [elapsed, setElapsed] = useState("00:00:00");
-  const startRef = useRef(Date.now());
   const [commit, setCommit] = useState<{
     shortSha: string;
     htmlUrl: string;
@@ -76,10 +77,10 @@ export function InfoBar() {
   const [views, setViews] = useState<number | null>(null);
   const viewTracked = useRef(false);
 
-  // Browse timer — time spent on the site
+  // Browse timer — cumulative time spent on the site (persisted via localStorage)
   useEffect(() => {
     const update = () => {
-      const diff = Math.floor((Date.now() - startRef.current) / 1000);
+      const diff = totalSeconds + Math.floor((Date.now() - sessionStart) / 1000);
       const h = String(Math.floor(diff / 3600)).padStart(2, "0");
       const m = String(Math.floor((diff % 3600) / 60)).padStart(2, "0");
       const s = String(diff % 60).padStart(2, "0");
@@ -88,7 +89,20 @@ export function InfoBar() {
     update();
     const id = setInterval(update, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [totalSeconds, sessionStart]);
+
+  // Flush elapsed time to localStorage on tab hide / browser close
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === "hidden") flush();
+    };
+    window.addEventListener("beforeunload", flush);
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => {
+      window.removeEventListener("beforeunload", flush);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [flush]);
 
   // Fetch page views and increment (ref guard prevents double-fire in StrictMode)
   useEffect(() => {
