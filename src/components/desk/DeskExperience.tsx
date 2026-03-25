@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { CanvasRoot } from "@/components/three/CanvasRoot";
 import { TerminalLoader } from "@/components/gate/TerminalLoader";
 import { HoverHUD } from "@/components/desk/overlays/HoverHUD";
@@ -20,12 +20,21 @@ export function DeskExperience() {
   const showExitConfirm = usePortfolioStore((s) => s.showExitConfirm);
   const setShowExitConfirm = usePortfolioStore((s) => s.setShowExitConfirm);
 
+  // Defer canvas mount so typing animation gets a head start
+  const [canvasReady, setCanvasReady] = useState(false);
+
   // Transition from gate to loading when this component mounts
   useEffect(() => {
     if (scenePhase === "gate") {
       setScenePhase("loading");
     }
   }, [scenePhase, setScenePhase]);
+
+  // Mount the heavy 3D canvas after a short delay so the typing animation runs smoothly
+  useEffect(() => {
+    const timer = setTimeout(() => setCanvasReady(true), 150);
+    return () => clearTimeout(timer);
+  }, []);
 
   // ESC key handler with priority: modal > focus > terminal
   const handleKeyDown = useCallback(
@@ -54,7 +63,7 @@ export function DeskExperience() {
 
   return (
     <>
-      <CanvasRoot />
+      {canvasReady && <CanvasRoot />}
       <TerminalLoader />
       <HoverHUD />
       <ModalManager />
