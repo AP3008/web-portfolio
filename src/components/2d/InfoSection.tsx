@@ -85,7 +85,7 @@ export function InfoSection() {
         {/* Three-box row */}
         <div className="flex flex-wrap gap-4">
           {/* Theme */}
-          <div className="rounded-xl border p-4 sm:p-6" style={boxStyle}>
+          <div className="w-full rounded-xl border p-4 sm:w-auto sm:p-6" style={boxStyle}>
             <BoxTitle icon={<PaletteIcon />} label="Theme" />
             <ThemePicker mode="compact" />
           </div>
@@ -109,7 +109,7 @@ export function InfoSection() {
               <LocationPinIcon />
               Living In
             </div>
-            <div className="min-h-[200px] flex-1 overflow-hidden rounded-lg">
+            <div className="relative z-0 min-h-[200px] flex-1 overflow-hidden rounded-lg" style={{ isolation: "isolate" }}>
               {mapReady ? (
                 <LocationMap
                   recenterTrigger={recenterTrigger}

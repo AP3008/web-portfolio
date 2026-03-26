@@ -91,14 +91,14 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
       </span>
 
       {/* Theme variant buttons */}
-      <div className="flex w-full flex-col gap-2 sm:w-auto">
+      <div className="flex w-full flex-col items-center gap-2 sm:w-auto sm:items-start">
         <span
           className={isExpanded ? "text-sm uppercase tracking-widest" : "text-xs uppercase tracking-widest"}
           style={{ color: palette.muted }}
         >
           Theme
         </span>
-        <div className="flex flex-wrap gap-2 sm:flex-nowrap">
+        <div className="flex flex-wrap justify-center gap-2 sm:justify-start sm:flex-nowrap">
           {VARIANT_LABELS.map(({ key, label }) => {
             const isActive = variant === key;
             const isHovered = hoveredVariant === key;
@@ -156,7 +156,7 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
       </div>
 
       {/* Text color circles */}
-      <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-col items-center gap-2 sm:items-start">
         <span
           className={isExpanded ? "text-sm uppercase tracking-widest" : "text-xs uppercase tracking-widest"}
           style={{ color: palette.muted }}
@@ -165,7 +165,7 @@ export function ThemePicker({ mode = "compact" }: ThemePickerProps) {
         </span>
         <div
           ref={containerRef}
-          className={isExpanded ? "relative flex flex-wrap gap-4" : "relative flex flex-wrap gap-3"}
+          className={isExpanded ? "relative flex flex-wrap justify-center gap-4 sm:justify-start" : "relative flex flex-wrap justify-center gap-3 sm:justify-start"}
         >
           {ringStyle && (
             <div
