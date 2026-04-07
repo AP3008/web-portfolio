@@ -1,5 +1,4 @@
 import { create } from "zustand";
-
 import type { SpotifyTrack } from "@/app/api/spotify/route";
 
 interface SpotifyState {
