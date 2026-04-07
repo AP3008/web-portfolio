@@ -203,4 +203,14 @@ export const projects: Project[] = [
     repoOwner: "AP3008",
     repoName: "dataquest26",
   },
+  {
+    id: "school-projects",
+    title: "School Projects",
+    description:
+      "Collection of my University projects made for classes at Western University.",
+    subtitle: "",
+    techStack: ["Java", "C", "DSA", "Swing", "Unit Tests"],
+    repoOwner: "AP3008",
+    repoName: "School-Projects",
+  },
 ];

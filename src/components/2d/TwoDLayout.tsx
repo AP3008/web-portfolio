@@ -68,7 +68,7 @@ export function TwoDLayout({
   const isMobile = !isDesktop;
   const isTwoDHome = pathname === ROUTES.TWO_D;
   const showBackButton = !(isMobile && isTwoDHome);
-
+ 
   return (
     <div
       className="rose-pine min-h-screen"
