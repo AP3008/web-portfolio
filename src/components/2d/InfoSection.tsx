@@ -125,7 +125,7 @@ export function InfoSection() {
               <div className="flex items-center gap-1.5">
                 {weather && (
                   <span style={{ color: weatherColor(weather.condition) }}>
-                    <WeatherIcon condition={weather.condition} isDay={weather.isDay} />
+                    <WeatherIcon condition={weather.condition} timeOfDay={weather.timeOfDay} />
                   </span>
                 )}
                 <span

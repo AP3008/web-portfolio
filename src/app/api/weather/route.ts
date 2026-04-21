@@ -20,22 +20,32 @@ function wmoToCondition(code: number): string {
 
 export const revalidate = 1800; // 30 min cache
 
+function getTimeOfDay(): "day" | "afternoon" | "night" {
+  const now = new Date();
+  const hour = parseInt(
+    now.toLocaleString("en-CA", { timeZone: "America/Toronto", hour: "2-digit", hour12: false }),
+    10
+  );
+  if (hour >= 6 && hour < 12) return "day";
+  if (hour >= 12 && hour < 18) return "afternoon";
+  return "night";
+}
+
 export async function GET() {
   try {
     const res = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=weather_code,is_day`,
+      `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=weather_code`,
       { next: { revalidate: 1800 } }
     );
     if (!res.ok) throw new Error(`Upstream ${res.status}`);
     const data = await res.json();
     const code = data.current?.weather_code ?? 0;
-    const isDay = data.current?.is_day === 1;
     return NextResponse.json({
       condition: wmoToCondition(code),
-      isDay,
+      timeOfDay: getTimeOfDay(),
     });
   } catch (err) {
     console.error("Weather API error:", err);
-    return NextResponse.json({ condition: "clouds", isDay: true });
+    return NextResponse.json({ condition: "clouds", timeOfDay: getTimeOfDay() });
   }
 }
