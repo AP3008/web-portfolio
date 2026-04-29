@@ -9,7 +9,7 @@ import {
 import type { CommitData } from "@/app/api/github-commits/route";
 
 // Define the triangle order: top, bottom-left, bottom-right
-const TRIANGLE_ORDER = ["janus", "findmyprof", "argo-labs"] as const;
+const TRIANGLE_ORDER = ["janus", "findmyprof", "autonomy"] as const;
 
 function FlipCard({
   project,

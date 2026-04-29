@@ -54,6 +54,23 @@ export const projects: Project[] = [
     devpostUrl: "https://devpost.com/software/findmyprof",
   },
   {
+    id: "autonomy",
+    title: "Autonomy",
+    description:
+      "Creates a local proxy server that allows you to edit all parts of your coding agents prompt before it gets upstreamed to the LLM's API, giving you full power over your prompt.",
+    subtitle: "Built for BearHacks | 2026",
+    techStack: [
+      "FastAPI",
+      "Backboard.io",
+      "Gemma + Ollama",
+      "VS Code Extension",
+      "Websockets",
+    ],
+    repoOwner: "AP3008",
+    repoName: "Autonomy",
+    devpostUrl: "https://devpost.com/software/autonomy-v01xrt",
+  },
+  {
     id: "reflecta",
     title: "Reflecta",
     description:

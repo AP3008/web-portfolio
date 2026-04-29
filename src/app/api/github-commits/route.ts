@@ -17,6 +17,7 @@ const PROJECT_REPOS = [
   "AP3008/dataquest26",
   "AP3008/web-portfolio-api",
   "AP3008/School-Projects",
+  "AP3008/Autonomy",
 ];
 const WEB_PORTFOLIO_REPO = "AP3008/web-portfolio";
 
