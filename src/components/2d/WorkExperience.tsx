@@ -10,6 +10,13 @@ interface WorkEntry {
 
 const WORK_EXPERIENCE: WorkEntry[] = [
   {
+    company: "Cybex GmbH",
+    role: "E-Com Advanced Data Analyst Intern",
+    dates: "May 2026 – Aug 2026",
+    description:
+      "Owned 3 production ETL pipelines in Microsoft Fabric (Python notebooks), ingesting warehouse logistics and PayPal payment data hourly from SFTP and API sources into a ~10M-row Lakehouse using Medallion architecture. Built AI data agents in Fabric & Copilot Studio that automated weekly executive reporting, and shipped an end-to-end Consumer Service dashboard in PostgreSQL and Power BI adopted across the customer service department.",
+  },
+  {
     company: "Savify",
     role: "Full-Stack Developer",
     dates: "Jan 2026 – Present",
@@ -49,7 +56,7 @@ export function WorkExperience() {
         <div className="flex flex-col gap-4">
           {WORK_EXPERIENCE.map((entry) => (
             <div
-              key={entry.company}
+              key={`${entry.company}-${entry.dates}`}
               className="rounded-xl border p-4 sm:p-6"
               style={{
                 background: "var(--rp-surface)",
