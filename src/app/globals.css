@@ -96,11 +96,6 @@ html::-webkit-scrollbar {
   background: var(--rp-base);
   font-family: 'JetBrains Mono', monospace;
 }
-/* Esri's dark gray canvas sits lighter than Rosé Pine base; pull it down and
-   tint it toward --rp-base. Labels layer is left untouched so it stays legible. */
-.map-tiles-base {
-  filter: sepia(0.22) hue-rotate(215deg) saturate(1.35) brightness(0.62) contrast(1.05);
-}
 .leaflet-control-attribution {
   background: var(--rp-surface) !important;
   color: var(--rp-muted) !important;

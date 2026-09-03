@@ -5,17 +5,12 @@ import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
 
 const LONDON_ONTARIO: [number, number] = [42.9849, -81.2453];
 
-// Esri World Dark Gray Canvas — keyless and unwatermarked. Note the {z}/{y}/{x}
-// order, which is Esri's, not the {z}/{x}/{y} that most XYZ services use.
-const ESRI_BASE =
-  "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}";
-const ESRI_LABELS =
-  "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}";
-const ESRI_ATTRIBUTION =
-  '&copy; <a href="https://www.esri.com/">Esri</a>, HERE, Garmin, &copy; OpenStreetMap contributors';
-
-// Esri stops serving real tiles past z16; upscale rather than go blank.
-const MAX_NATIVE_ZOOM = 16;
+// CARTO retired their keyless basemap tier and now stamps every unauthenticated
+// tile with an "API KEY REQUIRED" watermark. Free key: https://carto.com/basemaps/apikey
+const CARTO_KEY = process.env.NEXT_PUBLIC_CARTO_API_KEY;
+const CARTO_DARK =
+  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" +
+  (CARTO_KEY ? `?key=${CARTO_KEY}` : "");
 
 const OFF_CENTER_THRESHOLD = 0.01; // ~1 km
 
@@ -48,21 +43,25 @@ function MapController({ recenterTrigger, onOffCenter }: Props) {
 }
 
 export default function LeafletMapInner({ recenterTrigger, onOffCenter }: Props) {
+  useEffect(() => {
+    if (!CARTO_KEY && process.env.NODE_ENV === "development") {
+      console.warn(
+        "[LocationMap] NEXT_PUBLIC_CARTO_API_KEY is not set — CARTO will watermark every tile. " +
+          "Get a free key at https://carto.com/basemaps/apikey and restart the dev server."
+      );
+    }
+  }, []);
+
   return (
     <MapContainer
       center={LONDON_ONTARIO}
       zoom={12}
       scrollWheelZoom={false}
       zoomControl={false}
+      attributionControl={false}
       style={{ height: "100%", width: "100%", borderRadius: "0.5rem" }}
     >
-      <TileLayer
-        url={ESRI_BASE}
-        attribution={ESRI_ATTRIBUTION}
-        maxNativeZoom={MAX_NATIVE_ZOOM}
-        className="map-tiles-base"
-      />
-      <TileLayer url={ESRI_LABELS} maxNativeZoom={MAX_NATIVE_ZOOM} />
+      <TileLayer url={CARTO_DARK} attribution="" />
       <MapController recenterTrigger={recenterTrigger} onOffCenter={onOffCenter} />
     </MapContainer>
   );
