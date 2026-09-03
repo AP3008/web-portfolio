@@ -4,8 +4,14 @@ import { useEffect, useRef } from "react";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
 
 const LONDON_ONTARIO: [number, number] = [42.9849, -81.2453];
+
+// CARTO retired their keyless basemap tier and now stamps every unauthenticated
+// tile with an "API KEY REQUIRED" watermark. Free key: https://carto.com/basemaps/apikey
+const CARTO_KEY = process.env.NEXT_PUBLIC_CARTO_API_KEY;
 const CARTO_DARK =
-  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+  "https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png" +
+  (CARTO_KEY ? `?key=${CARTO_KEY}` : "");
+
 const OFF_CENTER_THRESHOLD = 0.01; // ~1 km
 
 interface Props {
@@ -37,6 +43,15 @@ function MapController({ recenterTrigger, onOffCenter }: Props) {
 }
 
 export default function LeafletMapInner({ recenterTrigger, onOffCenter }: Props) {
+  useEffect(() => {
+    if (!CARTO_KEY && process.env.NODE_ENV === "development") {
+      console.warn(
+        "[LocationMap] NEXT_PUBLIC_CARTO_API_KEY is not set — CARTO will watermark every tile. " +
+          "Get a free key at https://carto.com/basemaps/apikey and restart the dev server."
+      );
+    }
+  }, []);
+
   return (
     <MapContainer
       center={LONDON_ONTARIO}
@@ -46,7 +61,7 @@ export default function LeafletMapInner({ recenterTrigger, onOffCenter }: Props)
       attributionControl={false}
       style={{ height: "100%", width: "100%", borderRadius: "0.5rem" }}
     >
-      <TileLayer url={CARTO_DARK} attribution="" />
+      <TileLayer url={CARTO_DARK} attribution="" subdomains="abcd" maxZoom={20} />
       <MapController recenterTrigger={recenterTrigger} onOffCenter={onOffCenter} />
     </MapContainer>
   );
