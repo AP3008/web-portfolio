@@ -13,6 +13,7 @@ export function ExitOverlay() {
   const showExitConfirm = usePortfolioStore((s) => s.showExitConfirm);
   const setShowExitConfirm = usePortfolioStore((s) => s.setShowExitConfirm);
   const variant = useThemeStore((s) => s.variant);
+  const textColor = useThemeStore((s) => s.textColor);
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
 
   const showButton =
@@ -28,7 +29,7 @@ export function ExitOverlay() {
           style={{
             backgroundColor: palette.surface,
             borderColor: palette.highlightMed,
-            color: palette.text,
+            color: textColor,
             fontFamily: "'JetBrains Mono', monospace",
           }}
         >
@@ -47,7 +48,7 @@ export function ExitOverlay() {
               fontFamily: "'JetBrains Mono', monospace",
             }}
           >
-            <p className="text-base tracking-wider" style={{ color: palette.text }}>
+            <p className="text-base tracking-wider" style={{ color: textColor }}>
               Return to home?
             </p>
             <div className="flex gap-3">

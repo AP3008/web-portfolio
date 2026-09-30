@@ -52,6 +52,7 @@ function renderBioLine(
 
 export function AboutModal({ onClose }: AboutModalProps) {
   const variant = useThemeStore((s) => s.variant);
+  const textColor = useThemeStore((s) => s.textColor);
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
   const title = useTypingEffect("About Me", 80);
 
@@ -59,12 +60,12 @@ export function AboutModal({ onClose }: AboutModalProps) {
     <Modal onClose={onClose}>
       <div className="flex flex-col gap-8">
         {/* Title with typing effect */}
-        <h2 className="text-4xl font-bold" style={{ color: palette.text }}>
+        <h2 className="text-4xl font-bold" style={{ color: textColor }}>
           {title}
           <span
             className="inline-block w-[2px] h-[1.1em] ml-1 align-middle"
             style={{
-              backgroundColor: palette.text,
+              backgroundColor: textColor,
               animation: "blink-cursor 1.06s step-end infinite",
             }}
           />
@@ -78,7 +79,7 @@ export function AboutModal({ onClose }: AboutModalProps) {
             className="w-36 h-36 rounded-full object-cover border-2"
             style={{ borderColor: palette.highlightMed }}
           />
-          <h3 className="text-2xl font-bold" style={{ color: palette.text }}>
+          <h3 className="text-2xl font-bold" style={{ color: textColor }}>
             {aboutData.name}
           </h3>
         </div>

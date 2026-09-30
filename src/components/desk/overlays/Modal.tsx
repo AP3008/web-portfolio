@@ -12,6 +12,7 @@ interface ModalProps {
 export function Modal({ children, onClose }: ModalProps) {
   const backdropRef = useRef<HTMLDivElement>(null);
   const variant = useThemeStore((s) => s.variant);
+  const textColor = useThemeStore((s) => s.textColor);
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
 
   const handleBackdropClick = useCallback(
@@ -55,7 +56,7 @@ export function Modal({ children, onClose }: ModalProps) {
           style={{
             backgroundColor: palette.base,
             borderColor: palette.highlightMed,
-            color: palette.text,
+            color: textColor,
             fontFamily: "'JetBrains Mono', monospace",
           }}
         >

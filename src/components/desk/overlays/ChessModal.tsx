@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { chessPuzzle } from "../data/chess";
+import { useThemeStore } from "@/store/useThemeStore";
 
 interface ChessModalProps {
   onClose: () => void;
@@ -122,6 +123,7 @@ function fromAlgebraic(sq: string): { row: number; col: number } {
 }
 
 export function ChessModal({ onClose }: ChessModalProps) {
+  const textColor = useThemeStore((s) => s.textColor);
   const [board, setBoard] = useState(() => parseFen(chessPuzzle.fen));
   const [selected, setSelected] = useState<{ row: number; col: number } | null>(null);
   const [moveIndex, setMoveIndex] = useState(0);
@@ -238,7 +240,7 @@ export function ChessModal({ onClose }: ChessModalProps) {
                 <div
                   key={f}
                   className="w-[min(8vw,8vh)] h-5 flex items-center justify-center text-xs font-semibold"
-                  style={{ color: "#e0def4" }}
+                  style={{ color: textColor }}
                 >
                   {f}
                 </div>
@@ -251,7 +253,7 @@ export function ChessModal({ onClose }: ChessModalProps) {
                   <div
                     key={i}
                     className="w-8 h-[min(8vw,8vh)] flex items-center justify-center text-xs font-semibold"
-                    style={{ color: "#e0def4" }}
+                    style={{ color: textColor }}
                   >
                     {8 - i}
                   </div>
@@ -309,7 +311,7 @@ export function ChessModal({ onClose }: ChessModalProps) {
             {solved && (
               <p
                 className="mt-2 text-xs font-normal leading-relaxed sm:text-sm"
-                style={{ color: "#e0def4" }}
+                style={{ color: textColor }}
               >
                 {chessPuzzle.explanation}
               </p>

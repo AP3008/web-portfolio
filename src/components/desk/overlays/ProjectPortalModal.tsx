@@ -19,9 +19,11 @@ interface ProjectPortalModalProps {
 function CommitRow({
   commit,
   palette,
+  textColor,
 }: {
   commit: CommitData;
   palette: (typeof ROSE_PINE_PALETTES)[keyof typeof ROSE_PINE_PALETTES];
+  textColor: string;
 }) {
   return (
     <div className="flex items-center gap-3 text-sm">
@@ -30,7 +32,7 @@ function CommitRow({
         target="_blank"
         rel="noopener noreferrer"
         className="truncate flex-1 hover:underline text-base"
-        style={{ color: palette.text }}
+        style={{ color: textColor }}
       >
         {commit.message}
       </a>
@@ -65,6 +67,7 @@ function CommitRow({
 
 export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
   const variant = useThemeStore((s) => s.variant);
+  const textColor = useThemeStore((s) => s.textColor);
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
   const title = useTypingEffect("Featured Projects", 80);
 
@@ -89,12 +92,12 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
     <Modal onClose={onClose}>
       <div className="flex flex-col gap-6">
         {/* Title with typing effect */}
-        <h2 className="text-3xl font-bold" style={{ color: palette.text }}>
+        <h2 className="text-3xl font-bold" style={{ color: textColor }}>
           {title}
           <span
             className="inline-block w-[2px] h-[1.1em] ml-1 align-middle"
             style={{
-              backgroundColor: palette.text,
+              backgroundColor: textColor,
               animation: "blink-cursor 1.06s step-end infinite",
             }}
           />
@@ -118,7 +121,7 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
               <div className="flex items-center justify-between mb-1">
                 <h3
                   className="text-lg font-bold"
-                  style={{ color: palette.text }}
+                  style={{ color: textColor }}
                 >
                   {project.title}
                 </h3>
@@ -208,7 +211,11 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
                   className="border-t pt-3"
                   style={{ borderColor: palette.highlightMed }}
                 >
-                  <CommitRow commit={commit} palette={palette} />
+                  <CommitRow
+                    commit={commit}
+                    palette={palette}
+                    textColor={textColor}
+                  />
                 </div>
               )}
             </div>
@@ -239,7 +246,7 @@ export function ProjectPortalModal({ onClose }: ProjectPortalModalProps) {
                     borderColor: palette.highlightMed,
                   }}
                 >
-                  <CommitRow commit={c} palette={palette} />
+                  <CommitRow commit={c} palette={palette} textColor={textColor} />
                 </div>
               ))}
             </div>

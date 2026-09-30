@@ -68,6 +68,7 @@ const ROUTINE: WorkoutDay[] = [
 
 export function FitnessModal({ onClose }: FitnessModalProps) {
   const variant = useThemeStore((s) => s.variant);
+  const textColor = useThemeStore((s) => s.textColor);
   const palette = useMemo(() => ROSE_PINE_PALETTES[variant], [variant]);
   const title = useTypingEffect("Body Building", 80);
 
@@ -77,13 +78,13 @@ export function FitnessModal({ onClose }: FitnessModalProps) {
         {/* Title with typing effect */}
         <h2
           className="text-3xl font-bold"
-          style={{ color: palette.text }}
+          style={{ color: textColor }}
         >
           {title}
           <span
             className="inline-block w-[2px] h-[1.1em] ml-1 align-middle"
             style={{
-              backgroundColor: palette.text,
+              backgroundColor: textColor,
               animation: "blink-cursor 1.06s step-end infinite",
             }}
           />
@@ -146,7 +147,7 @@ export function FitnessModal({ onClose }: FitnessModalProps) {
                     key={ex.name}
                     className="flex items-center justify-between"
                   >
-                    <span className="text-base" style={{ color: palette.text }}>
+                    <span className="text-base" style={{ color: textColor }}>
                       {ex.name}
                     </span>
                     <span className="text-base" style={{ color: palette.subtle }}>
