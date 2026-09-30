@@ -39,8 +39,11 @@ function CommitRow({
           <svg width="8" height="8" viewBox="0 0 8 8">
             <circle cx="4" cy="4" r="4" fill={palette.foam} />
           </svg>
-          <span
-            className="px-2 py-0.5 rounded-md"
+          <a
+            href={commit.htmlUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-2 py-0.5 rounded-md hover:underline"
             style={{
               backgroundColor: palette.overlay,
               color: palette.foam,
@@ -48,7 +51,7 @@ function CommitRow({
             }}
           >
             {commit.shortSha}
-          </span>
+          </a>
         </span>
         <span>
           <span style={{ color: "#a6e3a1" }}>+{commit.additions}</span>

@@ -179,8 +179,11 @@ export function ProjectsSection() {
                       <svg width="8" height="8" viewBox="0 0 8 8">
                         <circle cx="4" cy="4" r="4" fill="var(--rp-foam)" />
                       </svg>
-                      <span
-                        className="rounded-md px-1.5 py-0.5 sm:px-2"
+                      <a
+                        href={commit.htmlUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-md px-1.5 py-0.5 hover:underline sm:px-2"
                         style={{
                           backgroundColor: "var(--rp-overlay)",
                           color: "var(--rp-foam)",
@@ -188,7 +191,7 @@ export function ProjectsSection() {
                         }}
                       >
                         {commit.shortSha}
-                      </span>
+                      </a>
                     </span>
                     <span>
                       <span style={{ color: "#a6e3a1" }}>
