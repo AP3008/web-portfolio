@@ -35,6 +35,27 @@ export const projects: Project[] = [
     devpostUrl: "https://devpost.com/software/janus-u9e3cl",
   },
   {
+    id: "usplat-engine",
+    title: "U Splat-Engine",
+    description:
+      "Pipeline to convert any YouTube video into 3D Explorable Worlds.",
+    subtitle: "Built for Hack Western 13 | 2026",
+    techStack: [
+      "Web Extension",
+      "CUDA",
+      "PyTorch",
+      "SAM3",
+      "SMPL-X",
+      "gsplat",
+      "LaMa",
+      "DepthAnything 3",
+    ],
+    repoOwner: "ejo6",
+    repoName: "USplat-Engine",
+    devpostUrl:
+      "https://devpost.com/software/hackwestern13-project",
+  },
+  {
     id: "findmyprof",
     title: "FindMyProf",
     description:

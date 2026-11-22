@@ -18,6 +18,7 @@ const PROJECT_REPOS = [
   "AP3008/web-portfolio-api",
   "AP3008/School-Projects",
   "AP3008/Autonomy",
+  "ejo6/USplat-Engine",
 ];
 const WEB_PORTFOLIO_REPO = "AP3008/web-portfolio";
 
