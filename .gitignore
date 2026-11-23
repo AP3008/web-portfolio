@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -37,9 +35,7 @@ yarn-error.log*
 .vercel
 
 # local claude instructions
-CLAUDE.md.local
 .claude/
-INSTRUCTIONS.md
 
 # typescript
 *.tsbuildinfo
