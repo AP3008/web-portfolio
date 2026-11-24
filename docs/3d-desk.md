@@ -42,7 +42,7 @@ PowerShell look: white text, `PS C:\Users\Adam>` prompt. Keystrokes go to a hidd
 - **Projects** (`ProjectPortalModal`): a card for each entry in `data/projects.tsx` showing its latest commit, plus a "Most Recent Commit: web-portfolio" section. Commit data comes from `/api/github-commits`. See `docs/adding-a-project.md`.
 - **Resume** (`ResumeModal`): the PDF in an `<iframe>` floating over a blurred backdrop, with a download button.
 - **About** (`AboutModal`): content from `data/about.ts`.
-- **Fitness** (`FitnessModal`): Hevy banner (`https://hevy.com/user/adamp3008`) and a Push/Pull/Legs routine. The routine is hardcoded in the component.
+- **Fitness** (`FitnessModal`): the title plus the **Live Pulse** card (`LivePulseCard`), which fetches `/api/whoop` on open and shows one Whoop day's recovery % (coloured foam ≥67 / gold 34–66 / love ≤33), day strain (/21) and sleep performance %. Its footer links to Hevy (`https://hevy.com/user/adamp3008`). While loading, the card shows "—" and empty bars. If the request fails, only the Hevy link shows, centred.
 - **Chess** (`ChessModal`): the Morphy Opera Game puzzle (1858). The FEN is the position *before* 1. Qb8+ (solution: 1. Qb8+ Nxb8 2. Rd8#), stored in `data/chess.ts`. Wooden board colours `#f0d9b5` / `#b58863`, piece images in `public/chess_pieces/` (queens at 150%, other pieces at 80%).
 - **Socials** (`SocialsModal`): a phone frame drawn in CSS (black, orange border and glow) listing links from `data/socials.ts`, each with an inline SVG `iconPath`.
 - **Theme** (`ThemeModal`): reuses `ThemePicker` from the landing page.
