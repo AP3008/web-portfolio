@@ -78,3 +78,15 @@ export async function getWhoopAccessToken(): Promise<string> {
     throw err;
   }
 }
+
+/** Public response of GET /api/whoop: one Whoop day's public metrics. */
+export interface LivePulse {
+  /** Whoop day start date in Adam's timezone, "YYYY-MM-DD". */
+  date: string;
+  /** 0–100, integer. */
+  recovery: number;
+  /** 0–21, 1 decimal. */
+  strain: number | null;
+  /** 0–100, integer. */
+  sleepPerformance: number | null;
+}
