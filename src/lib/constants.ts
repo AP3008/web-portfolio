@@ -263,3 +263,9 @@ export const ASSETS = {
   ROOM_MODEL: "/models/empty_bedroom.glb",
   RESUME_PDF: "/Adam-Porbanderwalla-Resume.pdf",
 } as const;
+
+/** Whoop OAuth + the private Blob holding its rotating token (shared by src/lib/whoop.ts and scripts/whoop-auth.ts) */
+export const WHOOP = {
+  TOKEN_URL: "https://api.prod.whoop.com/oauth/oauth2/token",
+  TOKEN_BLOB_PATH: "whoop/token.json",
+} as const;
