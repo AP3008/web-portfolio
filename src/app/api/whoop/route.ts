@@ -9,6 +9,9 @@ interface Scored<T> {
   score?: T;
 }
 
+const scoreOf = <T>(record: Scored<T> | null | undefined) =>
+  record?.score_state === "SCORED" ? record.score : undefined;
+
 /** Resolves null on 404 (e.g. a cycle with no sleep yet); throws on any other non-200. */
 async function whoopGet<T>(path: string, accessToken: string): Promise<T | null> {
   const res = await fetch(`${WHOOP.API_BASE}${path}`, {
@@ -38,8 +41,9 @@ export async function GET() {
     const recoveries = await whoopGet<{
       records: (Scored<{ recovery_score: number }> & { cycle_id: number })[];
     }>("/v2/recovery?limit=5", accessToken);
-    const recovery = recoveries?.records.find((r) => r.score_state === "SCORED" && r.score);
-    if (!recovery?.score) throw new Error("No scored Whoop recovery in the latest 5 records");
+    const recovery = recoveries?.records.find((r) => scoreOf(r));
+    const recoveryScore = scoreOf(recovery);
+    if (!recovery || !recoveryScore) throw new Error("No scored Whoop recovery in the latest 5 records");
 
     const [cycle, sleep] = await Promise.all([
       whoopGet<Scored<{ strain: number }> & { start: string; timezone_offset: string }>(
@@ -53,14 +57,13 @@ export async function GET() {
     ]);
     if (!cycle) throw new Error(`Whoop cycle ${recovery.cycle_id} not found`);
 
-    const strain = cycle.score_state === "SCORED" ? cycle.score?.strain : undefined;
-    const sleepPerformance =
-      sleep?.score_state === "SCORED" ? sleep.score?.sleep_performance_percentage : undefined;
+    const strain = scoreOf(cycle)?.strain;
+    const sleepPerformance = scoreOf(sleep)?.sleep_performance_percentage;
 
     // Only public metrics leave the server; HRV, RHR, SpO2 and skin temp are dropped here.
     const pulse: LivePulse = {
       date: localDate(cycle.start, cycle.timezone_offset),
-      recovery: Math.round(recovery.score.recovery_score),
+      recovery: Math.round(recoveryScore.recovery_score),
       strain: strain == null ? null : Math.round(strain * 10) / 10,
       sleepPerformance: sleepPerformance == null ? null : Math.round(sleepPerformance),
     };
@@ -71,6 +74,7 @@ export async function GET() {
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Whoop API error:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    // Details stay in the log: upstream/token errors aren't for the public (and this response is cached).
+    return NextResponse.json({ error: "Whoop data unavailable" }, { status: 500 });
   }
 }
