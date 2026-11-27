@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { WHOOP } from "@/lib/constants";
 import { getWhoopAccessToken, type LivePulse } from "@/lib/whoop";
 
-export const revalidate = 3600;
+// Never static: a token refresh uses a no-store fetch, which breaks ISR revalidation. The CDN caches via s-maxage below.
+export const dynamic = "force-dynamic";
 
 interface Scored<T> {
   score_state: "SCORED" | "PENDING_SCORE" | "UNSCORABLE";
@@ -16,7 +17,6 @@ const scoreOf = <T>(record: Scored<T> | null | undefined) =>
 async function whoopGet<T>(path: string, accessToken: string): Promise<T | null> {
   const res = await fetch(`${WHOOP.API_BASE}${path}`, {
     headers: { Authorization: `Bearer ${accessToken}` },
-    next: { revalidate: 3600 },
   });
   if (res.status === 404) return null;
   if (!res.ok) {
@@ -74,7 +74,7 @@ export async function GET() {
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Whoop API error:", message);
-    // Details stay in the log: upstream/token errors aren't for the public (and this response is cached).
+    // Details stay in the log: upstream/token errors aren't for the public.
     return NextResponse.json({ error: "Whoop data unavailable" }, { status: 500 });
   }
 }
