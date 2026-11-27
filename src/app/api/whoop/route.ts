@@ -74,7 +74,7 @@ export async function GET() {
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Whoop API error:", message);
-    // Details stay in the log: upstream/token errors aren't for the public (and this response is cached).
+    // Details stay in the log: upstream/token errors aren't for the public.
     return NextResponse.json({ error: "Whoop data unavailable" }, { status: 500 });
   }
 }
