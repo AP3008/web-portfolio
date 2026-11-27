@@ -49,8 +49,7 @@ There is no test suite.
 
 ## Agent skills
 
-Use cmux skills when deploying agents to complete tasks.
-Use mattpocock-skills:implement when handing off tasks to subagents to complete. 
+Run spawned agents in cmux panes, managed with the `cmux` / `cmux-workspace` skills.
 
 ### Issue tracker
 

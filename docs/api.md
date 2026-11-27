@@ -6,7 +6,7 @@
 | --- | --- | --- | --- |
 | `/api/github-commits` | GET | The latest commit (message, SHA, additions/deletions) for every repo in `PROJECT_REPOS`, plus the 3 most recent `AP3008/web-portfolio` commits | `revalidate = 3600`, `s-maxage=3600` |
 | `/api/spotify` | GET | Now playing or last played track (`SpotifyTrack`) | 60s |
-| `/api/whoop` | GET | `LivePulse` (`src/lib/whoop.ts`): `{ date, recovery, strain \| null, sleepPerformance \| null }` for the Whoop day of the latest scored recovery. Only these public metrics leave the server. Any failure → `500 { error }` | `revalidate = 3600`, `s-maxage=3600, stale-while-revalidate=3600` |
+| `/api/whoop` | GET | `LivePulse` (`src/lib/whoop.ts`): `{ date, recovery, strain \| null, sleepPerformance \| null }` for the Whoop day of the latest scored recovery. Only these public metrics leave the server. Any failure → `500 { error }` | `force-dynamic`, `s-maxage=3600, stale-while-revalidate=3600` |
 | `/api/weather` | GET | Open-Meteo condition + time of day for London, Ontario | 30 min |
 | `/api/views` | GET | Page view count (falls back to 0) | none |
 | `/api/track-view` | POST | Increments the view count | none |
@@ -25,7 +25,7 @@
 
 Whoop refresh tokens rotate (each refresh kills the old one), so the token can't live in an env var. `src/lib/whoop.ts` keeps `{ access_token, expires_at, refresh_token }` in the private Vercel Blob `whoop/token.json` (`WHOOP.TOKEN_BLOB_PATH`). It reuses the access token until it expires, then refreshes and writes back with `ifMatch: etag`; losing a race re-reads the stored token. One token chain serves dev and prod.
 
-The Whoop route caches whatever it returns, so a failure is served as a 500 for up to the full hour.
+The Whoop route must stay `force-dynamic`. With ISR (`revalidate`), a refresh needing a new token hits the `no-store` token fetch, Next throws a dynamic-usage error, and the old prerender is served forever. Only successful responses carry `s-maxage`, so a 500 isn't cached.
 
 **Re-auth** (the chain is dead: `/api/whoop` 500s with a token error and the Live Pulse card is hidden): run `npm run whoop:auth`, open the printed URL, approve, and paste back the `https://www.ap3008.dev/?code=…` URL you land on. The script overwrites the Blob token.
 
