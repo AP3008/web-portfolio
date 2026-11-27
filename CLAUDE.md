@@ -49,6 +49,9 @@ There is no test suite.
 
 ## Agent skills
 
+Use cmux skills when deploying agents to complete tasks.
+Use mattpocock-skills:implement when handing off tasks to subagents to complete. 
+
 ### Issue tracker
 
 Issues live in Linear: workspace "Adam Porbanderwalla", team `ADA`, project `Webportfolio`, accessed through the Linear MCP. See `docs/agents/issue-tracker.md`.
